@@ -1,0 +1,8 @@
+-: Remove Outros Mod
+    Author(s) -
+      Museus (Discord: Museus#7777) 
+  This mod removes the outro upon leaving the surface after killing Hades.
+  Instead you just die and go back to the House.
+:-
+
+Import "RemoveOutroMod.lua"
