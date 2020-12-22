@@ -2,6 +2,8 @@ ModUtil.RegisterMod("RoomDeterminism")
 
 local config = {
   -- TODO: these configs can yield infinite loops.  Needs addressing before exposing to player via a UI
+  Enabled = true,
+  PlanRoomsOnNewRun = true,
   MidShopMinDepth = {
     Tartarus = 5,
     Asphodel = 18,
@@ -87,16 +89,20 @@ BIOME_ABBREVIATION = {
 }
 
 -- Counts exit doors (since room creation for an exit door do not know which door they belong to)
-RoomDeterminism.CurrentExitForDepth = 1
+CurrentExitForDepth = 1
 
 -- Global Variable that tracks what overrides we will apply to the run
 OverridesByDepth = {}
+
+-- Global variable that tracks which rooms have already been placed
+SelectedRoomsCache = {}
 
 function populateRoomOverrides()
   rng = GetGlobalRng()
   RandomSynchronize(3110)
 
   OverridesByDepth = {}
+  SelectedRoomsCache = {}
 
   -- For each biome
   for _, biome in ipairs(BIOMES) do
@@ -162,6 +168,7 @@ function populateRoomOverrides()
       local selected_room_name = GetRandomKey(eligible_room_data)
       OverridesByDepth[depth] = OverridesByDepth[depth] or {} -- Create if nil
       OverridesByDepth[depth].Room = selected_room_name
+      SelectedRoomsCache[selected_room_name] = true
       writeToDebugBox(depth .. ": Selected " .. selected_room_name)
 
       -- Generate a table of options based on number of exits of selected room
@@ -203,7 +210,8 @@ function GetEligibleCombatRoomData(biome, depth, minimum_exits)
       -- Check all other conditions (e.g. biome depth and num exits)
       if roomData.NumExits >= minimum_exits
           and depth >= (roomData.RequiredMinBiomeDepth or -1)
-          and depth <= (roomData.RequiredMaxBiomeDepth or 99999) then
+          and depth <= (roomData.RequiredMaxBiomeDepth or 99999)
+          and not SelectedRoomsCache[roomName] then
 
         -- If all conditions succeeded, room is eligible
         eligible_room_data[roomName] = roomData
@@ -263,6 +271,10 @@ end
 
 ModUtil.WrapBaseFunction("ChooseNextRoomData", function ( baseFunc, run )
 	local next_room_data = baseFunc( run )
+  if not config.Enabled then
+    return next_room_data
+  end
+
   local depth = GetRunDepth(CurrentRun)
   local biome = GetBiome(depth + 1)
 
@@ -274,7 +286,7 @@ ModUtil.WrapBaseFunction("ChooseNextRoomData", function ( baseFunc, run )
     end
   end
 
-  -- If there is a door-specific override, use that instead of the room depth override
+  -- if there is a door-specific override, use that instead of the room depth override
   if OverridesByDepth[depth] ~= nil then
     if OverridesByDepth[depth]["Exit" .. CurrentExitForDepth] ~= nil then
       local temp_room_data = RoomSetData[biome][OverridesByDepth[depth]["Exit" .. CurrentExitForDepth]]
@@ -297,7 +309,9 @@ ModUtil.WrapBaseFunction("LeaveRoom", function ( baseFunc, currentRun, door )
 end, RoomDeterminism)
 
 ModUtil.WrapBaseFunction("StartNewRun", function ( baseFunc, currentRun )
-  populateRoomOverrides()
+  if config.PlanRoomsOnNewRun then
+    populateRoomOverrides()
+  end
   return baseFunc(currentRun)
 end, RoomDeterminism)
 
