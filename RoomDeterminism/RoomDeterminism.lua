@@ -2,7 +2,6 @@ ModUtil.RegisterMod("RoomDeterminism")
 
 local config = {
   -- TODO: these configs can yield infinite loops.  Needs addressing before exposing to player via a UI
-  Enabled = true,
   PlanRoomsOnNewRun = true,
   MidShopMinDepth = {
     Tartarus = 5,
@@ -169,7 +168,7 @@ function populateRoomOverrides()
       OverridesByDepth[depth] = OverridesByDepth[depth] or {} -- Create if nil
       OverridesByDepth[depth].Room = selected_room_name
       SelectedRoomsCache[selected_room_name] = true
-      writeToDebugBox(depth .. ": Selected " .. selected_room_name)
+      DebugPrint({Text = depth .. ": Selected " .. selected_room_name})
 
       -- Generate a table of options based on number of exits of selected room
       local exit_options = {}
@@ -182,7 +181,7 @@ function populateRoomOverrides()
         for _, placed_room in ipairs(placed_rooms[depth + 1]) do
           local exit = RemoveRandomValue(exit_options)
           OverridesByDepth[depth]["Exit" .. exit] = placed_room
-          writeToDebugBox(depth .. ": Placed " .. placed_room .. " at " .. "Exit" .. exit)
+          DebugPrint({Text = depth .. ": Placed " .. placed_room .. " at " .. "Exit" .. exit})
         end
       end
     end
@@ -259,44 +258,50 @@ function HasSeenMiniboss(biome)
   return false
 end
 
--- Use RoomSetName and handle mid biome rooms separately?
-function GetBiome(depth)
-  for biome_name, biome_depth_data in pairs(BIOME_DEPTH) do
-    if depth >= biome_depth_data.Min and depth <= biome_depth_data.Max then
-      return biome_name
+-- Search the room set data for a matching room name
+function GetBiome(room_name_to_find)
+  for biome_name, biome_data in pairs(RoomSetData) do
+    for room_name, room_data in pairs(biome_data) do
+      if room_name == room_name_to_find then
+        return biome_name
+      end
     end
   end
-  error("Invalid depth passed to GetBiome: " .. (depth or "nil"))
+  error("Invalid room name passed to GetBiome: " .. (room_name_to_find or "nil"))
 end
 
 ModUtil.WrapBaseFunction("ChooseNextRoomData", function ( baseFunc, run )
 	local next_room_data = baseFunc( run )
-  if not config.Enabled then
-    return next_room_data
-  end
-
+  local next_room_name = nil
   local depth = GetRunDepth(CurrentRun)
-  local biome = GetBiome(depth + 1)
 
   -- Override the room with the room planned at the next depth
   if OverridesByDepth[depth + 1] ~= nil then
     if OverridesByDepth[depth + 1].Room ~= nil then
-      writeToDebugBox("Override at depth " .. depth + 1 .. " for room is " .. OverridesByDepth[depth + 1].Room)
-      next_room_data = RoomSetData[biome][OverridesByDepth[depth + 1].Room]
+      DebugPrint({Text = "Override at depth " .. depth + 1 .. " for room is " .. OverridesByDepth[depth + 1].Room})
+      next_room_name = OverridesByDepth[depth + 1].Room
     end
   end
 
   -- if there is a door-specific override, use that instead of the room depth override
   if OverridesByDepth[depth] ~= nil then
     if OverridesByDepth[depth]["Exit" .. CurrentExitForDepth] ~= nil then
-      local temp_room_data = RoomSetData[biome][OverridesByDepth[depth]["Exit" .. CurrentExitForDepth]]
+      local temp_room_name = OverridesByDepth[depth]["Exit" .. CurrentExitForDepth]
+      local biome = GetBiome(temp_room_name)
+
       -- Only override exits with miniboss rooms if we haven't yet seen a miniboss this biome
-      if not (HasSeenMiniboss(biome) and temp_room_data.IsMiniBossRoom) then
-        writeToDebugBox("Override at depth " .. depth .. " and exit " .. CurrentExitForDepth .. " is " .. OverridesByDepth[depth]["Exit" .. CurrentExitForDepth])
-        next_room_data = RoomSetData[biome][OverridesByDepth[depth]["Exit" .. CurrentExitForDepth]]
+      if not (HasSeenMiniboss(biome) and RoomSetData[biome][temp_room_name].IsMiniBossRoom) then
+        DebugPrint({Text = "Override at depth " .. depth .. " and exit " .. CurrentExitForDepth .. " is " .. OverridesByDepth[depth]["Exit" .. CurrentExitForDepth]})
+        next_room_name = temp_room_name
       end
     end
   end
+
+  if next_room_name ~= nil then
+    local biome = GetBiome(next_room_name)
+    next_room_data = RoomSetData[biome][next_room_name]
+  end
+
   CurrentExitForDepth = CurrentExitForDepth + 1
 	return next_room_data
 end, RoomDeterminism)
@@ -314,8 +319,3 @@ ModUtil.WrapBaseFunction("StartNewRun", function ( baseFunc, currentRun )
   end
   return baseFunc(currentRun)
 end, RoomDeterminism)
-
--- Dummy function meant to be overridden by a debugging mod
-function writeToDebugBox(str, override)
-  -- Do nothing
-end
