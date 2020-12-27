@@ -2,7 +2,7 @@ ModUtil.RegisterMod("RoomDeterminism")
 
 local config = {
   -- TODO: these configs can yield infinite loops.  Needs addressing before exposing to player via a UI
-  PlanRoomsOnNewRun = true,
+  PlanRoomsOnNewRun = false,
   MidShopMinDepth = {
     Tartarus = 5,
     Asphodel = 18,
@@ -91,7 +91,7 @@ BIOME_ABBREVIATION = {
 CurrentExitForDepth = 1
 
 -- Global Variable that tracks what overrides we will apply to the run
-OverridesByDepth = {}
+RoomOverridesByDepth = {}
 
 -- Global variable that tracks which rooms have already been placed
 SelectedRoomsCache = {}
@@ -100,7 +100,7 @@ function populateRoomOverrides()
   rng = GetGlobalRng()
   RandomSynchronize(3110)
 
-  OverridesByDepth = {}
+  RoomOverridesByDepth = {}
   SelectedRoomsCache = {}
 
   -- For each biome
@@ -165,8 +165,8 @@ function populateRoomOverrides()
 
       -- Select room from eligible rooms
       local selected_room_name = GetRandomKey(eligible_room_data)
-      OverridesByDepth[depth] = OverridesByDepth[depth] or {} -- Create if nil
-      OverridesByDepth[depth].Room = selected_room_name
+      RoomOverridesByDepth[depth] = RoomOverridesByDepth[depth] or {} -- Create if nil
+      RoomOverridesByDepth[depth].Room = selected_room_name
       SelectedRoomsCache[selected_room_name] = true
       DebugPrint({Text = depth .. ": Selected " .. selected_room_name})
 
@@ -180,7 +180,7 @@ function populateRoomOverrides()
       if #(placed_rooms[depth + 1] or {}) > 0 then
         for _, placed_room in ipairs(placed_rooms[depth + 1]) do
           local exit = RemoveRandomValue(exit_options)
-          OverridesByDepth[depth]["Exit" .. exit] = placed_room
+          RoomOverridesByDepth[depth]["Exit" .. exit] = placed_room
           DebugPrint({Text = depth .. ": Placed " .. placed_room .. " at " .. "Exit" .. exit})
         end
       end
@@ -276,22 +276,22 @@ ModUtil.WrapBaseFunction("ChooseNextRoomData", function ( baseFunc, run )
   local depth = GetRunDepth(CurrentRun)
 
   -- Override the room with the room planned at the next depth
-  if OverridesByDepth[depth + 1] ~= nil then
-    if OverridesByDepth[depth + 1].Room ~= nil then
-      DebugPrint({Text = "Override at depth " .. depth + 1 .. " for room is " .. OverridesByDepth[depth + 1].Room})
-      next_room_name = OverridesByDepth[depth + 1].Room
+  if RoomOverridesByDepth[depth + 1] ~= nil then
+    if RoomOverridesByDepth[depth + 1].Room ~= nil then
+      DebugPrint({Text = "Override at depth " .. depth + 1 .. " for room is " .. RoomOverridesByDepth[depth + 1].Room})
+      next_room_name = RoomOverridesByDepth[depth + 1].Room
     end
   end
 
   -- if there is a door-specific override, use that instead of the room depth override
-  if OverridesByDepth[depth] ~= nil then
-    if OverridesByDepth[depth]["Exit" .. CurrentExitForDepth] ~= nil then
-      local temp_room_name = OverridesByDepth[depth]["Exit" .. CurrentExitForDepth]
+  if RoomOverridesByDepth[depth] ~= nil then
+    if RoomOverridesByDepth[depth]["Exit" .. CurrentExitForDepth] ~= nil then
+      local temp_room_name = RoomOverridesByDepth[depth]["Exit" .. CurrentExitForDepth]
       local biome = GetBiome(temp_room_name)
 
       -- Only override exits with miniboss rooms if we haven't yet seen a miniboss this biome
       if not (HasSeenMiniboss(biome) and RoomSetData[biome][temp_room_name].IsMiniBossRoom) then
-        DebugPrint({Text = "Override at depth " .. depth .. " and exit " .. CurrentExitForDepth .. " is " .. OverridesByDepth[depth]["Exit" .. CurrentExitForDepth]})
+        DebugPrint({Text = "Override at depth " .. depth .. " and exit " .. CurrentExitForDepth .. " is " .. RoomOverridesByDepth[depth]["Exit" .. CurrentExitForDepth]})
         next_room_name = temp_room_name
       end
     end
