@@ -23,7 +23,6 @@ ModUtil.WrapBaseFunction("StartNewRun", function(baseFunc, ...)
 
   -- reset the mod
   FixedHammers.Hammers = {}
-  FixedHammers.NextHammer = 1
 
   -- determine eligible hammers (for the current weapon)
   local eligibleHammers = GetEligibleHammers()
@@ -36,9 +35,9 @@ ModUtil.WrapBaseFunction("StartNewRun", function(baseFunc, ...)
 end, FixedHammers)
 
 ModUtil.WrapBaseFunction("SetTraitsOnLoot", function(baseFunc, lootData, args)
-  if config.UseFixedHammers and FixedHammers.Hammers then
-    local hammersInOrder = FixedHammers.Hammers[FixedHammers.NextHammer]
-    FixedHammers.NextHammer = 2
+  if lootData.Name == "WeaponUpgrade" and config.UseFixedHammers and FixedHammers.Hammers then
+    local previousHammers = CurrentRun.LootTypeHistory.WeaponUpgrade or 0
+    local hammersInOrder = FixedHammers.Hammers[previousHammers + 1]
 
     local eligibleHammers = GetEligibleHammers()
     local upgradeOptions = {}
