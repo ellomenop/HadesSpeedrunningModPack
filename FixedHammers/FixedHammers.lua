@@ -9,22 +9,17 @@ if ModConfigMenu then
   ModConfigMenu.Register(config)
 end
 
-function FixedHammers.GetEligibleHammers()
-  local eligibleHammers = {}
+local function GetEligibleHammers()
 
   local loot = DeepCopyTable( LootData["WeaponUpgrade"] )
   loot.RarityChances = {}
   loot.ForceCommon = true
-  for _, hammer in pairs(GetEligibleUpgrades({}, loot, LootData["WeaponUpgrade"])) do
-    table.insert(eligibleHammers, hammer.ItemName)
-  end
-
-  return eligibleHammers
+  return GetEligibleUpgrades({}, loot, LootData["WeaponUpgrade"])
 end
 
 ModUtil.WrapBaseFunction("StartNewRun", function(baseFunc, ...)
   -- initialize everything else first
-  baseFunc(...)
+  local run = baseFunc(...)
 
   -- reset the mod
   FixedHammers.Hammers = {}
@@ -32,24 +27,36 @@ ModUtil.WrapBaseFunction("StartNewRun", function(baseFunc, ...)
 
   -- determine eligible hammers (for the current weapon)
   local eligibleHammers = GetEligibleHammers()
-  for _, name in pairs(eligibleHammers) do
-    print(name)
-  end
 
   -- shuffle the hammers, creating two permutations
   FixedHammers.Hammers[1] = FYShuffle(eligibleHammers)
   FixedHammers.Hammers[2] = FYShuffle(eligibleHammers)
+
+  return run
 end, FixedHammers)
 
 ModUtil.WrapBaseFunction("SetTraitsOnLoot", function(baseFunc, lootData, args)
   if config.UseFixedHammers and FixedHammers.Hammers then
     local hammersInOrder = FixedHammers.Hammers[FixedHammers.NextHammer]
+    FixedHammers.NextHammer = 2
+
     local eligibleHammers = GetEligibleHammers()
     local upgradeOptions = {}
-    for _, hammer in pairs(hammersInOrder) do
-      
+    local upgradesSelected = 0
+
+    -- pick the first three hammers from the fixed permutation
+    for _, currentHammer in pairs(hammersInOrder) do
+      for _, eligibleHammer in pairs(eligibleHammers) do
+        if currentHammer.ItemName == eligibleHammer.ItemName then
+          eligibleHammer.Rarity = "Common"
+          table.insert(upgradeOptions, eligibleHammer)
+          upgradesSelected = upgradesSelected + 1
+          break
+        end
+      end
+      if upgradesSelected == 3 then break end
     end
-    return baseFunc(lootData, args)
+    lootData.UpgradeOptions = upgradeOptions
   else
     return baseFunc(lootData, args)
   end
