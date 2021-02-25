@@ -1,0 +1,8 @@
+-: RemoveCutscenes
+    Author:
+        Museus (Discord: Museus#7777)
+
+  Optionally removes the intro cutscene and outro cutscenes to runs
+:-
+
+Import "RemoveCutscenes.lua"
