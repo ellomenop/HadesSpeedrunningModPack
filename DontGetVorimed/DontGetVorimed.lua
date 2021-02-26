@@ -2,7 +2,7 @@
     DontGetVorimed
     Authors:
     Ellomenop (Discord: ellomenop#2254)
-    Makes the first room reward offer all 4 core boons
+    Makes the first boon reward offer all 4 core boons
 ]]
 ModUtil.RegisterMod("DontGetVorimed")
 
@@ -18,13 +18,13 @@ ModUtil.WrapBaseFunction("ChooseStartingRoom", function ( baseFunc, currentRun, 
   return baseFunc(currentRun, roomSetName)
 end, DontGetVorimed)
 
--- After first reward has been selected, return to normal number of choices
+-- After first boon reward has been selected, return to normal number of choices
 ModUtil.WrapBaseFunction("HandleUpgradeChoiceSelection", function ( baseFunc, screen, button )
   LootChoiceExt.Choices = 3
   baseFunc(screen, button)
 end, DontGetVorimed)
 
--- If the player rerolls, reduce to 3 options
+-- If the player ever rerolls, reduce to 3 options
 ModUtil.WrapBaseFunction("DestroyBoonLootButtons", function ( baseFunc, lootData )
   baseFunc(lootData)
   LootChoiceExt.Choices = 3
