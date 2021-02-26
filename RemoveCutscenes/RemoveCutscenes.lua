@@ -41,18 +41,3 @@ ModUtil.WrapBaseFunction("EndEarlyAccessPresentation", function ( baseFunc )
 
     baseFunc()
 end, RemoveCutscenes)
-
-
--- Scripts/RoomManager.lua : 1874
-ModUtil.WrapBaseFunction("StartRoom", function ( baseFunc, currentRun, currentRoom )
-    PrintUtil.showModdedWarning()
-
-    baseFunc(currentRun, currentRoom)
-end, RemoveCutscenes)
-
--- Scripts/UIScripts.lua : 145
-ModUtil.WrapBaseFunction("ShowCombatUI", function ( baseFunc, flag )
-    PrintUtil.showModdedWarning()
-
-    baseFunc(flag)
-end, RemoveCutscenes)
