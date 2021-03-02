@@ -1,0 +1,8 @@
+-: 
+    RTA Timer
+    Author:
+        Museus (Discord: Museus#7777)
+
+  Adds an RTA Timer below the IGT timer
+:-
+Import "RtaTimer.lua"
