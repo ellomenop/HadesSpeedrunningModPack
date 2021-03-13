@@ -59,19 +59,15 @@ ThanatosMod.Presets = {
 }
 
 OnAnyLoad{ function()
+    local maxThans = 1
     if config.ThanatosSetting == "Removed" then
-        ModUtil.MapSetTable(EncounterData, {
-            BaseThanatos = {
-                MaxThanatosSpawnsThisRun = 0,
-            },
-        })
-    else
-      ModUtil.MapSetTable(EncounterData, {
-          BaseThanatos = {
-              MaxThanatosSpawnsThisRun = 1,
-          },
-      })
+      maxThans = 0
     end
+    ModUtil.MapSetTable(EncounterData, {
+        BaseThanatos = {
+            MaxThanatosSpawnsThisRun = maxThans,
+        },
+    })
 end}
 
 function updateThanatosValues(data)
