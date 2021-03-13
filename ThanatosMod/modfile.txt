@@ -1,0 +1,2 @@
+:: ThanatosMod v1.0
+Import "ThanatosMod.lua"
