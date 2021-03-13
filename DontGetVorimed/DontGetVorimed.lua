@@ -12,11 +12,8 @@ local config = {
 }
 DontGetVorimed.config = config
 
-if ModConfigMenu then
-  ModConfigMenu.Register(config)
-end
-
 -- When the first room is created, set the number of loot choices to 4
+-- This will persist until the first boon reward is received or rolled over
 ModUtil.WrapBaseFunction("ChooseStartingRoom", function ( baseFunc, currentRun, roomSetName )
   if config.Enabled then
     LootChoiceExt.Choices = 4
