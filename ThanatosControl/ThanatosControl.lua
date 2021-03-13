@@ -1,5 +1,5 @@
 --[[
-    ThanatosMod v1.0
+    Thanatos Control v1.0
     Author:
         Museus (Discord: Museus#7777)
         ellomenop (Discord: ellomenop#2254)
@@ -7,14 +7,14 @@
     Gives options to modify or remove Thanatos
 ]]
 
-ModUtil.RegisterMod("ThanatosMod")
+ModUtil.RegisterMod("ThanatosControl")
 
 local config = {
     ThanatosSetting = "Rebalanced"
 }
-ThanatosMod.config = config
+ThanatosControl.config = config
 
-ThanatosMod.Presets = {
+ThanatosControl.Presets = {
     Removed = {},
     Rebalanced = {
         Tartarus = {
@@ -58,6 +58,10 @@ ThanatosMod.Presets = {
     },
 }
 
+function ThanatosControl.RegisterPreset(name, preset)
+  ThanatosControl.Presets[name] = preset
+end
+
 OnAnyLoad{ function()
     local maxThans = 1
     if config.ThanatosSetting == "Removed" then
@@ -72,12 +76,12 @@ end}
 
 function updateThanatosValues(data)
     local biome = string.sub(data.Name, 9, #data.Name)
-    data.BaseDifficulty = ThanatosMod.Presets[config.ThanatosSetting][biome].BaseDifficulty
+    data.BaseDifficulty = ThanatosControl.Presets[config.ThanatosSetting][biome].BaseDifficulty
     data.HardEncounterOverrideValues = {
-        DepthDifficultyRamp = ThanatosMod.Presets[config.ThanatosSetting][biome].EliteScaling
+        DepthDifficultyRamp = ThanatosControl.Presets[config.ThanatosSetting][biome].EliteScaling
     }
-    data.MinWaves = ThanatosMod.Presets[config.ThanatosSetting][biome].MinWaves
-    data.MaxWaves = ThanatosMod.Presets[config.ThanatosSetting][biome].MaxWaves
+    data.MinWaves = ThanatosControl.Presets[config.ThanatosSetting][biome].MinWaves
+    data.MaxWaves = ThanatosControl.Presets[config.ThanatosSetting][biome].MaxWaves
 end
 
 ModUtil.WrapBaseFunction("SetupEncounter", function( baseFunc, encounterData, room )
@@ -90,4 +94,4 @@ ModUtil.WrapBaseFunction("SetupEncounter", function( baseFunc, encounterData, ro
     end
 
     return baseFunc( encounterData, room )
-end, ThanatosMod)
+end, ThanatosControl)
