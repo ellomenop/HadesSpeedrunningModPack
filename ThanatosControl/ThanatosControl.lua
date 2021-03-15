@@ -10,7 +10,7 @@
 ModUtil.RegisterMod("ThanatosControl")
 
 local config = {
-    ThanatosSetting = "Rebalanced"
+    ThanatosSetting = "Removed"
 }
 ThanatosControl.config = config
 
@@ -68,9 +68,15 @@ OnAnyLoad{ function()
       maxThans = 0
     end
     ModUtil.MapSetTable(EncounterData, {
-        BaseThanatos = {
-            MaxThanatosSpawnsThisRun = maxThans,
-        },
+      ThanatosTartarus = {
+          MaxThanatosSpawnsThisRun = maxThans,
+      },
+      ThanatosAsphodel = {
+          MaxThanatosSpawnsThisRun = maxThans,
+      },
+      ThanatosElysium = {
+          MaxThanatosSpawnsThisRun = maxThans,
+      },
     })
 end}
 
