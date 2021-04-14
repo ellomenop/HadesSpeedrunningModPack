@@ -1,0 +1,8 @@
+-: 
+    SatyrSackControl
+    Author:
+        Museus (Discord: Museus#7777)
+
+    Forces the Styx satyr sack to appear in a specified range.
+:-
+Import "SatyrSackControl.lua"

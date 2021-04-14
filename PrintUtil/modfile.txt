@@ -1,0 +1,15 @@
+-: 
+    PrintUtil
+    Authors:
+        Ellomenop#2254 | https://twitch.tv/Ellomenop
+        Museus#7777 | https://twitch.tv/Museus7
+
+    Contains functions to print to the screen in an efficient and customizable
+    manner, and to get the current stack trace, to determine who is calling a
+    function and from where.
+
+    Should be the very first mod loaded, after ModUtil, as DebugBoxMod relies
+    on it.
+:-
+Load Priority 1
+Import "PrintUtil.lua"

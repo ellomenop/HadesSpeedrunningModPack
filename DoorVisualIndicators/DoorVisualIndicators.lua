@@ -2,14 +2,10 @@ ModUtil.RegisterMod("DoorVisualIndicators")
 
 local config = {
   ModName = "Door Visual Indicators",
-  ShowFountainDoorIndictor = true,
-  ShowMinibossDoorIndicator = true
+  ShowFountainDoorIndictor = false,
+  ShowMinibossDoorIndicator = false
 }
 DoorVisualIndicators.config = config
-
-if ModConfigMenu then
-  ModConfigMenu.Register(config)
-end
 
 DoorVisualIndicators.MiniBossLabels = {
   A_MiniBoss01 = "Bombers",
@@ -33,7 +29,7 @@ DoorVisualIndicators.MiniBossAnimations = {
   A_MiniBoss02 = {"HeavyRangedSplitterCrystal"},
   A_MiniBoss03 = {"EnemyWretchAssassin_Idle"},
   A_MiniBoss04 = {"HeavyRangedSplitterCrystal"},
-  -- Tried to use some barge-like static assets but didn't work: "AsphodelWrappingTile01", "AsphodelBoat01", "AsphodelBoatSunkUnlocked",
+  -- Tried to use some static assets but didn't work: "AsphodelWrappingTile01", "AsphodelBoat01", "AsphodelBoatSunkUnlocked",
   B_Wrapping01 = {"HealRangedCrystal4"},
   B_MiniBoss01 = {"CrusherUnitIdle", "EnemyMedusaHeadIdle"},
   B_MiniBoss02 = {"EnemyWretchCasterIdle_SpreadShot"}, -- x4 and make closer together?

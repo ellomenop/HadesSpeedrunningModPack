@@ -1,0 +1,10 @@
+Load Priority 999999
+  Import "HadesSpeedrunningModpack.lua"
+  Import "RngBalanceMenu.lua"
+  Import "QualityOfLifeMenu.lua"
+  Import "AccessibilityMenu.lua"
+  Import "PersonalizationMenu.lua"
+  :: Import "MetricsMenu.lua"
+  Import "SettingsHashMenu.lua"
+  Import "HSMConfigMenu.lua"
+  Import "AttributionAndNotes.lua"

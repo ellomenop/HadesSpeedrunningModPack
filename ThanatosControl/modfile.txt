@@ -1,0 +1,2 @@
+:: Thanatos Control v1.0
+Import "ThanatosControl.lua"

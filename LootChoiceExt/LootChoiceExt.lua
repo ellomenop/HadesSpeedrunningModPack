@@ -20,13 +20,11 @@ OnAnyLoad{ function()
 end}
 
 ModUtil.BaseOverride("GetTotalLootChoices", function()
-  DebugPrint({Text = "GetTotalLootChoices: " ..  LootChoiceExt.LastLootChoices})
 	return LootChoiceExt.LastLootChoices
 end, LootChoiceExt)
 
 ModUtil.BaseOverride("CalcNumLootChoices", function()
 	local numChoices = LootChoiceExt.LastLootChoices - GetNumMetaUpgrades("ReducedLootChoicesShrineUpgrade")
-  DebugPrint({Text = "CalcNumLootChoices: " ..  numChoices})
 	return numChoices
 end, LootChoiceExt)
 
