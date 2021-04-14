@@ -12,10 +12,7 @@ local config = {
     DisplayTimer = true,
     MultiWeapon = false,
 }
-
-if ModConfigMenu then
-  ModConfigMenu.Register(config)
-end
+RtaTimer.config = config
 
 function RtaTimer.FormatElapsedTime(start_time, current_epoch)
     -- Accept a "start" time and "current" time and output it in the format Xh Xm Xs
@@ -83,6 +80,11 @@ function RtaTimer.StartRtaTimer()
     end
 end
 
+function RtaTimer__ResetRtaTimer()
+    RtaTimer.TimerWasReset = true
+    RtaTimer.UpdateRtaTimer()
+end
+
 ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
     local val = baseFunc(...)
 
@@ -107,8 +109,9 @@ end, RtaTimer)
 ModUtil.LoadOnce(
     function()
         -- If not in a run, reset timer and prepare for run start
-        if CurrentRun.Hero.IsDead then
+        if ModUtil.PathGet("CurrentDeathAreaRoom") then
             RtaTimer.TimerWasReset = true
+
         -- If in a run, just start the timer from the time the mod was loaded
         else
             RtaTimer.TimerWasReset = false

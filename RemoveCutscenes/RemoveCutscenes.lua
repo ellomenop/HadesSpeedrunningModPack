@@ -14,10 +14,6 @@ local config = {
 }
 RemoveCutscenes.config = config
 
-if ModConfigMenu then
-  ModConfigMenu.Register(config)
-end
-
 -- Remove starting cutscene
 ModUtil.WrapBaseFunction("ShowRunIntro", function( baseFunc )
     if config.RemoveIntro then

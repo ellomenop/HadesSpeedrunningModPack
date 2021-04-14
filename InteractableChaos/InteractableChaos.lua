@@ -6,10 +6,6 @@ local config = {
 }
 InteractableChaos.config = config
 
-if ModConfigMenu then
-  ModConfigMenu.Register(config)
-end
-
 -- Spawn the chaos interactable and prevent interaction with the normal chaos gate
 ModUtil.WrapBaseFunction("DoUnlockRoomExits", function ( baseFunc, run, room )
   baseFunc(run, room)

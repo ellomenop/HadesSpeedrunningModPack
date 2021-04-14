@@ -1,0 +1,10 @@
+    ShowChamberNumber
+    Authors:
+      Museus (Discord: Museus#7777)
+      Ellomenop (Discord: ellomenop#2254)
+
+    This version of ShowChamberNumber shows the Depth immediately upon starting a room,
+    rather than waiting for the CombatUI to spawn. If that fails for some reason, fall back
+    to showing the Depth during ShowCombatUI.
+:-
+Import "ShowChamberNumber.lua"
