@@ -28,9 +28,9 @@ ModUtil.BaseOverride("CalcNumLootChoices", function()
 	return numChoices
 end, LootChoiceExt)
 
-ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
+ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData, reroll )
 
-	-- BASE CODE ...
+	-- BASE CODE ... (From Live Steam version v1.37996, pulled on 2021.04.27)
 	local components = ScreenAnchors.ChoiceScreen.Components
 	local upgradeName = lootData.Name
 	local upgradeChoiceData = LootData[upgradeName]
@@ -43,7 +43,9 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 	if not lootData.StackNum then
 		lootData.StackNum = 1
 	end
-	lootData.StackNum = lootData.StackNum + GetTotalHeroTraitValue("PomLevelBonus")
+	if not reroll then
+		lootData.StackNum = lootData.StackNum + GetTotalHeroTraitValue("PomLevelBonus")
+	end
 	local tooltipData = {}
 
 	local itemLocationY = 370
@@ -105,6 +107,13 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 	local squashY = 3/(3+excess)
 	local fsquashT1 = 0 if excess < 3 then fsquashT1 = 1 end
 
+	local iconScaling
+	if excess == 0 then
+		iconScaling = 0.85
+	else
+		iconScaling = 1.0
+	end
+
 	for itemIndex, itemData in ipairs( upgradeOptions ) do
 		local squashT1 = fsquashT1
 
@@ -112,7 +121,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 		components[itemBackingKey] = CreateScreenComponent({ Name = "TraitBacking", Group = "Combat_Menu", X = ScreenCenterX, Y = itemLocationY })
 		SetScaleY({ Id = components[itemBackingKey].Id, Fraction = 1.25*squashY })
 
-		-- BASE CODE ...
+		-- BASE CODE ...(From Live Steam version v1.37996, pulled on 2021.04.27)
 
 		local upgradeData = nil
 		local upgradeTitle = nil
@@ -124,11 +133,11 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 				upgradeTitle = "TraitLevel_Upgrade"
 				upgradeData.Title = upgradeData.Name
 			else
-				upgradeTitle = upgradeData.Name
+				upgradeTitle = GetTraitTooltipTitle( TraitData[itemData.ItemName] )
 
-				upgradeData.Title = upgradeData.Name .."_Initial"
+				upgradeData.Title = GetTraitTooltipTitle( TraitData[itemData.ItemName] ) .."_Initial"
 				if not HasDisplayName({ Text = upgradeData.Title }) then
-					upgradeData.Title = upgradeData.Name
+					upgradeData.Title = GetTraitTooltipTitle( TraitData[itemData.ItemName] )
 				end
 			end
 
@@ -139,15 +148,24 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 				tooltipData =  GetProcessedTraitData({ Unit = CurrentRun.Hero, TraitName = itemData.ItemName, FakeStackNum = existingNum, RarityMultiplier = upgradeData.RarityMultiplier})
 				if existingNum > 1 then
 					upgradeTitle = "TraitLevel_Exchange"
-					tooltipData.Title = upgradeData.Name
+					tooltipData.Title = GetTraitTooltipTitle( TraitData[upgradeData.Name])
 					tooltipData.Level = existingNum
 				end
 			elseif lootData.StackOnly then
 				tooltipData = GetProcessedTraitData({ Unit = CurrentRun.Hero, TraitName = itemData.ItemName, FakeStackNum = lootData.StackNum, RarityMultiplier = upgradeData.RarityMultiplier})
 				tooltipData.OldLevel = traitNum;
 				tooltipData.NewLevel = traitNum + lootData.StackNum;
-				tooltipData.Title = upgradeData.Name
+				tooltipData.Title = GetTraitTooltipTitle( TraitData[itemData.ItemName] )
+				upgradeData.Title = tooltipData.Title
 			else
+				if upgradeData.Rarity == "Legendary" then
+					if TraitData[upgradeData.Name].IsDuoBoon then
+						CreateAnimation({ Name = "BoonEntranceDuo", DestinationId = components[itemBackingKey].Id })
+					else
+					CreateAnimation({ Name = "BoonEntranceLegendary", DestinationId = components[itemBackingKey].Id })
+					end
+				end
+
 				tooltipData = upgradeData
 			end
 			SetTraitTextData( tooltipData )
@@ -158,7 +176,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 
 			upgradeData = GetRampedConsumableData(ConsumableData[itemData.ItemName], itemData.Rarity)
 			upgradeTitle = upgradeData.Name
-			upgradeDescription = upgradeTitle
+			upgradeDescription = GetTraitTooltip(upgradeData)
 
 			if upgradeData.UseFunctionArgs ~= nil then
 				if upgradeData.UseFunctionName ~= nil and upgradeData.UseFunctionArgs.TraitName ~= nil then
@@ -224,20 +242,20 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 
 		-- NEW CODE ...
 
-		local iconOffsetX = -323
+		local iconOffsetX = -338 --(From Live Steam version v1.37996, pulled on 2021.04.27)
 		local iconOffsetY = -2*squashY
 		local exchangeIconPrefix = nil
-		local overlayLayer = "Combat_Menu_Overlay"
+		local overlayLayer = "Combat_Menu_Overlay_Backing" --(From Live Steam version v1.37996, pulled on 2021.04.27)
 
 		components[purchaseButtonKey] = CreateScreenComponent({ Name = "BoonSlot"..RandomInt(1,3), Group = "Combat_Menu", Scale = 1, X = itemLocationX + buttonOffsetX, Y = itemLocationY })
 		SetScaleY({Id = components[purchaseButtonKey].Id, Fraction = squashY})
 		if upgradeData.CustomRarityColor then
-			components[purchaseButtonKey.."Patch"] = CreateScreenComponent({ Name = "BlankObstacle", Group = "Combat_Menu", X = iconOffsetX + itemLocationX + buttonOffsetX + 15, Y = iconOffsetY + itemLocationY })
+			components[purchaseButtonKey.."Patch"] = CreateScreenComponent({ Name = "BlankObstacle", Group = "Combat_Menu", X = iconOffsetX + itemLocationX + buttonOffsetX + 38, Y = iconOffsetY + itemLocationY })
 			SetAnimation({ DestinationId = components[purchaseButtonKey.."Patch"].Id, Name = "BoonRarityPatch"})
 			SetColor({ Id = components[purchaseButtonKey.."Patch"].Id, Color = upgradeData.CustomRarityColor })
 			SetScaleY({Id = components[purchaseButtonKey.."Patch"].Id, Fraction = squashY})
 		elseif itemData.Rarity ~= "Common" then
-			components[purchaseButtonKey.."Patch"] = CreateScreenComponent({ Name = "BlankObstacle", Group = "Combat_Menu", X = iconOffsetX + itemLocationX + buttonOffsetX + 15, Y = iconOffsetY + itemLocationY })
+			components[purchaseButtonKey.."Patch"] = CreateScreenComponent({ Name = "BlankObstacle", Group = "Combat_Menu", X = iconOffsetX + itemLocationX + buttonOffsetX + 38, Y = iconOffsetY + itemLocationY })
 			SetAnimation({ DestinationId = components[purchaseButtonKey.."Patch"].Id, Name = "BoonRarityPatch"})
 			SetColor({ Id = components[purchaseButtonKey.."Patch"].Id, Color = Color["BoonPatch" .. itemData.Rarity] })
 			SetScaleY({Id = components[purchaseButtonKey.."Patch"].Id, Fraction = squashY})
@@ -251,7 +269,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 			Text = "ReducedLootChoicesKeyword",
 			OffsetX = textOffset, OffsetY = -30*squashY,
 			Color = Color.Transparent,
-			Width = 615,
+			Width = 675, --(From Live Steam version v1.37996, pulled on 2021.04.27)
 			})
 			thread( TraitLockedPresentation, { squashY = squashY, squashTI = squashTI, Components = components, Id = purchaseButtonKey, OffsetX = itemLocationX + buttonOffsetX, OffsetY = iconOffsetY + itemLocationY })
 		end
@@ -259,8 +277,8 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 		if upgradeData.Icon ~= nil then
 			components[purchaseButtonKey.."Icon"] = CreateScreenComponent({ Name = "BlankObstacle", Group = "Combat_Menu", X = iconOffsetX + itemLocationX + buttonOffsetX, Y = iconOffsetY + itemLocationY })
 			SetAnimation({ DestinationId = components[purchaseButtonKey.."Icon"].Id, Name = upgradeData.Icon .. "_Large" })
-			SetScaleY({Id = components[purchaseButtonKey.."Icon"].Id, Fraction = squashY})
-			SetScaleX({Id = components[purchaseButtonKey.."Icon"].Id, Fraction = squashY})
+			SetScaleY({Id = components[purchaseButtonKey.."Icon"].Id, Fraction = iconScaling*squashY})
+			SetScaleX({Id = components[purchaseButtonKey.."Icon"].Id, Fraction = iconScaling*squashY})
 		end
 
 		local locScaleModifiers =
@@ -304,7 +322,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 				OffsetX = textOffset, OffsetY = -12*squashY*squashT1 - blockedIconOffset,
 				FontSize = 20,
 				Color = {160, 160, 160, 255},
-				Width = 615,
+				Width = 675, --(From Live Steam version v1.37996, pulled on 2021.04.27)
 				Font = "AlegreyaSansSCRegular",
 				ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 2},
 				Justification = "Left",
@@ -317,7 +335,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 				OffsetX = textOffset + 150, OffsetY = -12*squashY*squashT1 - blockedIconOffset,
 				FontSize = 20,
 				Color = Color["BoonPatch" .. itemData.OldRarity],
-				Width = 615,
+				Width = 675, --(From Live Steam version v1.37996, pulled on 2021.04.27)
 				Font = "AlegreyaSansSCRegular",
 				ShadowBlur = 0, ShadowColor = {0,0,0,1}, ShadowOffset={0, 2},
 				Justification = "Left",
@@ -327,16 +345,16 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 		end
 
 		components[purchaseButtonKey.."Frame"] = CreateScreenComponent({ Name = "BlankObstacle", Group = "Combat_Menu", X = iconOffsetX + itemLocationX + buttonOffsetX, Y = iconOffsetY + itemLocationY })
-		SetScaleY({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = squashY})
-		SetScaleX({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = squashY})
+		SetScaleY({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = iconScaling*squashY})
+		SetScaleX({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = iconScaling*squashY})
 		if upgradeData.Frame then
 			SetAnimation({ DestinationId = components[purchaseButtonKey.."Frame"].Id, Name = "Frame_Boon_Menu_".. upgradeData.Frame})
-			SetScaleY({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = squashY})
-			SetScaleX({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = squashY})
+			SetScaleY({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = iconScaling*squashY})
+			SetScaleX({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = iconScaling*squashY})
 		else
 			SetAnimation({ DestinationId = components[purchaseButtonKey.."Frame"].Id, Name = "Frame_Boon_Menu_".. itemData.Rarity})
-			SetScaleY({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = squashY})
-			SetScaleX({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = squashY})
+			SetScaleY({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = iconScaling*squashY})
+			SetScaleX({Id = components[purchaseButtonKey.."Frame"].Id, Fraction = iconScaling*squashY})
 		end
 		-- Button data setup
 		components[purchaseButtonKey].OnPressedFunctionName = "HandleUpgradeChoiceSelection"
@@ -349,7 +367,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 
 		components[components[purchaseButtonKey].Id] = purchaseButtonKey
 		-- Creates upgrade slot text
-		SetInteractProperty({ DestinationId = components[purchaseButtonKey].Id, Property = "TooltipOffsetX", Value = 640 })
+		SetInteractProperty({ DestinationId = components[purchaseButtonKey].Id, Property = "TooltipOffsetX", Value = 675 }) --(From Live Steam version v1.37996, pulled on 2021.04.27)
 		local selectionString = "UpgradeChoiceMenu_PermanentItem"
 		local selectionStringColor = Color.Black
 
@@ -362,7 +380,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 			selectionString = upgradeData.UpgradeChoiceText or "UpgradeChoiceMenu_PermanentItem"
 		end
 
-		local textOffset = 135 - buttonOffsetX
+		local textOffset = 115 - buttonOffsetX --(From Live Steam version v1.37996, pulled on 2021.04.27)
 		local exchangeIconOffset = 0
 		local lineSpacing = 8*squashY
 		local text = "Boon_"..tostring(itemData.Rarity)
@@ -376,8 +394,8 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 		end
 
 		CreateTextBox({ Id = components[purchaseButtonKey].Id, Text = text  ,
-			FontSize = 25,
-			OffsetX = textOffset + 600, OffsetY = -60*squashY*squashT1,
+			FontSize = 27, --(From Live Steam version v1.37996, pulled on 2021.04.27)
+			OffsetX = textOffset + 630, OffsetY = -60*squashY*squashT1, --(From Live Steam version v1.37996, pulled on 2021.04.27), minus the squashes
 			Width = 720,
 			Color = color,
 			Font = "AlegreyaSansSCLight",
@@ -387,7 +405,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 		if exchangeIconPrefix then
 			CreateTextBox({ Id = components[purchaseButtonKey].Id,
 				Text = exchangeIconPrefix ,
-				FontSize = 25,
+				FontSize = 27, --(From Live Steam version v1.37996, pulled on 2021.04.27)
 				OffsetX = textOffset, OffsetY = -55*squashY*squashT1,
 				Color = color,
 				Font = "AlegreyaSansSCLight",
@@ -402,7 +420,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 		end
 		CreateTextBox({ Id = components[purchaseButtonKey].Id,
 			Text = upgradeTitle,
-			FontSize = 25,
+			FontSize = 27, --(From Live Steam version v1.37996, pulled on 2021.04.27)
 			OffsetX = textOffset + exchangeIconOffset, OffsetY = -55*squashY*squashT1,
 			Color = color,
 			Font = "AlegreyaSansSCLight",
@@ -411,17 +429,24 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 			LuaKey = "TooltipData", LuaValue = tooltipData,
 		})
 
+		-- (From Live Steam version v1.37996, pulled on 2021.04.27)
+		-- Chaos curse/blessing traits need VariableAutoFormat disabled
+		local autoFormat = "BoldFormatGraft"
+		if upgradeDescription == "ChaosBlessingFormat" or itemData.Type == "TransformingTrait" then
+			autoFormat = nil
+		end
+
 		CreateTextBoxWithFormat(MergeTables({ Id = components[purchaseButtonKey].Id,
 			Text = upgradeDescription,
 			OffsetX = textOffset+2*ScreenCenterX*(1-fsquashT1), OffsetY = -30*squashY,
-			Width = 615,
+			Width = GetLocalizedValue(675, { { Code = "ja", Value = 670 }, }), -- (From Live Steam version v1.37996, pulled on 2021.04.27)
 			Justification = "Left",
 			VerticalJustification = "Top",
 			LineSpacingBottom = lineSpacing,
 			UseDescription = true,
 			LuaKey = "TooltipData", LuaValue = tooltipData,
 			Format = "BaseFormat",
-			VariableAutoFormat = "BoldFormatGraft",
+			VariableAutoFormat = autoFormat, -- (From Live Steam version v1.37996, pulled on 2021.04.27)
 			TextSymbolScale = 0.8*squashY,
 		}, locScaleModifiers))
 
@@ -433,7 +458,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 		end
 
 		if needsQuestIcon then
-			components[purchaseButtonKey.."QuestIcon"] = CreateScreenComponent({ Name = "BlankObstacle", Group = "Combat_Menu", X = itemLocationX + 112, Y = itemLocationY - 55*squashY*squashT1 })
+			components[purchaseButtonKey.."QuestIcon"] = CreateScreenComponent({ Name = "BlankObstacle", Group = "Combat_Menu", X = itemLocationX + 92, Y = itemLocationY - 55*squashY*squashT1 }) ---- (From Live Steam version v1.37996, pulled on 2021.04.27), except for squashing
 			SetAnimation({ DestinationId = components[purchaseButtonKey.."QuestIcon"].Id, Name = "QuestItemFound" })
 			-- Silent toolip
 			CreateTextBox({ Id = components[purchaseButtonKey].Id, TextSymbolScale = 0, Text = "TraitQuestItem", Color = Color.Transparent, LuaKey = "TooltipData", LuaValue = tooltipData, })
@@ -453,8 +478,8 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData )
 	end
 
 	-- BASE CODE ...
-
-	if IsMetaUpgradeActive("RerollPanelMetaUpgrade") then
+	-- (From Live Steam version v1.37996, pulled on 2021.04.27)
+	if IsMetaUpgradeSelected( "RerollPanelMetaUpgrade" ) then
 		local cost = -1
 		if lootData.BlockReroll then
 			cost = -1
