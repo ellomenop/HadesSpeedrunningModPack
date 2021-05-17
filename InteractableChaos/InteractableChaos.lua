@@ -62,6 +62,9 @@ ModUtil.WrapBaseFunction("HandleLootPickup", function ( baseFunc, currentRun, lo
         Damage( CurrentRun.Hero, { triggeredById = CurrentRun.Hero.ObjectId, DamageAmount = healthCost, PureDamage = true } )
       end
       baseFunc(currentRun, loot)
+      -- Removing Chaos visual artifacts
+      AdjustRadialBlurDistance({ Fraction = 0, Duration = 2 })
+	    AdjustRadialBlurStrength({ Fraction = 0, Duration = 2 })
       return
 
     -- If Zag does not have enough hp, push him away and show a text box saying why he cannot pick up the boon
