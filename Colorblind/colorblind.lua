@@ -114,7 +114,10 @@ ModUtil.BaseOverride("DoEnemyHealthBufferDeplete", function ( enemy )
 		_G[enemy.OnHealthBufferDepleteFunctionName]( enemy )
 	end
   -- Mod start
-  -- RemoveOutline({ Id = enemy.ObjectId })
+  local biome = CurrentRun.CurrentRoom.RoomSetName
+  if not ColorblindMod.config[(biome or "nil") .. "Enabled"] then
+    RemoveOutline({ Id = enemy.ObjectId })
+  end
   -- Mod end
   if enemy.TetherIds ~= nil then
 		for k, tetherId in ipairs( enemy.TetherIds ) do
