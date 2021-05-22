@@ -162,7 +162,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData, reroll )
 					if TraitData[upgradeData.Name].IsDuoBoon then
 						CreateAnimation({ Name = "BoonEntranceDuo", DestinationId = components[itemBackingKey].Id })
 					else
-					CreateAnimation({ Name = "BoonEntranceLegendary", DestinationId = components[itemBackingKey].Id })
+						CreateAnimation({ Name = "BoonEntranceLegendary", DestinationId = components[itemBackingKey].Id })
 					end
 				end
 
