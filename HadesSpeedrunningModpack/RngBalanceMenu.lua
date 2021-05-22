@@ -411,9 +411,9 @@ function HSMConfigMenu.CreateRNGMenu( screen )
 
   local minibossDropdownOptions = {["Default"] = {
     event = function(dropdown)
-      MinibossControl.config.MinibossSetting = "HyperDelivery"
+      MinibossControl.config.MinibossSetting = "Leaderboard"
     end,
-    Text = "HyperDelivery",
+    Text = "Leaderboard",
   }}
   for k, v in pairs(MinibossControl.Presets) do
     table.insert(minibossDropdownOptions,

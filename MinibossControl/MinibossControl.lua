@@ -9,7 +9,7 @@
 ModUtil.RegisterMod("MinibossControl")
 
 local config = {
-    MinibossSetting = "HyperDelivery"
+    MinibossSetting = "Leaderboards"
 }
 MinibossControl.config = config
 
@@ -38,12 +38,63 @@ MinibossControl.Presets = {
     -- If true, Tiny Vermin will not spawn
     RemoveTinyVermin = false,
   },
-  HyperDelivery = {
+  HyperDelivery1 = {
+    -- Tartarus_Bombers
     A_MiniBoss01 = 1,
+    -- Tartarus_Doomstone TODO: Handle middle management?
     A_MiniBoss04 = 1,
+    -- Tartarus_Sneak
     A_MiniBoss03 = 1,
 
+    -- Asphodel_Barge
     B_Wrapping01 = 0,
+    -- Asphodel_PowerCouple,
+    B_MiniBoss01 = 1,
+    -- Asphodel_Witches
+    B_MiniBoss02 = 2,
+
+    -- Elysium_ButterflyBall
+    C_MiniBoss02 = 1,
+    -- Elysium_Asterius
+    C_MiniBoss01 = 1,
+
+    -- If true, Tiny Vermin will not spawn
+    RemoveTinyVermin = true,
+  },
+  HyperDelivery = {
+    -- Tartarus_Bombers
+    A_MiniBoss01 = 1,
+    -- Tartarus_Doomstone TODO: Handle middle management?
+    A_MiniBoss04 = 1,
+    -- Tartarus_Sneak
+    A_MiniBoss03 = 1,
+
+    -- Asphodel_Barge
+    B_Wrapping01 = 0,
+    -- Asphodel_PowerCouple,
+    B_MiniBoss01 = 1,
+    -- Asphodel_Witches
+    B_MiniBoss02 = 2,
+
+    -- Elysium_ButterflyBall
+    C_MiniBoss02 = 0,
+    -- Elysium_Asterius
+    C_MiniBoss01 = 2,
+
+    -- If true, Tiny Vermin will not spawn
+    RemoveTinyVermin = true,
+  },
+  Leaderboard = {
+    -- Tartarus_Bombers
+    A_MiniBoss01 = 1,
+    -- Tartarus_Doomstone TODO: Handle middle management?
+    A_MiniBoss04 = 1,
+    -- Tartarus_Sneak
+    A_MiniBoss03 = 1,
+
+    -- Asphodel_Barge
+    B_Wrapping01 = 0,
+    -- Asphodel_PowerCouple,
     B_MiniBoss01 = 1,
     -- Asphodel_Witches
     B_MiniBoss02 = 2,

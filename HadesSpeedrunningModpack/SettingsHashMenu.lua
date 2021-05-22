@@ -6,7 +6,7 @@ HSMConfigMenu.RulesetSettings = {
   {Key = "DoorVisualIndicators.config.ShowMinibossDoorIndicator", Values = {false, true}, Default = false},
   {Key = "DoorVisualIndicators.config.ShowFountainDoorIndictor", Values = {false, true}, Default = true},
 
-  {Key = "EllosBoonSelectorMod.config.ShowPreview", Values = {false, true}, Default = true},
+  {Key = "EllosBoonSelectorMod.config.ShowPreview", Values = {false, true}, Default = false},
 
   {Key = "FixedHammers.config.Enabled", Values = {false, true}, Default = true},
   {Key = "FixedHammers.config.AchillesRebalance", Values = {false, true}, Default = true},
@@ -14,7 +14,10 @@ HSMConfigMenu.RulesetSettings = {
 
   {Key = "InteractableChaos.config.Enabled", Values = {false, true}, Default = false},
 
-  {Key = "MinibossControl.config.MinibossSetting", Values = {"Vanilla", "HyperDelivery"}, Default = "HyperDelivery"},
+  {Key = "MinibossControl.config.MinibossSetting", Values = {"Vanilla", "HyperDelivery1", "HyperDelivery", "Leaderboard"}, Default = "Leaderboard"},
+
+  {Key = "RemoveCutscenes.config.RemoveIntro", Values = {false, true}, Default = true},
+  {Key = "RemoveCutscenes.config.RemoveOutro", Values = {false, true}, Default = true},
 
   {Key = "RoomDeterminism.config.Enabled", Values = {false, true}, Default = false},
   {Key = "RoomDeterminism.config.RoomGenerationAlgorithm", Values = {"Vanilla"}, Default = "Vanilla"},
@@ -23,33 +26,28 @@ HSMConfigMenu.RulesetSettings = {
   {Key = "SatyrSackControl.config.MinSack", Values = {1, 2, 3, 4, 5}, Default = 2},
   {Key = "SatyrSackControl.config.MaxSack", Values = {1, 2, 3, 4, 5}, Default = 2},
 
-  {Key = "ThanatosControl.config.ThanatosSetting", Values = {"Vanilla", "Rebalanced", "Removed"}, Default = "Removed"},
+  {Key = "ShowChamberNumber.config.ShowDepth", Values = {false, true}, Default = true},
 
-  {Key = "EllosBoonSelectorMod.config.ShowPreview", Values = {false, true}, Default = true},
+  {Key = "ThanatosControl.config.ThanatosSetting", Values = {"Vanilla", "Removed"}, Default = "Removed"},
 }
 
 HSMConfigMenu.NonRulesetSettings = {
   {Key = "QuickRestart.config.Enabled", Values = {false, true}, Default = false},
-
-  {Key = "RemoveCutscenes.config.RemoveIntro", Values = {false, true}, Default = true},
-  {Key = "RemoveCutscenes.config.RemoveOutro", Values = {false, true}, Default = true},
 
   {Key = "ColorblindMod.config.TartarusEnabled", Values = {false, true}, Default = false},
   {Key = "ColorblindMod.config.AsphodelEnabled", Values = {false, true}, Default = false},
   {Key = "ColorblindMod.config.ElysiumEnabled", Values = {false, true}, Default = false},
   {Key = "ColorblindMod.config.StyxEnabled", Values = {false, true}, Default = false},
 
-  {Key = "ShowChamberNumber.config.ShowDepth", Values = {false, true}, Default = true},
-
-  {Key = "RtaTimer.config.DisplayTimer", Values = {false, true}, Default = true},
-  {Key = "RtaTimer.config.MultiWeapon", Values = {false, true}, Default = true},
+  {Key = "RtaTimer.config.DisplayTimer", Values = {false, true}, Default = false},
+  {Key = "RtaTimer.config.MultiWeapon", Values = {false, true}, Default = false},
 
   {Key = "EmoteMod.config.Enabled", Values = {false, true}, Default = false},
 }
 
 HSMConfigMenu.SettingsDefaults = {
-  RulesetSettings = 780877,
-  NonRulesetSettings = 782
+  RulesetSettings = 2866471,
+  NonRulesetSettings = 0
 }
 
 -- Register Room Override
