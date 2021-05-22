@@ -30,9 +30,7 @@ ModUtil.LoadOnce(function()
   HSMConfigMenu_SavedNonRuleset = {HashInt = hashInt}
 end)
 
-ModUtil.WrapBaseFunction("ModConfigMenu__Close", function ( baseFunc, screen, button )
-  baseFunc(screen, button)
-
+function HSMConfigMenu.SaveSettingsToGlobal()
   -- Save Ruleset to global
   local hashInt = CalculateHash(HSMConfigMenu.RulesetSettings, _G)
   HSMConfigMenu_SavedRuleset = {HashInt = hashInt}
@@ -47,6 +45,12 @@ ModUtil.WrapBaseFunction("ModConfigMenu__Close", function ( baseFunc, screen, bu
   HSMConfigMenu_SavedPersonalization.ModdedWarningWarningMessage = ModdedWarning.config.WarningMessage
   HSMConfigMenu_SavedPersonalization.ModdedWarningWarningColor = nil
   HSMConfigMenu_SavedPersonalization.ModdedWarningColor = ModdedWarning.config.Color
+end
+
+ModUtil.WrapBaseFunction("UnfreezePlayerUnit", function ( baseFunc, flag )
+  DebugPrint({Text="This is in the wrapper"})
+  HSMConfigMenu.SaveSettingsToGlobal()
+  baseFunc(flag)
 end, HSMConfigMenu)
 
 OnAnyLoad{function()
