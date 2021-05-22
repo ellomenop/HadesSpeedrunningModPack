@@ -147,13 +147,18 @@ function HSMConfigMenu.CreateSettingsHashMenu( screen )
       Font = "AlegrayaSansSCRegular",
       Items = {
         ["Default"] = {Text = "Select a Preset", event = function() end},
-        {Text = "Default Ruleset", event = function()
+        {Text = "Multirun Leaderboard Ruleset", event = function()
           HSMConfigMenu.LoadSettings("RulesetSettings")
           local rulesetHashInt = CalculateHash(HSMConfigMenu.RulesetSettings, _G)
           local rulesetHash =  HSMConfigMenu.ConvertIntToBase25(rulesetHashInt, 5)
+          HSMConfigMenu.CurrentRulesetHash = rulesetHash
+
           for i = 1, #rulesetHash do
             SetAnimation({ Name = HSMConfigMenu.HashImages[rulesetHash[i]], DestinationId = screen.Components["RulesetHashImage" .. i].Id, OffsetX = 0, OffsetY = 0})
           end
+
+          HSMConfigMenu.updateRulesetHashDisplay()
+          HSMConfigMenu.SaveSettingsToGlobal()
         end},
         {Text = "Any Heat Speedrun Ruleset v1.0", IsEnabled = false, event = function() end}
       },
