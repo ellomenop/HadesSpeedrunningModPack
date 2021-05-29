@@ -2,10 +2,10 @@ ModUtil.RegisterMod("EllosBoonSelectorMod")
 
 local config = {
   showPreview = true,
-  showChaosPreview = false,
-  showNextRoomPreview = false,
-  chaosFiltersActive = false,
-  boonRarityFiltersActive = false,
+  showChaosPreview = true,
+  showNextRoomPreview = true,
+  chaosFiltersActive = true,
+  boonRarityFiltersActive = true,
 }
 EllosBoonSelectorMod.config = config
 
@@ -82,6 +82,10 @@ function UseSeedController( usee, args )
 end
 
 function OpenSeedControlScreen( args )
+
+  if DontGetVorimed then
+    EllosBoonSelectorMod.boonRarityFiltersActive = (config.boonRarityFiltersActive and not DontGetVorimed.config.Enabled)
+  end
 
   local screen = DeepCopyTable( ScreenData.SeedControl )
   screen.Components = {}
@@ -210,7 +214,7 @@ function OpenSeedControlScreen( args )
 
   components.FiltersTitle = CreateScreenComponent({ Name = "BlankObstacle", Scale = 1.0, Group = "Combat_Menu", X = 475, Y = 520 })
   local displayText = "Filter for a Specific God"
-  if EllosBoonSelectorMod.config.boonRarityFiltersActive then 
+  if EllosBoonSelectorMod.boonRarityFiltersActive then
     displayText = displayText.." and Boon"
   end
   CreateTextBox({ Id = components.FiltersTitle.Id,
@@ -284,7 +288,7 @@ function OpenSeedControlScreen( args )
   -- Rarity filter buttons
   x = -250
   y = 150
-  if EllosBoonSelectorMod.config.boonRarityFiltersActive then
+  if EllosBoonSelectorMod.boonRarityFiltersActive then
       for _, priorityBoon in pairs({"Attack", "Special", "Dash", "Cast"}) do
         components[priorityBoon .. "Filter"] = CreateScreenComponent({ Name = "ButtonDefault", Scale = 0.5, Group = "Combat_Menu", X = 500 + x, Y = 450 + y })
         components[priorityBoon .. "Filter"].OnPressedFunctionName = "CycleRarityFilter"
@@ -479,7 +483,7 @@ function DoesRewardMatchFilters(roomReward)
       return false
     end
 
-    -- Rarities much match all active rarity filters    
+    -- Rarities much match all active rarity filters
     for priorityBoon, rarityFilter in pairs(EllosBoonSelectorMod.RarityFilter) do
       local thisFilterPassed = false;
       for index, boonOption in ipairs(roomReward.BoonData.Options) do
@@ -559,7 +563,7 @@ function ClearFilters ( screen, button )
       ModifyTextBox({ Id = screen.Components[location .. "Filter"].Id, Color = Color.BoonPatchCommon })
     end
   end
-  if EllosBoonSelectorMod.config.boonRarityFiltersActive then
+  if EllosBoonSelectorMod.boonRarityFiltersActive then
     for _, priorityBoon in pairs({"Attack", "Special", "Dash", "Cast"}) do
       ModifyTextBox({ Id = screen.Components[priorityBoon .. "Filter"].Id, Color = Color.BoonPatchCommon })
     end
@@ -967,7 +971,7 @@ function PredictHammerOptionsForWeapon( weapon, aspectIndex, seedForPrediction, 
   return hammerOptions
 end
 
-function PriorityBoonType(boon) 
+function PriorityBoonType(boon)
   for _, boonType in pairs(EllosBoonSelectorMod.PriorityBoons) do
     if string.find(boon, boonType) then
       return boonType
@@ -1004,7 +1008,7 @@ function PredictStartingGodBoonOptions( god, seedForPrediction, currentSeed )
       boonRewards[i] = god..boonReward
     end
   end
-  
+
 
   local excluded = RemoveRandomValue(boonRewards)
   boonRewards = CollapseTableOrdered(boonRewards)
