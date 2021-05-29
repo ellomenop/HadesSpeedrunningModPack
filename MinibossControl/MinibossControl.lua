@@ -115,7 +115,7 @@ function MinibossControl.RegisterPreset(name, preset)
 end
 
 -- Apply the configured miniboss settings to the game data
-function updateMinibossControl()
+function MinibossControl.UpdateMaxCreations()
     ModUtil.MapSetTable(RoomSetData, {
         -- [[ Tartarus Miniboss Counts ]]
         Tartarus = {
@@ -137,10 +137,10 @@ function updateMinibossControl()
         -- [[ Asphodel Miniboss Counts ]]
         Asphodel = {
             B_MiniBoss01 = {
-                MaxCreationsThisRun = MinibossControl.Presets[config.MinibossSetting].Asphodel_PowerCouple,
+                MaxCreationsThisRun = MinibossControl.Presets[config.MinibossSetting].B_MiniBoss01,
             },
             B_MiniBoss02 = {
-                MaxCreationsThisRun = MinibossControl.Presets[config.MinibossSetting].Asphodel_Witches,
+                MaxCreationsThisRun = MinibossControl.Presets[config.MinibossSetting].B_MiniBoss02,
             },
             B_Wrapping01 = {
                 MaxCreationsThisRun = MinibossControl.Presets[config.MinibossSetting].B_Wrapping01,
@@ -188,8 +188,12 @@ ModUtil.WrapBaseFunction("ChooseNextRoomData", function( baseFunc, currentRun, a
     return baseFunc(currentRun, args)
 end, MinibossControl)
 
+ModUtil.LoadOnce( function()
+    MinibossControl.UpdateMaxCreations()
+end)
+
 -- When a new run is started, make sure to apply the miniboss modifications
 ModUtil.WrapBaseFunction("StartNewRun", function ( baseFunc, currentRun )
-  updateMinibossControl()
+  MinibossControl.UpdateMaxCreations()
   return baseFunc(currentRun)
 end, MinibossControl)
