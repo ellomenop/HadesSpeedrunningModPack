@@ -1,1 +1,3 @@
-Import "EmoteMod.lua"
+:: Disabled until functional and/or the following issue is resolved
+:: https://github.com/ellomenop/HadesSpeedrunningModPack/issues/37
+:: Import "EmoteMod.lua"
