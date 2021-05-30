@@ -9,7 +9,7 @@
 ModUtil.RegisterMod("MinibossControl")
 
 local config = {
-    MinibossSetting = "Leaderboards"
+    MinibossSetting = "Leaderboard"
 }
 MinibossControl.config = config
 
