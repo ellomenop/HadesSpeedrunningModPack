@@ -44,7 +44,7 @@ HSMConfigMenu.NonRulesetSettings = {
 }
 
 HSMConfigMenu.SettingsDefaults = {
-  RulesetSettings = 2866471,
+  RulesetSettings = 769319,
   NonRulesetSettings = 0
 }
 
