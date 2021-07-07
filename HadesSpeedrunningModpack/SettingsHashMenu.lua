@@ -8,9 +8,7 @@ HSMConfigMenu.RulesetSettings = {
 
   {Key = "EllosBoonSelectorMod.config.ShowPreview", Values = {false, true}, Default = false},
 
-  {Key = "FixedHammers.config.Enabled", Values = {false, true}, Default = true},
-  {Key = "FixedHammers.config.AchillesRebalance", Values = {false, true}, Default = true},
-  {Key = "FixedHammers.config.NemesisRebalance", Values = {false, true}, Default = true},
+  {Key = "RunStartControl.config.Enabled", Values = {false, true}, Default = true},
 
   {Key = "InteractableChaos.config.Enabled", Values = {false, true}, Default = false},
 
@@ -216,7 +214,7 @@ end
 
 function GetConfigBits(parentTable, config)
   for i, val in ipairs(config.Values) do
-    local currentConfigVal = ModUtil.SafeGet(parentTable, ModUtil.PathArray(config.Key))
+    local currentConfigVal = ModUtil.SafeGet(parentTable, ModUtil.PathToIndexArray(config.Key))
     if currentConfigVal == nil then
       currentConfigVal = config.Default -- One liner will not work for boolean values as it will be interpreted as a logical or
     end
@@ -235,7 +233,7 @@ function SetConfigBits(parentTable, config, configBits)
     setValue = config.Default -- One liner will not work for boolean values as it will be interpreted as a logical or
   end
 
-  ModUtil.SafeSet(parentTable, ModUtil.PathArray(config.Key), setValue)
+  ModUtil.SafeSet(parentTable, ModUtil.PathToIndexArray(config.Key), setValue)
 end
 
 function CalculateHash(settings, parentTable)
