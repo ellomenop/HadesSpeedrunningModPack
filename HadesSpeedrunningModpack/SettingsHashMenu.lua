@@ -29,6 +29,15 @@ HSMConfigMenu.RulesetSettings = {
   {Key = "ThanatosControl.config.ThanatosSetting", Values = {"Vanilla", "Removed"}, Default = "Removed"},
 }
 
+HSMConfigMenu.MultiRunSettings = DeepCopyTable(HSMConfigMenu.RulesetSettings)
+HSMConfigMenu.SingleRunSettings = DeepCopyTable(HSMConfigMenu.RulesetSettings)
+for i, setting in ipairs(HSMConfigMenu.SingleRunSettings) do
+  if setting.Key == "ThanatosControl.config.ThanatosSetting" then
+    setting.Default = "Vanilla"
+    break
+  end
+end
+
 HSMConfigMenu.NonRulesetSettings = {
   {Key = "QuickRestart.config.Enabled", Values = {false, true}, Default = false},
 
@@ -45,6 +54,8 @@ HSMConfigMenu.NonRulesetSettings = {
 
 HSMConfigMenu.SettingsDefaults = {
   RulesetSettings = 769319,
+  MultiRunSettings = 769319,
+  SingleRunSettings = 769318,
   NonRulesetSettings = 0
 }
 
@@ -145,9 +156,9 @@ function HSMConfigMenu.CreateSettingsHashMenu( screen )
       Font = "AlegrayaSansSCRegular",
       Items = {
         ["Default"] = {Text = "Select a Preset", event = function() end},
-        {Text = "Multirun Leaderboard Ruleset", event = function()
-          HSMConfigMenu.LoadSettings("RulesetSettings")
-          local rulesetHashInt = CalculateHash(HSMConfigMenu.RulesetSettings, _G)
+        {Text = "Multi-Run Leaderboard Ruleset", event = function()
+          HSMConfigMenu.LoadSettings("MultiRunSettings")
+          local rulesetHashInt = CalculateHash(HSMConfigMenu.MultiRunSettings, _G)
           local rulesetHash =  HSMConfigMenu.ConvertIntToBase25(rulesetHashInt, 5)
           HSMConfigMenu.CurrentRulesetHash = rulesetHash
 
@@ -158,7 +169,19 @@ function HSMConfigMenu.CreateSettingsHashMenu( screen )
           HSMConfigMenu.updateRulesetHashDisplay()
           HSMConfigMenu.SaveSettingsToGlobal()
         end},
-        {Text = "Any Heat Speedrun Ruleset v1.0", IsEnabled = false, event = function() end}
+        {Text = "Single Run Leaderboard Ruleset",  event = function() 
+          HSMConfigMenu.LoadSettings("SingleRunSettings")
+          local rulesetHashInt = CalculateHash(HSMConfigMenu.SingleRunSettings, _G)
+          local rulesetHash =  HSMConfigMenu.ConvertIntToBase25(rulesetHashInt, 5)
+          HSMConfigMenu.CurrentRulesetHash = rulesetHash
+
+          for i = 1, #rulesetHash do
+            SetAnimation({ Name = HSMConfigMenu.HashImages[rulesetHash[i]], DestinationId = screen.Components["RulesetHashImage" .. i].Id, OffsetX = 0, OffsetY = 0})
+          end
+
+          HSMConfigMenu.updateRulesetHashDisplay()
+          HSMConfigMenu.SaveSettingsToGlobal()
+        end},
       },
     })
   itemLocationY = itemLocationY + 100
