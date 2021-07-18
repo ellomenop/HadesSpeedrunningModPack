@@ -27,6 +27,10 @@ function QuickRestart.ResetRun(triggerArgs)
     return
   end
 
+  if RtaTimer then
+    RtaTimer__ResetRtaTimer()
+  end
+
   KillHero( CurrentRun.Hero, triggerArgs )
 end
 
