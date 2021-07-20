@@ -8,9 +8,7 @@ HSMConfigMenu.RulesetSettings = {
 
   {Key = "EllosBoonSelectorMod.config.ShowPreview", Values = {false, true}, Default = false},
 
-  {Key = "FixedHammers.config.Enabled", Values = {false, true}, Default = true},
-  {Key = "FixedHammers.config.AchillesRebalance", Values = {false, true}, Default = true},
-  {Key = "FixedHammers.config.NemesisRebalance", Values = {false, true}, Default = true},
+  {Key = "RunStartControl.config.Enabled", Values = {false, true}, Default = true},
 
   {Key = "InteractableChaos.config.Enabled", Values = {false, true}, Default = false},
 
@@ -31,6 +29,15 @@ HSMConfigMenu.RulesetSettings = {
   {Key = "ThanatosControl.config.ThanatosSetting", Values = {"Vanilla", "Removed"}, Default = "Removed"},
 }
 
+HSMConfigMenu.MultiRunSettings = DeepCopyTable(HSMConfigMenu.RulesetSettings)
+HSMConfigMenu.SingleRunSettings = DeepCopyTable(HSMConfigMenu.RulesetSettings)
+for i, setting in ipairs(HSMConfigMenu.SingleRunSettings) do
+  if setting.Key == "ThanatosControl.config.ThanatosSetting" then
+    setting.Default = "Vanilla"
+    break
+  end
+end
+
 HSMConfigMenu.NonRulesetSettings = {
   {Key = "QuickRestart.config.Enabled", Values = {false, true}, Default = false},
 
@@ -46,7 +53,9 @@ HSMConfigMenu.NonRulesetSettings = {
 }
 
 HSMConfigMenu.SettingsDefaults = {
-  RulesetSettings = 2866471,
+  RulesetSettings = 769319,
+  MultiRunSettings = 769319,
+  SingleRunSettings = 769318,
   NonRulesetSettings = 0
 }
 
@@ -147,9 +156,9 @@ function HSMConfigMenu.CreateSettingsHashMenu( screen )
       Font = "AlegrayaSansSCRegular",
       Items = {
         ["Default"] = {Text = "Select a Preset", event = function() end},
-        {Text = "Multirun Leaderboard Ruleset", event = function()
-          HSMConfigMenu.LoadSettings("RulesetSettings")
-          local rulesetHashInt = CalculateHash(HSMConfigMenu.RulesetSettings, _G)
+        {Text = "Multi-Run Leaderboard Ruleset", event = function()
+          HSMConfigMenu.LoadSettings("MultiRunSettings")
+          local rulesetHashInt = CalculateHash(HSMConfigMenu.MultiRunSettings, _G)
           local rulesetHash =  HSMConfigMenu.ConvertIntToBase25(rulesetHashInt, 5)
           HSMConfigMenu.CurrentRulesetHash = rulesetHash
 
@@ -160,7 +169,19 @@ function HSMConfigMenu.CreateSettingsHashMenu( screen )
           HSMConfigMenu.updateRulesetHashDisplay()
           HSMConfigMenu.SaveSettingsToGlobal()
         end},
-        {Text = "Any Heat Speedrun Ruleset v1.0", IsEnabled = false, event = function() end}
+        {Text = "Single Run Leaderboard Ruleset",  event = function() 
+          HSMConfigMenu.LoadSettings("SingleRunSettings")
+          local rulesetHashInt = CalculateHash(HSMConfigMenu.SingleRunSettings, _G)
+          local rulesetHash =  HSMConfigMenu.ConvertIntToBase25(rulesetHashInt, 5)
+          HSMConfigMenu.CurrentRulesetHash = rulesetHash
+
+          for i = 1, #rulesetHash do
+            SetAnimation({ Name = HSMConfigMenu.HashImages[rulesetHash[i]], DestinationId = screen.Components["RulesetHashImage" .. i].Id, OffsetX = 0, OffsetY = 0})
+          end
+
+          HSMConfigMenu.updateRulesetHashDisplay()
+          HSMConfigMenu.SaveSettingsToGlobal()
+        end},
       },
     })
   itemLocationY = itemLocationY + 100
@@ -216,7 +237,7 @@ end
 
 function GetConfigBits(parentTable, config)
   for i, val in ipairs(config.Values) do
-    local currentConfigVal = ModUtil.SafeGet(parentTable, ModUtil.PathArray(config.Key))
+    local currentConfigVal = ModUtil.SafeGet(parentTable, ModUtil.PathToIndexArray(config.Key))
     if currentConfigVal == nil then
       currentConfigVal = config.Default -- One liner will not work for boolean values as it will be interpreted as a logical or
     end
@@ -235,7 +256,7 @@ function SetConfigBits(parentTable, config, configBits)
     setValue = config.Default -- One liner will not work for boolean values as it will be interpreted as a logical or
   end
 
-  ModUtil.SafeSet(parentTable, ModUtil.PathArray(config.Key), setValue)
+  ModUtil.SafeSet(parentTable, ModUtil.PathToIndexArray(config.Key), setValue)
 end
 
 function CalculateHash(settings, parentTable)

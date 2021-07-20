@@ -131,7 +131,7 @@ ModUtil.BaseOverride("DoEnemyHealthBufferDeplete", function ( enemy )
 end, ColorblindMod)
 
 OnAnyLoad{function ()
-    local biome = ModUtil.SafeGet(_G, ModUtil.PathArray("CurrentRun.CurrentRoom.RoomSetName"))
+    local biome = ModUtil.SafeGet(_G, ModUtil.PathToIndexArray("CurrentRun.CurrentRoom.RoomSetName"))
     while ColorblindMod.config[(biome or "nil") .. "Enabled"] do
 	    local ammoIds = GetIdsByType({ Name = "AmmoPack" })
         if ammoIds ~= nil then

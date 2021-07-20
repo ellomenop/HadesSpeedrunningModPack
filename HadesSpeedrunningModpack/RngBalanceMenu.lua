@@ -1,6 +1,6 @@
 HSMConfigMenu__UpdateGenericConfigCheckbox = function(screen, button)
   local radioButtonValue = "RadioButton_Unselected"
-  if ModUtil.SafeGet(_G, ModUtil.PathArray(button.Config)) then
+  if ModUtil.SafeGet(_G, ModUtil.PathToIndexArray(button.Config)) then
     radioButtonValue = "RadioButton_Selected"
   end
   SetThingProperty({
@@ -27,7 +27,7 @@ function HSMConfigMenu__ToggleGenericConfigCheckBox(screen, button, overrideValu
   if button.Enabled == false then
     return
   end
-  local configPathArray = ModUtil.PathArray(button.Config)
+  local configPathArray = ModUtil.PathToIndexArray(button.Config)
   local configValue = ModUtil.SafeGet(_G, configPathArray)
   if configValue ~= nil then
     if overrideValue ~= nil then
@@ -616,7 +616,7 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   itemLocationY = itemLocationY + itemSpacingY
 
   -- Hammers
-  screen.Components["HammerDeterminismTextBox"] = CreateScreenComponent({
+  screen.Components["HammerControlTextBox"] = CreateScreenComponent({
     Name = "BlankObstacle",
     Scale = 1,
     X = itemLocationX,
@@ -624,8 +624,8 @@ function HSMConfigMenu.CreateRNGMenu( screen )
     Group = "Combat_Menu"
   })
   CreateTextBox({
-    Id = screen.Components["HammerDeterminismTextBox"].Id,
-    Text = "Deterministic Hammers by Seed: ",
+    Id = screen.Components["HammerControlTextBox"].Id,
+    Text = "Set Hammers by Aspect: ",
     Color = Color.BoonPatchCommon,
     FontSize = 16,
     OffsetX = 0, OffsetY = 0,
@@ -633,95 +633,18 @@ function HSMConfigMenu.CreateRNGMenu( screen )
     ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
     Justification = "Left"
   })
-  screen.Components["HammerDeterminismCheckBox"] = CreateScreenComponent({
+  screen.Components["HammerControlCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
     X = itemLocationX + itemSpacingX,
     Y = itemLocationY,
     Group = "CombatMenu"
   })
-  screen.Components["HammerDeterminismCheckBox"].Config = "FixedHammers.config.Enabled"
-  screen.Components["HammerDeterminismCheckBox"].Children = {{Textbox = "AchillesRebalanceTextBox", Checkbox = "AchillesRebalanceCheckBox"}, {Textbox = "NemesisRebalanceTextBox", Checkbox = "NemesisRebalanceCheckBox"}}
-  screen.Components["HammerDeterminismCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  screen.Components["HammerControlCheckBox"].Config = "RunStartControl.config.Enabled"
+  screen.Components["HammerControlCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
   itemLocationY = itemLocationY + itemSpacingY
 
-  screen.Components["AchillesRebalanceTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["AchillesRebalanceTextBox"].Id,
-    Text = " - Achilles Hammer Rebalance: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
-  screen.Components["AchillesRebalanceCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["AchillesRebalanceCheckBox"].Config = "FixedHammers.config.AchillesRebalance"
-  screen.Components["AchillesRebalanceCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  CreateTextBox({
-    Id = screen.Components["AchillesRebalanceTextBox"].Id,
-    Text = "(First Hammer always includes Flurry Jab) ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 10,
-    OffsetX = 38, OffsetY = 22,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left",
-  })
-  itemLocationY = itemLocationY + itemSpacingY
-
-  screen.Components["NemesisRebalanceTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["NemesisRebalanceTextBox"].Id,
-    Text = " - Nemesis Hammer Rebalance: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
-  screen.Components["NemesisRebalanceCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["NemesisRebalanceCheckBox"].Config = "FixedHammers.config.NemesisRebalance"
-  screen.Components["NemesisRebalanceCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  CreateTextBox({
-    Id = screen.Components["NemesisRebalanceTextBox"].Id,
-    Text = "(First Hammer always includes Double Edge) ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 10,
-    OffsetX = 38, OffsetY = 22,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left",
-  })
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["HammerDeterminismCheckBox"])
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["AchillesRebalanceCheckBox"])
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["NemesisRebalanceCheckBox"])
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["HammerControlCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 end
 
