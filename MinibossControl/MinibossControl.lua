@@ -100,9 +100,9 @@ MinibossControl.Presets = {
     B_MiniBoss02 = 2,
 
     -- Elysium_ButterflyBall
-    C_MiniBoss02 = 1,
+    C_MiniBoss02 = 2,
     -- Elysium_Asterius
-    C_MiniBoss01 = 1,
+    C_MiniBoss01 = 0,
 
     -- If true, Tiny Vermin will not spawn
     RemoveTinyVermin = true,
