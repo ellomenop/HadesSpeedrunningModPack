@@ -16,7 +16,15 @@ function QuickRestart.CanReset()
   if not IsEmpty( CurrentRun.Hero.FreezeInputKeys ) then return false end
 
   -- Combat UI must be visible
-	if not (ShowingCombatUI or false) then return false end
+  if not (ShowingCombatUI or false) then return false end
+
+  -- If we're in a Thanatos Room, enemies must have already spawned
+  if (CurrentRun ~= nil and CurrentRun.CurrentRoom ~= nil and
+      CurrentRun.CurrentRoom.Encounter ~= nil and
+      CurrentRun.CurrentRoom.Encounter.ThanatosId ~= nil
+      and GetActiveEnemyCount() == 0) then
+    return false
+  end
 
   return true
 end
