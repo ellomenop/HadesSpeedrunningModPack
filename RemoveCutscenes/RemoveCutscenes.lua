@@ -16,7 +16,7 @@ RemoveCutscenes.config = config
 
 -- Remove starting cutscene
 ModUtil.WrapBaseFunction("ShowRunIntro", function( baseFunc )
-    if config.RemoveIntro then
+    if RemoveCutscenes.config.RemoveIntro then
         return
     end
 
@@ -25,7 +25,7 @@ end, RemoveCutscenes)
 
 
 ModUtil.WrapBaseFunction("EndEarlyAccessPresentation", function ( baseFunc )
-    if config.RemoveOutro then
+    if Removeconfig.RemoveOutro then
         CurrentRun.ActiveBiomeTimer = false
 
         thread( Kill, CurrentRun.Hero )

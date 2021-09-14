@@ -39,9 +39,9 @@ for i, setting in ipairs(HSMConfigMenu.SingleRunSettings) do
 end
 
 HSMConfigMenu.FirstRunSettings = DeepCopyTable(HSMConfigMenu.RulesetSettings)
-for i, setting in ipairs(HSMCOnfigMenu.FirstRunSettings) do
+for i, setting in ipairs(HSMConfigMenu.FirstRunSettings) do
   if setting.Key == "DontGetVorimed.config.Enabled" then
-    setting.Default = true
+    setting.Default = false
   elseif setting.Key == "RemoveCutscenes.config.RemoveIntro" then
     setting.Default = false --maybe not lol
   elseif setting.Key == "RunStartControl.config.Enabled" then
@@ -69,6 +69,7 @@ HSMConfigMenu.SettingsDefaults = {
   RulesetSettings = 769319,
   MultiRunSettings = 769319,
   SingleRunSettings = 769318,
+  FirstRunSettings = 769319,
   NonRulesetSettings = 0
 }
 

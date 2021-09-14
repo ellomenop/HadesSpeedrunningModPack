@@ -1,1 +1,2 @@
+Load Priority 110
 Import "FirstRunMods.lua"
