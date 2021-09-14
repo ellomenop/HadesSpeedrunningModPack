@@ -36,7 +36,7 @@ end, DontGetVorimed)
 
 -- After first boon reward has been selected, return to normal number of choices
 ModUtil.WrapBaseFunction("HandleUpgradeChoiceSelection", function ( baseFunc, screen, button )
-    if config.Enabled and not DontGetVorimed.BoonTakenFlag then
+    if config.Enabled and not DontGetVorimed.BoonTakenFlag and #GetAllUpgradeableGodTraits() == 0 then
         if button.Data.God ~= nil then
             LootChoiceExt.Choices = 3
             LootChoiceExt.LastLootChoices = 3
@@ -49,6 +49,15 @@ ModUtil.WrapBaseFunction("HandleUpgradeChoiceSelection", function ( baseFunc, sc
     end
 
     baseFunc(screen, button)
+end, DontGetVorimed)
+
+-- Removing Approval Process blockers on the 4-core boon
+ModUtil.WrapBaseFunction("CalcNumLootChoices", function( baseFunc )
+    if LootChoiceExt.Choices == 4 then
+        return baseFunc() + GetNumMetaUpgrades("ReducedLootChoicesShrineUpgrade")
+    else
+        return baseFunc()
+    end
 end, DontGetVorimed)
 
 -- If the player ever rerolls, reduce to 3 options
