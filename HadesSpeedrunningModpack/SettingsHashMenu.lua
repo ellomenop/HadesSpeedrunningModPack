@@ -169,7 +169,7 @@ function HSMConfigMenu.CreateSettingsHashMenu( screen )
           HSMConfigMenu.updateRulesetHashDisplay()
           HSMConfigMenu.SaveSettingsToGlobal()
         end},
-        {Text = "Ingame Time (IGT) Ruleset",  event = function() 
+        {Text = "In-Game Time (IGT) Ruleset",  event = function() 
           HSMConfigMenu.LoadSettings("SingleRunSettings")
           local rulesetHashInt = CalculateHash(HSMConfigMenu.SingleRunSettings, _G)
           local rulesetHash =  HSMConfigMenu.ConvertIntToBase25(rulesetHashInt, 5)
