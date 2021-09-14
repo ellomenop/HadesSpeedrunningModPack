@@ -228,11 +228,29 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -----------------------------
   -- Hell Mode Toggle
   -----------------------------
+  screen.Components["HellModeToggleTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["HellModeToggleTextBox"].Id,
+    Text = "Turn Hell Mode On/Off:",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+  itemLocationY = itemLocationY + itemSpacingY
+
   screen.Components["HellModeToggleButton"] = CreateScreenComponent({
     Name = "MarketSlot",
     Scale = 1,
     X = itemLocationX + itemSpacingX / 2 - 50,
-    Y = itemLocationY + itemSpacingY,
+    Y = itemLocationY,
     Group = "Combat_Menu" })
   SetScaleX({ Id = screen.Components["HellModeToggleButton"].Id, Fraction =  .375})
   SetScaleY({ Id = screen.Components["HellModeToggleButton"].Id, Fraction = .5 })
@@ -241,7 +259,7 @@ function HSMConfigMenu.CreateQolMenu(screen)
     Id = screen.Components["HellModeToggleButton"].Id,
     Text = "Toggle Hell Mode",
     Color = Color.BoonPatchCommon,
-    FontSize = 12,
+    FontSize = 16,
     OffsetX = 0, OffsetY = 0,
     Font = "AlegrayaSansSCRegular",
     ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
