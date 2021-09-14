@@ -38,6 +38,19 @@ for i, setting in ipairs(HSMConfigMenu.SingleRunSettings) do
   end
 end
 
+HSMConfigMenu.FirstRunSettings = DeepCopyTable(HSMConfigMenu.RulesetSettings)
+for i, setting in ipairs(HSMCOnfigMenu.FirstRunSettings) do
+  if setting.Key == "DontGetVorimed.config.Enabled" then
+    setting.Default = true
+  elseif setting.Key == "RemoveCutscenes.config.RemoveIntro" then
+    setting.Default = false --maybe not lol
+  elseif setting.Key == "RunStartControl.config.Enabled" then
+    setting.Default = false
+  elseif setting.Key == "MinibossControl.config.MinibossSetting" then
+    setting.Default = "FirstRun"
+  end
+end
+
 HSMConfigMenu.NonRulesetSettings = {
   {Key = "QuickRestart.config.Enabled", Values = {false, true}, Default = false},
 
