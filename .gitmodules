@@ -4,9 +4,9 @@
 [submodule "sgg-mod-modutil"]
 	path = sgg-mod-modutil
 	url = https://github.com/SGG-Modding/sgg-mod-modutil.git
-[submodule "DontGetVorimed"]
-	path = DontGetVorimed
-	url = https://github.com/cgullsHadesMods/DontGetVorimed
 [submodule "HellModeToggle"]
 	path = HellModeToggle
 	url = https://github.com/cgullsHadesMods/HellModeToggle
+[submodule "DontGetVorimed"]
+	path = DontGetVorimed
+	url = https://github.com/cgullsHadesMods/DontGetVorimed
