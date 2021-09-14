@@ -17,15 +17,10 @@ function HSMConfigMenu.CreateAttributionMenu(screen)
   })
   CreateTextBox({
     Id = screen.Components["ThanksForAllTheFish"].Id,
-    Text = "Hey Everyone,\\n"
-      .. " Business first.  The Hades Speedrunning ModPack (v0.1) will be ever evolving."
-      .. " There WILL be bugs. \\n It took over 8000 lines of code and 100s of hours of nerd sweat to get this far."
-      .. " So I know its difficult after 4 hours of Flurry Jab resets, but please be patient, it takes time and toil to make your ideas into reality."
-
-      .. " \\n Also please lend your voice and opinions to making it better as we move forwards."
-      .. " Wriste is organizing a document and survey to get us started, but feel free to reach out directly or via #modification-station too."
-
-      .. " \\n \\n Secondly, I just wanted to say thank you.\\n \\n Thank you to the Speedrunning Community:"
+    Text = "Modders: \\n"
+      .. "Ellomenop, Museus, cgull, paradigmsort, erumi321, Magic_Gonads, PonyWarrior"
+      .. "\\n Testers: The Entire Hades Speedrunning Commumity <3"
+      .. " \\n\\n\\n Note from Ello: I just wanted to say thank you.\\n \\n Thank you to the Speedrunning Community:"
       .. " \\n This community is an immensely positive place to be and thats no accident."
       .. " \\n Its due to our shared love of this game (or perhaps our shared hatred of 5 sacks)."
       .. " \\n Its due to the hard work of everyone building each other up (even if its just so the Fish Flex hits that much harder)."
