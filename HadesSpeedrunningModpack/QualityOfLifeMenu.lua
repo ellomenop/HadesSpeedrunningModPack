@@ -224,7 +224,33 @@ function HSMConfigMenu.CreateQolMenu(screen)
   })
   screen.Components["RtaTimerResetButton"].OnPressedFunctionName = "RtaTimer__ResetRtaTimer"
   itemLocationY = itemLocationY + itemSpacingY
+
+  -----------------------------
+  -- Hell Mode Toggle
+  -----------------------------
+  screen.Components["HellModeToggleButton"] = CreateScreenComponent({
+    Name = "MarketSlot",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX / 2 - 50,
+    Y = itemLocationY + itemSpacingY,
+    Group = "Combat_Menu" })
+  SetScaleX({ Id = screen.Components["HellModeToggleButton"].Id, Fraction =  .375})
+  SetScaleY({ Id = screen.Components["HellModeToggleButton"].Id, Fraction = .5 })
+
+  CreateTextBox({
+    Id = screen.Components["HellModeToggleButton"].Id,
+    Text = "Toggle Hell Mode",
+    Color = Color.BoonPatchCommon,
+    FontSize = 12,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Center"
+  })
+  screen.Components["HellModeToggleButton"].OnPressedFunctionName = "HellModeToggle.ToggleHellMode"
+  itemLocationY = itemLocationY + itemSpacingY
 end
+
 
 ModUtil.LoadOnce(function()
   ModConfigMenu.RegisterMenuOverride({ModName = "QoL"}, HSMConfigMenu.CreateQolMenu)
