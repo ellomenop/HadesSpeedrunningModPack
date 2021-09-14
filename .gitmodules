@@ -7,3 +7,6 @@
 [submodule "DontGetVorimed"]
 	path = DontGetVorimed
 	url = https://github.com/cgullsHadesMods/DontGetVorimed
+[submodule "HellModeToggle"]
+	path = HellModeToggle
+	url = https://github.com/cgullsHadesMods/HellModeToggle
