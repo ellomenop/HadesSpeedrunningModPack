@@ -1,6 +1,0 @@
--:
-  DontGetVorimed v1.0
-  Authors:
-    ellomenop (Discord: ellomenop#2254)
-:-
-Import DontGetVorimed.lua
