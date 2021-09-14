@@ -9,6 +9,9 @@ function QuickRestart.CanReset()
   -- QuickRestart must be Enabled
   if not config.Enabled then return false end
 
+  -- Short delay to handle edge cases
+  wait(0.1)
+
   -- Zag must not be in the House
   if ModUtil.PathGet("CurrentDeathAreaRoom") then return false end
 
