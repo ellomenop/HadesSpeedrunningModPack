@@ -58,7 +58,7 @@ ModUtil.WrapBaseFunction("CalcNumLootChoices", function( baseFunc )
     else
         return baseFunc()
     end
-end DontGetVorimed)
+end, DontGetVorimed)
 
 -- If the player ever rerolls, reduce to 3 options
 ModUtil.WrapBaseFunction("DestroyBoonLootButtons", function ( baseFunc, lootData )
