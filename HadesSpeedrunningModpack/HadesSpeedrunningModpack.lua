@@ -1,6 +1,6 @@
 ModUtil.RegisterMod("HadesSpeedrunningModpack")
 config = {
-  Version = "v1.1.1"
+  Version = "FIRST RUN BETA"
 }
 HadesSpeedrunningModpack.config = config
 
