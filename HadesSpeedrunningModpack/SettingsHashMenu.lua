@@ -40,6 +40,7 @@ end
 
 HSMConfigMenu.FirstRunSettings = DeepCopyTable(HSMConfigMenu.RulesetSettings)
 for i, setting in ipairs(HSMConfigMenu.FirstRunSettings) do
+  setting.Values = {}
   if setting.Key == "DontGetVorimed.config.Enabled" then
     setting.Default = false
   elseif setting.Key == "RemoveCutscenes.config.RemoveIntro" then
@@ -50,6 +51,8 @@ for i, setting in ipairs(HSMConfigMenu.FirstRunSettings) do
     setting.Default = "FirstRun"
   end
 end
+table.insert(HSMConfigMenu.FirstRunSettings, {Key = "RtaTimer.config.MultiWeapon", Values={}, Default = true})
+table.insert(HSMConfigMenu.FirstRunSettings, {Key = "RtaTimer.config.DisplayTimer", Values={}, Default = true})
 
 HSMConfigMenu.NonRulesetSettings = {
   {Key = "QuickRestart.config.Enabled", Values = {false, true}, Default = false},
@@ -69,7 +72,7 @@ HSMConfigMenu.SettingsDefaults = {
   RulesetSettings = 769319,
   MultiRunSettings = 769319,
   SingleRunSettings = 769318,
-  FirstRunSettings = 769319,
+  FirstRunSettings = 589095,
   NonRulesetSettings = 0
 }
 
@@ -266,6 +269,7 @@ function SetConfigBits(parentTable, config, configBits)
   local curConfigIndex = tonumber(configBits, 2)
 
   local setValue = config.Values[curConfigIndex + 1]
+
   if setValue == nil then
     setValue = config.Default -- One liner will not work for boolean values as it will be interpreted as a logical or
   end
@@ -332,4 +336,5 @@ function HSMConfigMenu.LoadSettings(settingsName, hashedSettingsInt)
       SetConfigBits(_G, config, "0")
     end
   end
+
 end

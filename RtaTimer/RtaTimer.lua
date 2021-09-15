@@ -46,7 +46,7 @@ end
 function RtaTimer.UpdateRtaTimer()
     -- If Timer should not be displayed, make sure it's gone but don't kill thread
     -- in case it's enabled in the middle of a run
-    if not config.DisplayTimer then
+    if not RtaTimer.config.DisplayTimer then
         PrintUtil.destroyScreenAnchor("RtaTimer")
         return
     end
@@ -90,7 +90,7 @@ ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
 
     -- If single run, timer should always restart
     -- If multiweapon, only restart if timer was reset
-    if not config.MultiWeapon or RtaTimer.TimerWasReset then
+    if not RtaTimer.config.MultiWeapon or RtaTimer.TimerWasReset then
         RtaTimer.StartTime = GetTime({ })
         RtaTimer.TimerWasReset = false
     end

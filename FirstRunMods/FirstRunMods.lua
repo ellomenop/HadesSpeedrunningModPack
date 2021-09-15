@@ -31,30 +31,31 @@ FirstRunMods.MiniBossPreset = {
     RemoveTinyVermin = true,
   }
 
-MinibossControl.RegisterPreset("FirstRun", FirstRunMods.MiniBossPreset)
+ModUtil.LoadOnce(function()
+    MinibossControl.RegisterPreset("FirstRun", FirstRunMods.MiniBossPreset)
+end, FirstRunMods)
+
 
 ModUtil.WrapBaseFunction("StartNewGame", function( baseFunc )
     baseFunc()
 
     if FirstRunMods.config.Enabled then
-        local rulesetHashInt = CalculateHash(HSMConfigMenu.FirstRunSettings, _G)
-        local rulesetHash =  HSMConfigMenu.ConvertIntToBase25(rulesetHashInt, 5)
-        --HSMConfigMenu_SavedRuleset = {HashInt = rulesetHashInt}
+        HSMConfigMenu_SavedRuleset = {HashInt = HSMConfigMenu.SettingsDefaults["FirstRunSettings"]}
+        HSMConfigMenu_SavedPersonalization = {}
 
-        HSMConfigMenu.LoadSettings("FirstRunSettings", rulesetHashInt)
 
+        HSMConfigMenu.LoadSettings("FirstRunSettings")
         
-        HSMConfigMenu.CurrentRulesetHash = rulesetHash
+        HSMConfigMenu.CurrentRulesetHash = HSMConfigMenu.ConvertIntToBase25(HSMConfigMenu_SavedRuleset.HashInt, 5)
 
         HSMConfigMenu.updateRulesetHashDisplay()
         HSMConfigMenu.SaveSettingsToGlobal()
 
-        FirstRunMods.FirstRunTartarus = true
-
+        DontGetVorimed.config.Enabled = false
         RtaTimer.config.DisplayTimer = true
         RtaTimer.config.MultiWeapon = true
         RtaTimer.TimerWasReset = false
-        thread(RtaTimer.StartRtaTimer)
+        FirstRunMods.FirstRunTartarus = true
     end
 
 end, FirstRunMods)
