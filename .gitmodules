@@ -10,3 +10,6 @@
 [submodule "DontGetVorimed"]
 	path = DontGetVorimed
 	url = https://github.com/cgullsHadesMods/DontGetVorimed
+[submodule "hades-SplitDisplay"]
+	path = hades-SplitDisplay
+	url = https://github.com/cgullsHadesMods/hades-SplitDisplay.git
