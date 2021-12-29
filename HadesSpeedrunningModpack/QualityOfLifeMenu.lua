@@ -202,6 +202,110 @@ function HSMConfigMenu.CreateQolMenu(screen)
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RtaTimerMultiRunCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 
+  screen.Components["RtaTimerSingleRunTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["RtaTimerSingleRunTextBox"].Id,
+    Text = " - Display Single Run Timer: ",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+  screen.Components["RtaTimerSingleRunCheckBox"] = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX,
+    Y = itemLocationY,
+    Group = "CombatMenu"
+  })
+  screen.Components["RtaTimerSingleRunCheckBox"].Config = "RtaTimer.config.CurrentRun"
+  screen.Components["RtaTimerSingleRunCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RtaTimerSingleRunCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
+
+  screen.Components["RtaTimerBiomeSplitTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["RtaTimerBiomeSplitTextBox"].Id,
+    Text = " - Display Biome Splits: ",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+  screen.Components["RtaTimerBiomeSplitCheckBox"] = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX,
+    Y = itemLocationY,
+    Group = "CombatMenu"
+  })
+  screen.Components["RtaTimerBiomeSplitCheckBox"].Config = "RtaTimer.config.CurrentBiome"
+  screen.Components["RtaTimerBiomeSplitCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RtaTimerBiomeSplitCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
+
+  screen.Components["RtaTimerSplitTypeTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["RtaTimerSplitTypeTextBox"].Id,
+    Text = " - Biome Split Type: ",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+
+  local splitSetting = RtaTimer.config.BiomeSplitType
+
+  ErumiUILib.Dropdown.CreateDropdown(screen, {
+    Name = "SplitTypeDropDown",
+    Group = "Combat_Menu",
+    Scale = {X = .25, Y = .5},
+    Padding = {X = 0, Y = 2},
+    X = itemLocationX + itemSpacingX, Y = itemLocationY,
+    GeneralFontSize = 16,
+    Font = "AlegrayaSansSCRegular",
+    Items = {
+      ["Default"] = {
+        event = function(dropdown) end,
+        Text = splitSetting,
+      },
+      {
+        event = function(dropdown)
+          RtaTimer.config.BiomeSplitType = "BossKill"
+        end,
+        Text = "On Boss Kill"
+      },
+      {
+        event = function(dropdown)
+          RtaTimer.config.BiomeSplitType = "RoomExit"
+        end,
+        Text = "On Room Exit",
+      },
+    }
+  })
+  itemLocationY = itemLocationY + itemSpacingY
+
 
   screen.Components["RtaTimerResetButton"] = CreateScreenComponent({
     Name = "MarketSlot",
