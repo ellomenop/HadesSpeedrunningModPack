@@ -10,3 +10,7 @@
 [submodule "DontGetVorimed"]
 	path = DontGetVorimed
 	url = https://github.com/cgullsHadesMods/DontGetVorimed
+[submodule "hades-CharonSackControl"]
+	path = hades-CharonSackControl
+	url = https://github.com/cgullsHadesMods/hades-CharonSackControl.git
+
