@@ -202,6 +202,33 @@ function HSMConfigMenu.CreateQolMenu(screen)
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RtaTimerMultiRunCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 
+  screen.Components["RtaTimerLowPerformanceTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["RtaTimerLowPerformanceTextBox"].Id,
+    Text = " - Use Low-Performance Mode: ",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+  screen.Components["RtaTimerLowPerformanceCheckBox"] = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX,
+    Y = itemLocationY,
+    Group = "CombatMenu"
+  })
+  screen.Components["RtaTimerLowPerformanceCheckBox"].Config = "RtaTimer.config.LowPerformance"
+  screen.Components["RtaTimerLowPerformanceCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RtaTimerLowPerformanceCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
 
   screen.Components["RtaTimerResetButton"] = CreateScreenComponent({
     Name = "MarketSlot",
