@@ -67,8 +67,8 @@ function HSMConfigMenu.CreateQolMenu(screen)
   screen.Components["DisableIntroCheckBox"].Config = "RemoveCutscenes.config.RemoveIntro"
   screen.Components["DisableIntroCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["DisableIntroCheckBox"])
-
   itemLocationY = itemLocationY + itemSpacingY
+
   screen.Components["DisableOuttroTextBox"] = CreateScreenComponent({
     Name = "BlankObstacle",
     Scale = 1,
@@ -136,6 +136,39 @@ function HSMConfigMenu.CreateQolMenu(screen)
   screen.Components["RestartCheckBox"].Config = "QuickRestart.config.Enabled"
   screen.Components["RestartCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RestartCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
+
+  -----------------------------
+  -- Charon Sack Control
+  -----------------------------
+
+  screen.Components["CharonSackControlTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["CharonSackControlTextBox"].Id,
+    Text = "Force Charon Sack Spawn: ",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left",
+  })
+  screen.Components["CharonSackControlCheckBox"] = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX,
+    Y = itemLocationY,
+    Group = "CombatMenu"
+  })
+  screen.Components["CharonSackControlCheckBox"].Config = "CharonSackControl.config.SpawnSack"
+  screen.Components["CharonSackControlCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["CharonSackControlCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
 
   -----------------------------
   -- Right Column
