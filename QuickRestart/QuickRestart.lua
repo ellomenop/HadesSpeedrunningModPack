@@ -1,7 +1,8 @@
 ModUtil.RegisterMod("QuickRestart")
 
 local config = {
-    Enabled = false
+    Enabled = true,
+    KeepStartingKeepsake = true,
 }
 QuickRestart.config = config
 
@@ -30,6 +31,16 @@ function QuickRestart.CanReset()
     end
 
     return true
+end
+
+function QuickRestart.EquipStartingKeepsake()
+    for idx, keepsake in ipairs(QuickRestart.Keepsakes) do
+        if HeroHasTrait(keepsake) and keepsake ~= QuickRestart.StartingKeepsake then
+            DebugPrint({ Text = "QuickRestart: Unequipping " .. keepsake })
+            UnequipKeepsake(CurrentRun.Hero, keepsake)
+            EquipKeepsake(CurrentRun.Hero, QuickRestart.StartingKeepsake)
+        end
+    end
 end
 
 function QuickRestart.ResetRun(triggerArgs)
@@ -104,6 +115,12 @@ OnAnyLoad{ "RoomPreRun",
         if QuickRestart.UsedQuickRestart then
             thread( PlayVoiceLines, GlobalVoiceLines.EnteredDeathAreaVoiceLines )
             QuickRestart.UsedQuickRestart = false
+
+            -- Reset Starting Keepsake
+            if QuickRestart.config.KeepStartingKeepsake and QuickRestart.StartingKeepsake ~= nil then
+                DebugPrint({ Text="Setting keepsake trigger" })
+                QuickRestart.TriggerKeepsakeChange = true
+            end
         end
     end
 }
@@ -179,4 +196,31 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
     local runDepth = GetRunDepth( currentRun )
 
     LoadMap({ Name = deathMap, ResetBinks = true, ResetWeaponBinks = true })
+end, QuickRestart)
+
+ModUtil.WrapBaseFunction("ShowCombatUI", function( baseFunc, ... )
+    local val = baseFunc(...)
+
+    -- Get starting keepsake
+    if QuickRestart.TriggerKeepsakeChange then
+        DebugPrint({ Text="Equipping Keepsake" })
+        QuickRestart.EquipStartingKeepsake()
+    end
+
+    QuickRestart.TriggerKeepsakeChange = false
+
+    return val
+end, QuickRestart)
+
+ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
+    local val = baseFunc(...)
+
+    -- Get starting keepsake
+    for idx, keepsake in ipairs(QuickRestart.Keepsakes) do
+        if HeroHasTrait(keepsake) then
+            QuickRestart.StartingKeepsake = keepsake
+        end
+    end
+
+    return val
 end, QuickRestart)
