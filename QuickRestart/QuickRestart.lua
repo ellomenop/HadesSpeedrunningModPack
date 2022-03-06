@@ -43,6 +43,11 @@ function QuickRestart.ResetRun(triggerArgs)
     end
 
     QuickRestart.UsedQuickRestart = true
+    AddInputBlock({ Name = "QuickRestart" })
+
+    -- Short delay to let Livesplit grab flag
+    wait(0.1)
+
     KillHero( CurrentRun.Hero, triggerArgs )
 end
 
@@ -110,6 +115,10 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
     end
 
     SendSaveFileEmail({ })
+
+    if QuickRestart.UsedQuickRestart then
+        RemoveInputBlock({ Name = "QuickRestart" })
+    end
 
     AddTimerBlock( currentRun, "HandleDeath" )
     if ScreenAnchors.TraitTrayScreen ~= nil then
