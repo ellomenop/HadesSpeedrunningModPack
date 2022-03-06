@@ -11,7 +11,6 @@ local config = {
     ModName = "RtaTimer",
     DisplayTimer = true,
     MultiWeapon = false,
-    LowPerformance = false,
 }
 RtaTimer.config = config
 
@@ -56,18 +55,14 @@ function RtaTimer.UpdateRtaTimer()
     -- If the timer has been reset, it should stay at 00:00.00 until it "starts" again
     if not RtaTimer.TimerWasReset then
         -- Use _worldTime to prevent overusing system calls
-        if config.LowPerformance then
-            current_time = RtaTimer.FormatElapsedTime(RtaTimer.StartWorldTime, _worldTime + RtaTimer.Offset)
-            RtaTimer.Cycle = RtaTimer.Cycle + 1
+        current_time = RtaTimer.FormatElapsedTime(RtaTimer.StartWorldTime, _worldTime + RtaTimer.Offset)
+        RtaTimer.Cycle = RtaTimer.Cycle + 1
 
-            -- Update offset every 15 cycles to prevent drift during pauses
-            if RtaTimer.Cycle == 15 then
-                RtaTimer.Offset = (GetTime({ }) - RtaTimer.StartTime) - (_worldTime - RtaTimer.StartWorldTime)
-                current_time = RtaTimer.FormatElapsedTime(RtaTimer.StartTime, GetTime({ }))
-                RtaTimer.Cycle = 0
-            end
-        else
-                current_time = RtaTimer.FormatElapsedTime(RtaTimer.StartTime, GetTime({ }))
+        -- Update offset every 15 cycles to prevent drift during pauses
+        if RtaTimer.Cycle == 15 then
+            RtaTimer.Offset = (GetTime({ }) - RtaTimer.StartTime) - (_worldTime - RtaTimer.StartWorldTime)
+            current_time = RtaTimer.FormatElapsedTime(RtaTimer.StartTime, GetTime({ }))
+            RtaTimer.Cycle = 0
         end
     end
 
