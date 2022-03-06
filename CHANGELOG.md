@@ -4,6 +4,60 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/), and will follow [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2022-03-06
+
+### Added
+
+ - Can now toggle guaranteed Charon Sack spawn for Loyalty Card
+ - QuickRestart now sets a flag for the Livesplit autosplitter to reset
+
+### Changed
+ - QuickRestart spawns you in the Courtyard instead of the blood pool
+ - QuickRestart re-equips your starting keepsake
+ - RtaTimer is now more efficient - should remove any lag issues that it was causing
+
+## [1.1.1] - 2021-09-14
+
+### Added
+
+ - Can now toggle Hell Mode in mod settings
+
+### Removed
+
+ - Starting Boon Selector was not legal on any rulesets
+
+### Changed
+
+ - Clarified ruleset text
+ - Cleaned up menu and credits
+
+### Bug fixes
+
+ - Remove Approval Process blocking on the DontGetVorimed boon
+ - Slight delay before QuickRestart to remove interaction bugs
+
+## [1.1.0] - 2021-08-01
+
+### Added
+
+ - Single-run ruleset
+
+### Changed
+
+ - Quick Restart also resets RtaTimer
+ - Replaced FixedHammers with RunStartControl
+ - Asterius removed from Leaderboard ruleset
+
+### Bug fixes
+
+ - Can no longer reset during the pause before Thanatos Encounter spawns to prevent broken GameState
+
+
+
+## [1.0.0] - 2021-06-04
+
+No major bugs were found with v1.0.0-rc.2 so we are moving forward with leaderboard creation!
+
 ## [1.0.0-rc.2] - 2021-05-30
 
 ### Changed
