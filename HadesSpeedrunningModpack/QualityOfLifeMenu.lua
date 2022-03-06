@@ -138,6 +138,35 @@ function HSMConfigMenu.CreateQolMenu(screen)
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RestartCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 
+
+  screen.Components["StartingKeepsakeTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["StartingKeepsakeTextBox"].Id,
+    Text = " - Re-equip Starting Keepsake: ",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left",
+  })
+  screen.Components["StartingKeepsakeCheckBox"] = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX,
+    Y = itemLocationY,
+    Group = "CombatMenu"
+  })
+  screen.Components["StartingKeepsakeCheckBox"].Config = "QuickRestart.config.KeepStartingKeepsake"
+  screen.Components["StartingKeepsakeCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["StartingKeepsakeCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
+
   -----------------------------
   -- Charon Sack Control
   -----------------------------
