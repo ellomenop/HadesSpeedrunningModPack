@@ -35,7 +35,7 @@ end
 
 function QuickRestart.EquipStartingKeepsake()
     for idx, keepsake in ipairs(QuickRestart.Keepsakes) do
-        if HeroHasTrait(keepsake) and keepsake ~= QuickRestart.StartingKeepsake then
+        if  QuickRestart.StartingKeepsake and HeroHasTrait(keepsake) and keepsake ~= QuickRestart.StartingKeepsake then
             DebugPrint({ Text = "QuickRestart: Unequipping " .. keepsake })
             UnequipKeepsake(CurrentRun.Hero, keepsake)
             EquipKeepsake(CurrentRun.Hero, QuickRestart.StartingKeepsake)
@@ -204,12 +204,10 @@ ModUtil.WrapBaseFunction("ShowCombatUI", function( baseFunc, ... )
 
     -- Get starting keepsake
     if QuickRestart.TriggerKeepsakeChange then
+		QuickRestart.TriggerKeepsakeChange = false
         DebugPrint({ Text="Equipping Keepsake" })
         QuickRestart.EquipStartingKeepsake()
     end
-
-    QuickRestart.TriggerKeepsakeChange = false
-
     return val
 end, QuickRestart)
 
@@ -219,7 +217,7 @@ ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
     -- Get starting keepsake
     for idx, keepsake in ipairs(QuickRestart.Keepsakes) do
         if HeroHasTrait(keepsake) then
-            QuickRestart.StartingKeepsake = keepsake
+			QuickRestart.StartingKeepsake = keepsake
         end
     end
 
