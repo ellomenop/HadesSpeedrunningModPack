@@ -39,6 +39,7 @@ function QuickRestart.EquipStartingKeepsake()
             DebugPrint({ Text = "QuickRestart: Unequipping " .. keepsake })
             UnequipKeepsake(CurrentRun.Hero, keepsake)
             EquipKeepsake(CurrentRun.Hero, QuickRestart.StartingKeepsake)
+            GameState.LastAwardTrait = QuickRestart.StartingKeepsake
         end
     end
 end
