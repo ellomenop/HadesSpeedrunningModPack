@@ -3,7 +3,9 @@ ModUtil.RegisterMod("QuickRestart")
 local config = {
     Enabled = true,
     KeepStartingKeepsake = true,
+    QuickDeathEnabled = true,
 }
+
 QuickRestart.config = config
 
 function QuickRestart.CanReset()
@@ -181,7 +183,7 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
     local deathMap = "DeathArea"
 
     -- Changes Here
-    if QuickRestart.UsedQuickRestart then
+    if QuickRestart.UsedQuickRestart or (config.QuickDeathEnabled and not currentRun.Cleared) then
       deathMap = "RoomPreRun"
     end
     -- End Changes
