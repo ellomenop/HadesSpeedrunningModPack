@@ -171,14 +171,14 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -- Quick Restart on Death
   -----------------------------
 
-  screen.Components["HeatQuickDeathTextBox"] = CreateScreenComponent({
+  screen.Components["QuickDeathTextBox"] = CreateScreenComponent({
     Name = "BlankObstacle",
     Scale = 1,
     X = itemLocationX,
     Y = itemLocationY,
     Group = "Combat_Menu" })
   CreateTextBox({
-    Id = screen.Components["HeatQuickDeathTextBox"].Id,
+    Id = screen.Components["QuickDeathTextBox"].Id,
     Text = "Enable Quick Death:",
     Color = Color.BoonPatchCommon,
     FontSize = 16,
@@ -187,16 +187,16 @@ function HSMConfigMenu.CreateQolMenu(screen)
     ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
     Justification = "Left"
   })
-  screen.Components["HeatQuickDeathCheckBox"] = CreateScreenComponent({
+  screen.Components["QuickDeathCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
     X = itemLocationX + itemSpacingX,
     Y = itemLocationY,
     Group = "CombatMenu"
   })
-  screen.Components["HeatQuickDeathCheckBox"].Config = "QuickRestart.config.Enabled"
-  screen.Components["HeatQuickDeathCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["HeatQuickDeathCheckBox"])
+  screen.Components["QuickDeathCheckBox"].Config = "QuickRestart.config.QuickDeathEnabled"
+  screen.Components["QuickDeathCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["QuickDeathCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 
   -----------------------------
