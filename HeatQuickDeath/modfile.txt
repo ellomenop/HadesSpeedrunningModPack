@@ -1,6 +1,0 @@
--:
-  HellModeToggle v1.0
-  Authors:
-    Zyruvias (Discord: zyruvias#3283)
-:-
-Import "HeatQuickDeath.lua"
