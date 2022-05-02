@@ -183,8 +183,13 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
     local deathMap = "DeathArea"
 
     -- Changes Here
-    if QuickRestart.UsedQuickRestart or (config.QuickDeathEnabled and not currentRun.Cleared) then
+    local quickDeathApplicable = config.QuickDeathEnabled and not currentRun.Cleared
+    if QuickRestart.UsedQuickRestart or quickDeathApplicable then
       deathMap = "RoomPreRun"
+    end
+    -- Set UsedQuickRestart Flag so Keepsake and InputBlock are appropriately set.
+    if quickDeathApplicable then
+        QuickRestart.UsedQuickRestart = true
     end
     -- End Changes
 
