@@ -57,7 +57,7 @@ function QuickRestart.ResetRun(triggerArgs)
 
     wait(0.1)
 
-    KillHero( CurrentRun.Hero, triggerArgs )
+    Kill( CurrentRun.Hero, triggerArgs )
 end
 
 OnControlPressed{ "Assist",
