@@ -16,6 +16,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/), and will 
  - QuickRestart re-equips your starting keepsake
  - RtaTimer is now more efficient - should remove any lag issues that it was causing
  - Default Hammer for Rama Aspect of the Bow is now Twin Shot
+ - Renamed sgg-mod-modutil to reduce duplicate ModUtil user installs
+
+### Bug fixes
+ - ShowChamberNumber now works with newer versions of modimporter
 
 ## [1.1.1] - 2021-09-14
 
