@@ -22,6 +22,12 @@ function QuickRestart.CanReset()
     -- Combat UI must be visible
     if not (ShowingCombatUI or false) then return false end
 
+    -- We can't be LastStand-ing
+    if QuickRestart.LastStanding then return false end
+
+    -- We can't be QuickRestart-ing
+    if QuickRestart.UsedQuickRestart then return false end
+
     -- If we're in a Thanatos Room, enemies must have already spawned
     if (CurrentRun ~= nil and CurrentRun.CurrentRoom ~= nil and
             CurrentRun.CurrentRoom.Encounter ~= nil and
@@ -221,5 +227,16 @@ ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
         end
     end
 
+    return val
+end, QuickRestart)
+
+ModUtil.WrapBaseFunction("PlayerLastStandPresentationStart", function( baseFunc, ... )
+    QuickRestart.LastStanding = true
+    return baseFunc( ... )
+end, QuickRestart)
+
+ModUtil.WrapBaseFunction("PlayerLastStandPresentationEnd", function( baseFunc, ... )
+    local val = baseFunc( ... )
+    QuickRestart.LastStanding = false
     return val
 end, QuickRestart)
