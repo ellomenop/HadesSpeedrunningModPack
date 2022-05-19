@@ -28,6 +28,9 @@ function QuickRestart.CanReset()
     -- We can't be QuickRestart-ing
     if QuickRestart.UsedQuickRestart then return false end
 
+    -- We can't be mid-trial god selection
+    if QuickRestart.MidDevotion then return false end
+
     -- If we're in a Thanatos Room, enemies must have already spawned
     if (CurrentRun ~= nil and CurrentRun.CurrentRoom ~= nil and
             CurrentRun.CurrentRoom.Encounter ~= nil and
@@ -240,3 +243,10 @@ ModUtil.WrapBaseFunction("PlayerLastStandPresentationEnd", function( baseFunc, .
     QuickRestart.LastStanding = false
     return val
 end, QuickRestart)
+
+ModUtil.WrapBaseFunction("StartDevotionTestPresentation", function( baseFunc, ... )
+    QuickRestart.MidDevotion = true
+    baseFunc(...)
+    QuickRestart.MidDevotion = false
+end, QuickRestart)
+
