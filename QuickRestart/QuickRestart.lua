@@ -42,17 +42,6 @@ function QuickRestart.CanReset()
     return true
 end
 
-function QuickRestart.EquipStartingKeepsake()
-    for idx, keepsake in ipairs(QuickRestart.Keepsakes) do
-        if  QuickRestart.StartingKeepsake and HeroHasTrait(keepsake) and keepsake ~= QuickRestart.StartingKeepsake then
-            DebugPrint({ Text = "QuickRestart: Unequipping " .. keepsake })
-            UnequipKeepsake(CurrentRun.Hero, keepsake)
-            EquipKeepsake(CurrentRun.Hero, QuickRestart.StartingKeepsake)
-            GameState.LastAwardTrait = QuickRestart.StartingKeepsake
-        end
-    end
-end
-
 function QuickRestart.ResetRun(triggerArgs)
     if not QuickRestart.CanReset() then
         ModUtil.Hades.PrintOverhead("Can't reset now!", 2)
@@ -66,7 +55,6 @@ function QuickRestart.ResetRun(triggerArgs)
     QuickRestart.UsedQuickRestart = true
     AddInputBlock({ Name = "QuickRestart" })
 
-    -- Short delay to let Livesplit grab flag
     wait(0.1)
 
     KillHero( CurrentRun.Hero, triggerArgs )
@@ -126,10 +114,14 @@ OnAnyLoad{ "RoomPreRun",
             thread( PlayVoiceLines, GlobalVoiceLines.EnteredDeathAreaVoiceLines )
             QuickRestart.UsedQuickRestart = false
 
+            RemoveLastAwardTrait()
+            UnequipWeaponUpgrade()
+            RemoveLastAssistTrait()
+
             -- Reset Starting Keepsake
-            if QuickRestart.config.KeepStartingKeepsake and QuickRestart.StartingKeepsake ~= nil then
+            if QuickRestart.config.KeepStartingKeepsake then
                 DebugPrint({ Text="Setting keepsake trigger" })
-                QuickRestart.TriggerKeepsakeChange = true
+                GameState.LastAwardTrait = GameState.QuickRestartStartingKeepsake or GameState.LastAwardTrait
             end
         end
     end
@@ -141,11 +133,11 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
         return
     end
 
-    SendSaveFileEmail({ })
-
     if QuickRestart.UsedQuickRestart then
         RemoveInputBlock({ Name = "QuickRestart" })
     end
+
+    SendSaveFileEmail({ })
 
     AddTimerBlock( currentRun, "HandleDeath" )
     if ScreenAnchors.TraitTrayScreen ~= nil then
@@ -193,6 +185,10 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
     if QuickRestart.UsedQuickRestart then
       deathMap = "RoomPreRun"
     end
+
+    if QuickRestart.KeepStartingKeepsake and GameState.QuickRestartStartingKeepsake then
+      GameState.LastAwardTrait = GameState.QuickRestartStartingKeepsake
+    end
     -- End Changes
 
     GameState.LocationName = "Location_Home"
@@ -208,28 +204,10 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
     LoadMap({ Name = deathMap, ResetBinks = true, ResetWeaponBinks = true })
 end, QuickRestart)
 
-ModUtil.WrapBaseFunction("ShowCombatUI", function( baseFunc, ... )
-    local val = baseFunc(...)
-
-    -- Get starting keepsake
-    if QuickRestart.TriggerKeepsakeChange then
-		QuickRestart.TriggerKeepsakeChange = false
-        DebugPrint({ Text="Equipping Keepsake" })
-        QuickRestart.EquipStartingKeepsake()
-    end
-    return val
-end, QuickRestart)
-
 ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
     local val = baseFunc(...)
-
     -- Get starting keepsake
-    for idx, keepsake in ipairs(QuickRestart.Keepsakes) do
-        if HeroHasTrait(keepsake) then
-			QuickRestart.StartingKeepsake = keepsake
-        end
-    end
-
+    GameState.QuickRestartStartingKeepsake = GameState.LastAwardTrait
     return val
 end, QuickRestart)
 
