@@ -328,6 +328,59 @@ function HSMConfigMenu.CreateQolMenu(screen)
   })
   screen.Components["HellModeToggleButton"].OnPressedFunctionName = "HellModeToggle.ToggleHellMode"
   itemLocationY = itemLocationY + itemSpacingY
+
+  -----------------------------
+  -- Cgull's Save File Elixir
+  -----------------------------
+  screen.Components["RunHistoryWipeTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["RunHistoryWipeTextBox"].Id,
+    Text = "Save File History Pruning:",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+  CreateTextBox({
+    Id = screen.Components["RunHistoryWipeTextBox"].Id,
+    Text = "(Press 5 times to wipe your savefile, no confirmation)",
+    Color = Color.BoonPatchCommon,
+    FontSize = 10,
+    OffsetX = 0, OffsetY = 22,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left",
+  })
+  itemLocationY = itemLocationY + itemSpacingY
+
+  screen.Components["RunHistoryWipeButton"] = CreateScreenComponent({
+    Name = "MarketSlot",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX / 2 - 50,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  SetScaleX({ Id = screen.Components["RunHistoryWipeButton"].Id, Fraction =  .375})
+  SetScaleY({ Id = screen.Components["RunHistoryWipeButton"].Id, Fraction = .5 })
+
+  CreateTextBox({
+    Id = screen.Components["RunHistoryWipeButton"].Id,
+    Text = "Wipe Save File",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Center"
+  })
+  screen.Components["RunHistoryWipeButton"].OnPressedFunctionName = "RunHistoryWipe.PressWipeRunHistoryButton"
+  itemLocationY = itemLocationY + itemSpacingY
 end
 
 
