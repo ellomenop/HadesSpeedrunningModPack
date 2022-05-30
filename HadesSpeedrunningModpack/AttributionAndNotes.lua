@@ -18,7 +18,7 @@ function HSMConfigMenu.CreateAttributionMenu(screen)
   CreateTextBox({
     Id = screen.Components["ThanksForAllTheFish"].Id,
     Text = "Modders: \\n"
-      .. " Ellomenop, Museus, cgull, paradigmsort, erumi321, Magic_Gonads, PonyWarrior"
+      .. " Ellomenop, Museus, cgull, paradigmsort, erumi321, Magic_Gonads, PonyWarrior, Zyruvias"
       .. "\\n Testers: The Entire Hades Speedrunning Commumity <3"
       .. " \\n\\n\\n Note from Ello: \\nI just wanted to say thank you.\\n \\n Thank you to the Speedrunning Community:"
       .. " \\n This community is an immensely positive place to be and thats no accident."
