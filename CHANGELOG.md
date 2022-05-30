@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/), and will follow [Semantic Versioning](https://semver.org/).
 
-## [1.2.0] - TBD (rc.4 released 2021-05-19)
+## [1.2.0] - 2022-05-30
 
 ### Added
 
