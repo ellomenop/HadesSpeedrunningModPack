@@ -3,7 +3,9 @@ ModUtil.RegisterMod("QuickRestart")
 local config = {
     Enabled = true,
     KeepStartingKeepsake = true,
+    QuickDeathEnabled = true,
 }
+
 QuickRestart.config = config
 
 function QuickRestart.CanReset()
@@ -182,12 +184,18 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
     local deathMap = "DeathArea"
 
     -- Changes Here
-    if QuickRestart.UsedQuickRestart then
+    local quickDeathApplicable = config.QuickDeathEnabled and not currentRun.Cleared
+    if QuickRestart.UsedQuickRestart or quickDeathApplicable then
       deathMap = "RoomPreRun"
+      
+      if QuickRestart.KeepStartingKeepsake and GameState.QuickRestartStartingKeepsake then
+        GameState.LastAwardTrait = GameState.QuickRestartStartingKeepsake
+      end
     end
 
-    if QuickRestart.KeepStartingKeepsake and GameState.QuickRestartStartingKeepsake then
-      GameState.LastAwardTrait = GameState.QuickRestartStartingKeepsake
+    -- Set UsedQuickRestart Flag so Keepsake and InputBlock are appropriately set.
+    if quickDeathApplicable then
+        QuickRestart.UsedQuickRestart = true
     end
     -- End Changes
 
