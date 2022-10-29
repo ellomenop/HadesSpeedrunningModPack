@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("RoomDeterminism")
+ModUtil.Mod.Register("RoomDeterminism")
 
 local config = {
   -- TODO: these configs can yield infinite loops.  Needs addressing before exposing to player via a UI
@@ -330,11 +330,11 @@ function GetRoomBiome(room_name_to_find)
   error("Invalid room name passed to GetRoomBiome: " .. (room_name_to_find or "nil"))
 end
 
-ModUtil.WrapBaseFunction("ChooseNextRoomData", function ( baseFunc, run, args )
+ModUtil.Path.Wrap("ChooseNextRoomData", function ( baseFunc, run, args )
 	local next_room_data = baseFunc( run, args )
 
   -- If the mod isn't enabled or the next room is a vanilla chaos, then don't override the next room
-  if (not config.Enabled) or ModUtil.SafeGet(args, {"RoomDataSet"}) ~= nil then
+  if (not config.Enabled) or ModUtil.IndexArray.Get(args, {"RoomDataSet"}) ~= nil then
     return next_room_data
   end
 
@@ -372,14 +372,14 @@ ModUtil.WrapBaseFunction("ChooseNextRoomData", function ( baseFunc, run, args )
 	return next_room_data
 end, RoomDeterminism)
 
-ModUtil.WrapBaseFunction("LeaveRoom", function ( baseFunc, currentRun, door )
+ModUtil.Path.Wrap("LeaveRoom", function ( baseFunc, currentRun, door )
   -- Reset our naive exit door counter
   RoomDeterminism.CurrentExitForDepth = 1
 
   baseFunc(currentRun, door)
 end, RoomDeterminism)
 
-ModUtil.WrapBaseFunction("StartNewRun", function ( baseFunc, currentRun )
+ModUtil.Path.Wrap("StartNewRun", function ( baseFunc, currentRun )
   if config.Enabled and config.RoomGenerationAlgorithm ~= nil then
     RandomSynchronize(3110)
     RoomDeterminism.RoomGenerationAlgorithms[config.RoomGenerationAlgorithm]()

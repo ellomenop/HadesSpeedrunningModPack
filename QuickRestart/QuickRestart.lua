@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("QuickRestart")
+ModUtil.Mod.Register("QuickRestart")
 
 local config = {
     Enabled = true,
@@ -16,7 +16,7 @@ function QuickRestart.CanReset()
     wait(0.1)
 
     -- Zag must not be in the House
-    if ModUtil.PathGet("CurrentDeathAreaRoom") then return false end
+    if ModUtil.Path.Get("CurrentDeathAreaRoom") then return false end
 
     -- Zag must not be frozen
     if not IsEmpty( CurrentRun.Hero.FreezeInputKeys ) then return false end
@@ -129,7 +129,7 @@ OnAnyLoad{ "RoomPreRun",
     end
 }
 
-ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWeapon )
+ModUtil.Path.Override( "HandleDeath", function( currentRun, killer, killingUnitWeapon )
     if GetConfigOptionValue({ Name = "EditingMode" }) then
         SetAnimation({ Name = "ZagreusDeadStartBlood", DestinationId = currentRun.Hero.ObjectId })
         return
@@ -212,25 +212,25 @@ ModUtil.BaseOverride( "HandleDeath", function( currentRun, killer, killingUnitWe
     LoadMap({ Name = deathMap, ResetBinks = true, ResetWeaponBinks = true })
 end, QuickRestart)
 
-ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
+ModUtil.Path.Wrap("WindowDropEntrance", function( baseFunc, ... )
     local val = baseFunc(...)
     -- Get starting keepsake
     GameState.QuickRestartStartingKeepsake = GameState.LastAwardTrait
     return val
 end, QuickRestart)
 
-ModUtil.WrapBaseFunction("PlayerLastStandPresentationStart", function( baseFunc, ... )
+ModUtil.Path.Wrap("PlayerLastStandPresentationStart", function( baseFunc, ... )
     QuickRestart.LastStanding = true
     return baseFunc( ... )
 end, QuickRestart)
 
-ModUtil.WrapBaseFunction("PlayerLastStandPresentationEnd", function( baseFunc, ... )
+ModUtil.Path.Wrap("PlayerLastStandPresentationEnd", function( baseFunc, ... )
     local val = baseFunc( ... )
     QuickRestart.LastStanding = false
     return val
 end, QuickRestart)
 
-ModUtil.WrapBaseFunction("StartDevotionTestPresentation", function( baseFunc, ... )
+ModUtil.Path.Wrap("StartDevotionTestPresentation", function( baseFunc, ... )
     QuickRestart.MidDevotion = true
     baseFunc(...)
     QuickRestart.MidDevotion = false
