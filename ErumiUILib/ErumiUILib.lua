@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("ErumiUILib")
+ModUtil.Mod.Register("ErumiUILib")
 ErumiUILib = {
     Slider = {},
     Dropdown = {},

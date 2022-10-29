@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("InteractableChaos")
+ModUtil.Mod.Register("InteractableChaos")
 
 local config = {
   ModName = "Interactable Chaos",
@@ -7,7 +7,7 @@ local config = {
 InteractableChaos.config = config
 
 -- Spawn the chaos interactable and prevent interaction with the normal chaos gate
-ModUtil.WrapBaseFunction("DoUnlockRoomExits", function ( baseFunc, run, room )
+ModUtil.Path.Wrap("DoUnlockRoomExits", function ( baseFunc, run, room )
   baseFunc(run, room)
 
   if not config.Enabled then
@@ -34,7 +34,7 @@ ModUtil.WrapBaseFunction("DoUnlockRoomExits", function ( baseFunc, run, room )
 end, InteractableChaos)
 
 -- Prevent chaos gates from unlocking visually
-ModUtil.WrapBaseFunction("ExitDoorUnlockedPresentation", function ( baseFunc, exitDoor )
+ModUtil.Path.Wrap("ExitDoorUnlockedPresentation", function ( baseFunc, exitDoor )
   -- If this is a chaos gate, do not unlock
   if exitDoor.Name == "SecretDoor" and config.Enabled then
     return
@@ -45,7 +45,7 @@ ModUtil.WrapBaseFunction("ExitDoorUnlockedPresentation", function ( baseFunc, ex
 end, InteractableChaos)
 
 -- Handling for picking up the special chaos interactable
-ModUtil.WrapBaseFunction("HandleLootPickup", function ( baseFunc, currentRun, loot )
+ModUtil.Path.Wrap("HandleLootPickup", function ( baseFunc, currentRun, loot )
   if loot.IsInteractableChaosLoot and config.Enabled then
 
     -- Calculate health cost and reduce it to 0 if chaos egg is equipped

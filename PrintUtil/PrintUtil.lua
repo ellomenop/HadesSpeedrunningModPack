@@ -8,7 +8,7 @@
   manner, and to get the current stack trace, to determine who is calling a
   function and from where.
 ]]
-ModUtil.RegisterMod("PrintUtil")
+ModUtil.Mod.Register("PrintUtil")
 
 --- Util method to draw text to the screen
 -- @param obstacleName Name of textbox

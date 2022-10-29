@@ -5,7 +5,7 @@
 
     Optionally removes intro and outro cutscenes to runs
 ]]
-ModUtil.RegisterMod("RemoveCutscenes")
+ModUtil.Mod.Register("RemoveCutscenes")
 
 local config = {
     ModName = "RemoveCutscenes",
@@ -15,7 +15,7 @@ local config = {
 RemoveCutscenes.config = config
 
 -- Remove starting cutscene
-ModUtil.WrapBaseFunction("ShowRunIntro", function( baseFunc )
+ModUtil.Path.Wrap("ShowRunIntro", function( baseFunc )
     if config.RemoveIntro then
         return
     end
@@ -24,7 +24,7 @@ ModUtil.WrapBaseFunction("ShowRunIntro", function( baseFunc )
 end, RemoveCutscenes)
 
 
-ModUtil.WrapBaseFunction("EndEarlyAccessPresentation", function ( baseFunc )
+ModUtil.Path.Wrap("EndEarlyAccessPresentation", function ( baseFunc )
     if config.RemoveOutro then
         CurrentRun.ActiveBiomeTimer = false
 

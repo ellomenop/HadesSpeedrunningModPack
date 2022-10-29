@@ -7,7 +7,7 @@
     Gives options to modify or remove Thanatos
 ]]
 
-ModUtil.RegisterMod("ThanatosControl")
+ModUtil.Mod.Register("ThanatosControl")
 
 local config = {
     ThanatosSetting = "Removed"
@@ -69,7 +69,7 @@ function updateNumberOfThanatos()
     if config.ThanatosSetting == "Removed" then
       maxThans = 0
     end
-    ModUtil.MapSetTable(EncounterData, {
+    ModUtil.Table.Merge(EncounterData, {
       ThanatosTartarus = {
           MaxThanatosSpawnsThisRun = maxThans,
       },
@@ -92,7 +92,7 @@ function updateThanatosValues(data)
     data.MaxWaves = ThanatosControl.Presets[config.ThanatosSetting][biome].MaxWaves
 end
 
-ModUtil.WrapBaseFunction("SetupEncounter", function( baseFunc, encounterData, room )
+ModUtil.Path.Wrap("SetupEncounter", function( baseFunc, encounterData, room )
     -- TODO: Make this actually work
     if false and config.ThanatosSetting ~= "Removed" then
       local moddedEncounter = DeepCopyTable( encounterData )
@@ -106,7 +106,7 @@ ModUtil.WrapBaseFunction("SetupEncounter", function( baseFunc, encounterData, ro
 end, ThanatosControl)
 
 -- When a new run is started, make sure to apply the than modifications
-ModUtil.WrapBaseFunction("StartNewRun", function ( baseFunc, currentRun )
+ModUtil.Path.Wrap("StartNewRun", function ( baseFunc, currentRun )
   updateNumberOfThanatos()
   return baseFunc(currentRun)
 end, ThanatosControl)
