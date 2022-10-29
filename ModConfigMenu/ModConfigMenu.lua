@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("ModConfigMenu")
+ModUtil.Mod.Register("ModConfigMenu")
 
 ModConfigMenu.Menus = {}
 ModConfigMenu.CurrentMenuIdx = 1
@@ -279,9 +279,9 @@ function ModConfigMenu__Close( screen, button )
   OnScreenClosed({ Flag = screen.Name })
 end
 
-ModUtil.WrapBaseFunction("CreatePrimaryBacking", function ( baseFunc )
+ModUtil.Path.Wrap("CreatePrimaryBacking", function ( baseFunc )
   -- Only show menu between runs
-  if not ModUtil.PathGet("CurrentDeathAreaRoom") then
+  if not ModUtil.Path.Get("CurrentDeathAreaRoom") then
     return baseFunc()
   end
 

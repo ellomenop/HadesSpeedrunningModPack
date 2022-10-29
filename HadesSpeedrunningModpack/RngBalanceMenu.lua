@@ -1,6 +1,6 @@
 HSMConfigMenu__UpdateGenericConfigCheckbox = function(screen, button)
   local radioButtonValue = "RadioButton_Unselected"
-  if ModUtil.SafeGet(_G, ModUtil.PathToIndexArray(button.Config)) then
+  if ModUtil.IndexArray.Get(_G, ModUtil.Path.IndexArray(button.Config)) then
     radioButtonValue = "RadioButton_Selected"
   end
   SetThingProperty({
@@ -27,13 +27,13 @@ function HSMConfigMenu__ToggleGenericConfigCheckBox(screen, button, overrideValu
   if button.Enabled == false then
     return
   end
-  local configPathArray = ModUtil.PathToIndexArray(button.Config)
-  local configValue = ModUtil.SafeGet(_G, configPathArray)
+  local configPathArray = ModUtil.Path.IndexArray(button.Config)
+  local configValue = ModUtil.IndexArray.Get(_G, configPathArray)
   if configValue ~= nil then
     if overrideValue ~= nil then
-      ModUtil.SafeSet(_G, configPathArray, overrideValue)
+      ModUtil.IndexArray.Set(_G, configPathArray, overrideValue)
     else
-      ModUtil.SafeSet(_G, configPathArray, not configValue)
+      ModUtil.IndexArray.Set(_G, configPathArray, not configValue)
     end
     HSMConfigMenu__UpdateGenericConfigCheckbox(screen, button)
   end
