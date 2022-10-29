@@ -5,7 +5,7 @@
 
     Forces the Styx satyr sack to appear in a specified range.
 ]]
-ModUtil.RegisterMod("SatyrSackControl")
+ModUtil.Mod.Register("SatyrSackControl")
 
 local config = {
     Enabled = true, -- If true, sack wil fall between MinSack and MaxSack
@@ -15,17 +15,17 @@ local config = {
 SatyrSackControl.config = config
 
 -- Scripts/RoomManager.lua : 1874
-ModUtil.WrapBaseFunction("StartRoom", function ( baseFunc, currentRun, currentRoom )
+ModUtil.Path.Wrap("StartRoom", function ( baseFunc, currentRun, currentRoom )
     baseFunc(currentRun, currentRoom)
 end, SatyrSackControl)
 
 -- Scripts/UIScripts.lua : 145
-ModUtil.WrapBaseFunction("ShowCombatUI", function ( baseFunc, flag )
+ModUtil.Path.Wrap("ShowCombatUI", function ( baseFunc, flag )
     baseFunc(flag)
 end, SatyrSackControl)
 
 -- Scripts/RunManager.lua : 591
-ModUtil.BaseOverride("IsRoomForced", function(currentRun, currentRoom, nextRoomData, args)
+ModUtil.Path.Override("IsRoomForced", function(currentRun, currentRoom, nextRoomData, args)
     if nextRoomData.AlwaysForce then
         return true
     end

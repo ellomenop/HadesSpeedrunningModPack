@@ -5,7 +5,7 @@
 
     Track RTA time and display it below the IGT timer
 ]]
-ModUtil.RegisterMod("RtaTimer")
+ModUtil.Mod.Register("RtaTimer")
 
 local config = {
     ModName = "RtaTimer",
@@ -97,7 +97,7 @@ function RtaTimer__ResetRtaTimer()
     RtaTimer.UpdateRtaTimer()
 end
 
-ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
+ModUtil.Path.Wrap("WindowDropEntrance", function( baseFunc, ... )
     local val = baseFunc(...)
 
     -- If single run, timer should always restart
@@ -114,7 +114,7 @@ ModUtil.WrapBaseFunction("WindowDropEntrance", function( baseFunc, ... )
 end, RtaTimer)
 
 -- Stop timer when Hades dies (but leave it on screen)
-ModUtil.WrapBaseFunction("HadesKillPresentation", function( baseFunc, ...)
+ModUtil.Path.Wrap("HadesKillPresentation", function( baseFunc, ...)
    RtaTimer.Running = false
    baseFunc(...)
 end, RtaTimer)
@@ -122,7 +122,7 @@ end, RtaTimer)
 ModUtil.LoadOnce(
     function()
         -- If not in a run, reset timer and prepare for run start
-        if ModUtil.PathGet("CurrentDeathAreaRoom") then
+        if ModUtil.Path.Get("CurrentDeathAreaRoom") then
             RtaTimer.TimerWasReset = true
 
         -- If in a run, just start the timer from the time the mod was loaded

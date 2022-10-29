@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("DoorVisualIndicators")
+ModUtil.Mod.Register("DoorVisualIndicators")
 
 local config = {
   ModName = "Door Visual Indicators",
@@ -42,10 +42,10 @@ DoorVisualIndicators.MiniBossAnimations = {
   D_MiniBoss04 = {"EnemyStyxThiefIdle"},
 }
 
-ModUtil.WrapBaseFunction("CreateDoorPreviewIcon", function ( baseFunc, exitDoor, args )
+ModUtil.Path.Wrap("CreateDoorPreviewIcon", function ( baseFunc, exitDoor, args )
   baseFunc(exitDoor, args)
 
-  local room_name = ModUtil.PathGet('RoomData.Name', args) or ""
+  local room_name = ModUtil.Path.Get('RoomData.Name', args) or ""
   local is_miniboss = RoomData[room_name].IsMiniBossRoom or false
 
   -- If the room is a fountain, add a visual effect to the door icon

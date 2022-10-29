@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("EmoteMod")
+ModUtil.Mod.Register("EmoteMod")
 
 local config = {
   ModName = "EmoteMod",

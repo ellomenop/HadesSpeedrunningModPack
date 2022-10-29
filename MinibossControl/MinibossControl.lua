@@ -6,7 +6,7 @@
     Change the proportions of miniboss chambers, allowing minibosses
     to be removed or replaced with others.
 ]]
-ModUtil.RegisterMod("MinibossControl")
+ModUtil.Mod.Register("MinibossControl")
 
 local config = {
     MinibossSetting = "Leaderboard"
@@ -116,7 +116,7 @@ end
 
 -- Apply the configured miniboss settings to the game data
 function MinibossControl.UpdateMaxCreations()
-    ModUtil.MapSetTable(RoomSetData, {
+    ModUtil.Table.Merge(RoomSetData, {
         -- [[ Tartarus Miniboss Counts ]]
         Tartarus = {
             A_MiniBoss01 = {
@@ -159,21 +159,21 @@ function MinibossControl.UpdateMaxCreations()
 
     -- Remove Tiny Vermin
     if MinibossControl.Presets[config.MinibossSetting].RemoveTinyVermin then
-        ModUtil.MapSetTable(RoomSetData.Styx.D_MiniBoss03, {
+        ModUtil.Table.Merge(RoomSetData.Styx.D_MiniBoss03, {
             LegalEncounters = { "MiniBossHeavyRangedForked" },
         })
     else
-      ModUtil.MapSetTable(RoomSetData.Styx.D_MiniBoss03, {
-          LegalEncounters = { "MiniBossCrawler", "MiniBossHeavyRangedForked" },
+        ModUtil.Table.Merge(RoomSetData.Styx.D_MiniBoss03, {
+            LegalEncounters = { "MiniBossCrawler", "MiniBossHeavyRangedForked" },
       })
     end
 end
 
 -- Scripts/RunManager.lua : 515
-ModUtil.WrapBaseFunction("ChooseNextRoomData", function( baseFunc, currentRun, args )
+ModUtil.Path.Wrap("ChooseNextRoomData", function( baseFunc, currentRun, args )
     -- IsRoomEligible looks at RoomCreations and ignores it if it's nil. Make sure it's not nil
     -- Easier and cleaner than overriding the IsRoomEligible function to fix nil behavior
-    ModUtil.MapSetTable(CurrentRun.RoomCreations, {
+    ModUtil.Table.Merge(CurrentRun.RoomCreations, {
         A_MiniBoss01 = currentRun.RoomCreations.A_MiniBoss01 or 0,
         A_MiniBoss02 = currentRun.RoomCreations.A_MiniBoss02 or 0,
         A_MiniBoss03 = currentRun.RoomCreations.A_MiniBoss03 or 0,
@@ -193,7 +193,7 @@ ModUtil.LoadOnce( function()
 end)
 
 -- When a new run is started, make sure to apply the miniboss modifications
-ModUtil.WrapBaseFunction("StartNewRun", function ( baseFunc, currentRun )
+ModUtil.Path.Wrap("StartNewRun", function ( baseFunc, currentRun )
   MinibossControl.UpdateMaxCreations()
   return baseFunc(currentRun)
 end, MinibossControl)

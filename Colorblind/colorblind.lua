@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("ColorblindMod")
+ModUtil.Mod.Register("ColorblindMod")
 
 local config =
 {
@@ -98,7 +98,7 @@ function IsOutlineLegal(enemy)
     return true
 end
 
-ModUtil.WrapBaseFunction("CreateLevelDisplay", function ( baseFunc, newEnemy, currentRun )
+ModUtil.Path.Wrap("CreateLevelDisplay", function ( baseFunc, newEnemy, currentRun )
   local biome = CurrentRun.CurrentRoom.RoomSetName
 
   if ColorblindMod.config[(biome or "nil") .. "Enabled"] and IsOutlineLegal(newEnemy) then
@@ -109,7 +109,7 @@ ModUtil.WrapBaseFunction("CreateLevelDisplay", function ( baseFunc, newEnemy, cu
   baseFunc(newEnemy, currentRun)
 end, ColorblindMod)
 
-ModUtil.BaseOverride("DoEnemyHealthBufferDeplete", function ( enemy )
+ModUtil.Path.Override("DoEnemyHealthBufferDeplete", function ( enemy )
 	if enemy.OnHealthBufferDepleteFunctionName ~= nil then
 		_G[enemy.OnHealthBufferDepleteFunctionName]( enemy )
 	end
@@ -131,7 +131,7 @@ ModUtil.BaseOverride("DoEnemyHealthBufferDeplete", function ( enemy )
 end, ColorblindMod)
 
 OnAnyLoad{function ()
-    local biome = ModUtil.SafeGet(_G, ModUtil.PathToIndexArray("CurrentRun.CurrentRoom.RoomSetName"))
+    local biome = ModUtil.IndexArray.Get(_G, ModUtil.Path.IndexArray("CurrentRun.CurrentRoom.RoomSetName"))
     while ColorblindMod.config[(biome or "nil") .. "Enabled"] do
 	    local ammoIds = GetIdsByType({ Name = "AmmoPack" })
         if ammoIds ~= nil then
@@ -145,52 +145,52 @@ OnAnyLoad{function ()
     end
 end}
 
-ModUtil.WrapBaseFunction( "HarpyKillPresentation", function(baseFunc, unit, args)
+ModUtil.Path.Wrap( "HarpyKillPresentation", function(baseFunc, unit, args)
     RemoveOutline({ Id = unit.ObjectId})
     return baseFunc(unit, args)
 end)
 
-ModUtil.WrapBaseFunction( "HydraKillPresentation", function(baseFunc, unit, args)
+ModUtil.Path.Wrap( "HydraKillPresentation", function(baseFunc, unit, args)
     RemoveOutline({ Id = unit.ObjectId})
     return baseFunc(unit, args)
 end)
 
-ModUtil.WrapBaseFunction( "HydraKillPresentation", function(baseFunc, unit, args)
+ModUtil.Path.Wrap( "HydraKillPresentation", function(baseFunc, unit, args)
     RemoveOutline({ Id = unit.ObjectId})
     return baseFunc(unit, args)
 end)
 
-ModUtil.WrapBaseFunction( "TheseusMinotaurKillPresentation", function(baseFunc, unit, args)
+ModUtil.Path.Wrap( "TheseusMinotaurKillPresentation", function(baseFunc, unit, args)
     RemoveOutline({ Id = unit.ObjectId})
     return baseFunc(unit, args)
 end)
 
-ModUtil.WrapBaseFunction( "CrawlerMiniBossKillPresentation", function(baseFunc, unit, args)
+ModUtil.Path.Wrap( "CrawlerMiniBossKillPresentation", function(baseFunc, unit, args)
     RemoveOutline({ Id = unit.ObjectId})
     return baseFunc(unit, args)
 end)
 
-ModUtil.WrapBaseFunction( "HadesKillPresentation", function(baseFunc, unit, args)
+ModUtil.Path.Wrap( "HadesKillPresentation", function(baseFunc, unit, args)
     RemoveOutline({ Id = unit.ObjectId})
     return baseFunc(unit, args)
 end)
 
-ModUtil.WrapBaseFunction( "KillPresentation", function(baseFunc, victim, args)
+ModUtil.Path.Wrap( "KillPresentation", function(baseFunc, victim, args)
     RemoveOutline({ Id = victim.ObjectId})
     return baseFunc(victim, args)
 end)
 
-ModUtil.WrapBaseFunction( "DeathPresentation", function(baseFunc, currentRun, killer, killingUnitWeapon )
+ModUtil.Path.Wrap( "DeathPresentation", function(baseFunc, currentRun, killer, killingUnitWeapon )
     RemoveOutline({ Id = currentRun.Hero.ObjectId})
     return baseFunc(currentRun, killer, killingUnitWeapon )
 end)
 
-ModUtil.WrapBaseFunction( "BoatToDeathAreaTransition", function(baseFunc, unit, args)
+ModUtil.Path.Wrap( "BoatToDeathAreaTransition", function(baseFunc, unit, args)
     RemoveOutline({ Id = CurrentRun.Hero.ObjectId})
     return baseFunc(unit, args)
 end)
 
-ModUtil.WrapBaseFunction( "SurfaceDeathPresentation", function(baseFunc, unit, args)
+ModUtil.Path.Wrap( "SurfaceDeathPresentation", function(baseFunc, unit, args)
     RemoveOutline({ Id = CurrentRun.Hero.ObjectId})
     return baseFunc(unit, args)
 end)

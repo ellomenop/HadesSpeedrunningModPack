@@ -47,14 +47,14 @@ function HSMConfigMenu.SaveSettingsToGlobal()
   HSMConfigMenu_SavedPersonalization.ModdedWarningColor = ModdedWarning.config.Color
 end
 
-ModUtil.WrapBaseFunction("UnfreezePlayerUnit", function ( baseFunc, flag )
+ModUtil.Path.Wrap("UnfreezePlayerUnit", function ( baseFunc, flag )
   DebugPrint({Text="This is in the wrapper"})
   HSMConfigMenu.SaveSettingsToGlobal()
   baseFunc(flag)
 end, HSMConfigMenu)
 
 OnAnyLoad{function()
-  if ModUtil.PathGet("CurrentDeathAreaRoom") then
+  if ModUtil.Path.Get("CurrentDeathAreaRoom") then
     HSMConfigMenu.updateRulesetHashDisplay()
   end
 end}
