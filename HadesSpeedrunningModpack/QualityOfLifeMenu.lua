@@ -10,22 +10,15 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -----------------------------
   -- Show Chamber Number
   -----------------------------
-  screen.Components["ChamberNumberTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["ChamberNumberTextBox"].Id,
-    Text = "Show Chamber Number: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableShowChamberNumber",
+      "Show Chamber Number: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   screen.Components["ChamberNumberCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -41,22 +34,15 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -----------------------------
   -- Intro and outro cutscenes
   -----------------------------
-  screen.Components["DisableIntroTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["DisableIntroTextBox"].Id,
-    Text = "Disable Intro Cutscene: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "DisableIntroCutscene",
+      "Disable Intro Cutscene: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   screen.Components["DisableIntroCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -69,22 +55,15 @@ function HSMConfigMenu.CreateQolMenu(screen)
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["DisableIntroCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 
-  screen.Components["DisableOuttroTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["DisableOuttroTextBox"].Id,
-    Text = "Disable Outro Cutscene: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "DisableOutroCutscene",
+      "DisableOutroCutscene: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   screen.Components["DisableOutroCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -100,32 +79,25 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -----------------------------
   -- Quick Restart
   -----------------------------
-  screen.Components["RestartTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["RestartTextBox"].Id,
-    Text = "Quick Restart: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left",
-  })
-  CreateTextBox({
-    Id = screen.Components["RestartTextBox"].Id,
-    Text = "(Interact + Reload + Call + Summon) ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 10,
-    OffsetX = 0, OffsetY = 22,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left",
-  })
+  ModpackMenu.Label(
+      "EnableQuickRestart",
+      "Quick Restart: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+  ModpackMenu.Label(
+      "QuickRestartKeyBindings",
+      "(Interact + Reload + Call + Summon)",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+          FontSize = 10,
+          OffsetY = 22,
+      }
+  )
+
   screen.Components["RestartCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -139,22 +111,14 @@ function HSMConfigMenu.CreateQolMenu(screen)
   itemLocationY = itemLocationY + itemSpacingY
 
 
-  screen.Components["StartingKeepsakeTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["StartingKeepsakeTextBox"].Id,
-    Text = " - Re-equip Starting Keepsake: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left",
-  })
+  ModpackMenu.Label(
+      "QuickRestartStartingKeepsake",
+      " - Re-equip Starting Keepsake: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
   screen.Components["StartingKeepsakeCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -171,22 +135,14 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -- Quick Restart on Death
   -----------------------------
 
-  screen.Components["QuickDeathTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["QuickDeathTextBox"].Id,
-    Text = "Enable Quick Death:",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "QuickRestartQuickDeath",
+      " - Enable Quick Death ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
   screen.Components["QuickDeathCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -202,23 +158,14 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -----------------------------
   -- Charon Sack Control
   -----------------------------
-
-  screen.Components["CharonSackControlTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["CharonSackControlTextBox"].Id,
-    Text = "Force Charon Sack Spawn: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left",
-  })
+  ModpackMenu.Label(
+      "EnableCharonSackControl",
+      "Force Charon Sack Spawn: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
   screen.Components["CharonSackControlCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -240,50 +187,27 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -----------------------------
   -- Show RTA Timer
   -----------------------------
-  screen.Components["RtaTimerTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["RtaTimerTextBox"].Id,
-    Text = "Show RTA Timer: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
-  screen.Components["RtaTimerCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
+  ModpackMenu.Label(
+    "EnableRtaTimer",
+    "Show RTA Timer: ",
+    {
+        ItemLocationX = itemLocationX,
+        ItemLocationY = itemLocationY,
+    }
+  )
   screen.Components["RtaTimerCheckBox"].Config = "RtaTimer.config.DisplayTimer"
   screen.Components["RtaTimerCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RtaTimerCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 
-  screen.Components["RtaTimerMultiRunTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["RtaTimerMultiRunTextBox"].Id,
-    Text = " - Use Multi-Run Mode: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+    "RtaTimerMultiRun",
+    " - Use Multi-Run Mode: ",
+    {
+        ItemLocationX = itemLocationX,
+        ItemLocationY = itemLocationY,
+    }
+  )
   screen.Components["RtaTimerMultiRunCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -321,22 +245,14 @@ function HSMConfigMenu.CreateQolMenu(screen)
   -----------------------------
   -- Hell Mode Toggle
   -----------------------------
-  screen.Components["HellModeToggleTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["HellModeToggleTextBox"].Id,
-    Text = "Turn Hell Mode On/Off:",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+    "EnableHellModeToggle",
+    "Turn Hell Mode On/Off: ",
+    {
+        ItemLocationX = itemLocationX,
+        ItemLocationY = itemLocationY,
+    }
+  )
   itemLocationY = itemLocationY + itemSpacingY
 
   screen.Components["HellModeToggleButton"] = CreateScreenComponent({

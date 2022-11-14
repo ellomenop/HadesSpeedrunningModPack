@@ -25,90 +25,53 @@ function HSMConfigMenu.CreateAccessibilityMenu( screen )
 
   -- Biome Headers
   itemLocationX = itemLocationX + 250
-  screen.Components["ColorblindTartarusTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["ColorblindTartarusTextBox"].Id,
-    Text = "Tartarus",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Center"
-  })
-  screen.Components["ColorblindAsphodelTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX + 2 * itemSpacingX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["ColorblindAsphodelTextBox"].Id,
-    Text = "Asphodel",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Center"
-  })
-  screen.Components["ColorblindElysiumTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX + 3 * itemSpacingX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["ColorblindElysiumTextBox"].Id,
-    Text = "Elysium",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Center"
-  })
-  screen.Components["ColorblindStyxTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX + 4 * itemSpacingX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["ColorblindStyxTextBox"].Id,
-    Text = "Styx",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Center"
-  })
+  What a comfy change though:
+
+  ModpackMenu.Label(
+      "EnableColorblindTartarus",
+      "Tartarus: ",
+      {
+          ItemLocationX = itemLocationX + itemSpacingX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+  ModpackMenu.Label(
+      "EnableColorblindAsphodel",
+      "Tartarus: ",
+      {
+          ItemLocationX = itemLocationX + 2 * itemSpacingX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+  ModpackMenu.Label(
+      "EnableColorblindElysium",
+      "Tartarus: ",
+      {
+          ItemLocationX = itemLocationX + 3 * itemSpacingX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+  ModpackMenu.Label(
+      "EnableColorblindStyx",
+      "Tartarus: ",
+      {
+          ItemLocationX = itemLocationX + 4 * itemSpacingX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   itemLocationY = itemLocationY + 40
   itemLocationX = rowStartX
 
   -- General prompt
-  screen.Components["ColorblindPromptTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["ColorblindPromptTextBox"].Id,
-    Text = "Enable Color Blind Mode: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableColorblind",
+      "Enable Color Blind Mode: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
 
   -- Biome Checkboxes
   itemLocationX = itemLocationX + 250
@@ -161,22 +124,15 @@ function HSMConfigMenu.CreateAccessibilityMenu( screen )
   ---------------------
   -- Accessibilty Note
   ---------------------
-  screen.Components["AccessibilityNoteTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["AccessibilityNoteTextBox"].Id,
-    Text = "Accessiblity options missing something you need? Reach out to ellomenop#2254 on discord and I will see what I can do",
-    Color = Color.Gray,
-    FontSize = 14,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "AccessibilityNote",
+      "Accessiblity options missing something you need? Reach out to ellomenop#2254 on discord and I will see what I can do",
+      {
+          FontSize = 14,
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
 end
 
 ModUtil.LoadOnce(function()
