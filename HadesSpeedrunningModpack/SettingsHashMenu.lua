@@ -96,23 +96,15 @@ function HSMConfigMenu.CreateSettingsHashMenu( screen )
   local itemSpacingX = 250
   local itemSpacingY = 65
 
-  screen.Components["RulesetText"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = ScreenCenterX,
-    Y = itemLocationY - 135,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["RulesetText"].Id,
-    Text = "Ruleset Hash (" .. HadesSpeedrunningModpack.config.Version .. "): ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 28,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Center"
-  })
+  ModpackMenu.Label(
+      "Ruleset",
+      "Ruleset Hash (" .. HadesSpeedrunningModpack.config.Version .. "): ",
+      {
+          FontSize = 28,
+          ItemLocationX = ScreenCenterX,
+          ItemLocationY = itemLocationY - 135,
+      }
+  )
 
   local baseXOffset = (#rulesetHash - 1) * itemSpacingX / 2
   for i = 1, #rulesetHash do
@@ -169,7 +161,7 @@ function HSMConfigMenu.CreateSettingsHashMenu( screen )
           HSMConfigMenu.updateRulesetHashDisplay()
           HSMConfigMenu.SaveSettingsToGlobal()
         end},
-        {Text = "In-Game Time (IGT) Ruleset",  event = function() 
+        {Text = "In-Game Time (IGT) Ruleset",  event = function()
           HSMConfigMenu.LoadSettings("SingleRunSettings")
           local rulesetHashInt = CalculateHash(HSMConfigMenu.SingleRunSettings, _G)
           local rulesetHash =  HSMConfigMenu.ConvertIntToBase25(rulesetHashInt, 5)

@@ -10,23 +10,15 @@ function HSMConfigMenu.CreatePersonalizationMenu(screen)
   local moddedWarningKeyboard = {}
 
   -- Modded Game message customization
-  screen.Components["ModdedWarningCustomizationPrompt"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["ModdedWarningCustomizationPrompt"].Id,
-    Text = "Customize your Modded Warning: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "CustomizeModdedWarning",
+      "Customize your Modded Warning: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   local moddedWarningTextBox = ErumiUILib.Textbox.CreateTextbox(screen, {
 		Name = "ModdedWarningTextBox",
 		Group = "Combat_Menu",

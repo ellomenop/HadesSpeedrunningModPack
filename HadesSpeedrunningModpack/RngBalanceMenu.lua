@@ -1,44 +1,3 @@
-HSMConfigMenu__UpdateGenericConfigCheckbox = function(screen, button)
-  local radioButtonValue = "RadioButton_Unselected"
-  if ModUtil.SafeGet(_G, ModUtil.PathToIndexArray(button.Config)) then
-    radioButtonValue = "RadioButton_Selected"
-  end
-  SetThingProperty({
-    DestinationId = button.Id,
-    Property = "Graphic",
-    Value = radioButtonValue
-  })
-
-  if radioButtonValue == "RadioButton_Unselected" and button.Children ~= nil then
-    for _, child in pairs(button.Children) do
-      HSMConfigMenu__ToggleGenericConfigCheckBox(screen, screen.Components[child.Checkbox], false)
-      ModifyTextBox({ Id = screen.Components[child.Textbox].Id, Color = {1, 1, 1, .2}})
-      screen.Components[child.Checkbox].Enabled = false
-    end
-  elseif button.Children ~= nil then
-    for _, child in pairs(button.Children) do
-      ModifyTextBox({ Id = screen.Components[child.Textbox].Id, Color = {1, 1, 1, 1}})
-      screen.Components[child.Checkbox].Enabled = true
-    end
-  end
-end
-
-function HSMConfigMenu__ToggleGenericConfigCheckBox(screen, button, overrideValue)
-  if button.Enabled == false then
-    return
-  end
-  local configPathArray = ModUtil.PathToIndexArray(button.Config)
-  local configValue = ModUtil.SafeGet(_G, configPathArray)
-  if configValue ~= nil then
-    if overrideValue ~= nil then
-      ModUtil.SafeSet(_G, configPathArray, overrideValue)
-    else
-      ModUtil.SafeSet(_G, configPathArray, not configValue)
-    end
-    HSMConfigMenu__UpdateGenericConfigCheckbox(screen, button)
-  end
-end
-
 local updateSackCheckbox = function(screen, button)
   local radioButtonValue = "RadioButton_Unselected"
   if SatyrSackControl.config.Enabled then
@@ -79,23 +38,15 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   -- Sack settings
   -----------------
   -- Enabled
-  screen.Components["SackModdedTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["SackModdedTextBox"].Id,
-    Text = "Use Modded Saytr Sack: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableSatyrSackControl",
+      "Use Modded Saytr Sack:",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   screen.Components["SackModdedCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -183,24 +134,16 @@ function HSMConfigMenu.CreateRNGMenu( screen )
     Text = "5",
   }
 
-  -- Min
+  -- Minimum Satyr Sack
   itemLocationY = itemLocationY + itemSpacingY
-  screen.Components["SackMinTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["SackMinTextBox"].Id,
-    Text = " - Min Tunnel for Sack: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "MinimumSatyrSack",
+      " - Min Tunnel for Sack: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
   ErumiUILib.Dropdown.CreateDropdown(
       	screen, {
       		Name = "SackMinDropDown",
@@ -221,22 +164,14 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   itemLocationY = itemLocationY + itemSpacingY
 
   -- Max
-  screen.Components["SackMaxTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["SackMaxTextBox"].Id,
-    Text = " - Max Tunnel for Sack: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "MaximumSatyrSack",
+      " - Max Tunnel for Sack: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
   ErumiUILib.Dropdown.CreateDropdown(
         screen, {
           Name = "SackMaxDropDown",
@@ -260,23 +195,15 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   -----------------
   -- Dont get Vorime'd Settings
   -----------------
-  screen.Components["DGVTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["DGVTextBox"].Id,
-    Text = "Remove Getting Vorime'd: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableDontGetVorimed",
+      "Remove Getting Vorime'd: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   screen.Components["DGVCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -292,22 +219,14 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   -----------------
   -- Than settings
   -----------------
-  screen.Components["ThanTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["ThanTextBox"].Id,
-    Text = "Thanatos: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableRemoveThanatos",
+      "Thanatos: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
 
   local thanDropdownOptions = {["Default"] = {
     event = function(dropdown) end,
@@ -338,22 +257,14 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   -----------------
   -- Chaos settings
   -----------------
-  screen.Components["ChaosTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["ChaosTextBox"].Id,
-    Text = "Chaos: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "SelectChaosType",
+      "Chaos: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
 
   local currentChaosSetting = "Vanilla"
   if InteractableChaos.config.Enabled then
@@ -392,22 +303,14 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   -----------------
   -- Miniboss settings
   -----------------
-  screen.Components["MinibossTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu" })
-  CreateTextBox({
-    Id = screen.Components["MinibossTextBox"].Id,
-    Text = "Minibosses: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "SelectMinibossControl",
+      "Minibosses: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
 
   local minibossDropdownOptions = {["Default"] = {
     event = function(dropdown)
@@ -440,23 +343,14 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   -----------------
   -- Visual Indicators
   -----------------
-  screen.Components["MinibossVisualIndicatorTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["MinibossVisualIndicatorTextBox"].Id,
-    Text = "Miniboss Door Preview: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableMinibossVisualIndicator",
+      "Miniboss Door Preview: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
   screen.Components["MinibossVisualIndicatorCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -469,23 +363,15 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["MinibossVisualIndicatorCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 
-  screen.Components["FountainVisualIndicatorTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["FountainVisualIndicatorTextBox"].Id,
-    Text = "Fountain Door Preview: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableFountainVisualIndicator",
+      "Fountain Door Preview: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   screen.Components["FountainVisualIndicatorCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -498,23 +384,15 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["FountainVisualIndicatorCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
 
-  screen.Components["BoonSelectorTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["BoonSelectorTextBox"].Id,
-    Text = "Show Boon Selector Preview: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableBoonSelectorPreview",
+      "Show Boon Selector Preview: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   screen.Components["BoonSelectorCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -539,23 +417,25 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   -- Determinism settings
   -----------------
   -- Rooms
-  screen.Components["RoomDeterminismTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["RoomDeterminismTextBox"].Id,
-    Text = "Deterministic Rooms by Seed: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableRoomDeterminism",
+      "Deterministic Rooms by Seed: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+  ModpackMenu.Label(
+    "RoomDeterminismDisclaimer",
+    "(Only Tartarus through Elysium) ",
+    {
+      FontSize = 10,
+      ItemLocationX = itemLocationX,
+      ItemLocationY = itemLocationY,
+      OffsetY = 22,
+    }
+  )
+
   screen.Components["RoomDeterminismCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -566,36 +446,19 @@ function HSMConfigMenu.CreateRNGMenu( screen )
   screen.Components["RoomDeterminismCheckBox"].Config = "RoomDeterminism.config.Enabled"
   screen.Components["RoomDeterminismCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
   HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RoomDeterminismCheckBox"])
-  CreateTextBox({
-    Id = screen.Components["RoomDeterminismTextBox"].Id,
-    Text = "(Only Tartarus through Elysium) ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 10,
-    OffsetX = 0, OffsetY = 22,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left",
-  })
+
   itemLocationY = itemLocationY + itemSpacingY
 
   -- Enemies
-  screen.Components["EnemyDeterminismTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["EnemyDeterminismTextBox"].Id,
-    Text = "Deterministic Enemies by Seed: ",
-    Color = {1, 0, 0, 0.4},
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableEnemyDeterminism",
+      "Deterministic Enemies by Seed: ",
+      {
+          Color = {1, 0, 0, 0.4},
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
   screen.Components["EnemyDeterminismCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
@@ -603,36 +466,27 @@ function HSMConfigMenu.CreateRNGMenu( screen )
     Y = itemLocationY,
     Group = "CombatMenu"
   })
-  CreateTextBox({
-    Id = screen.Components["EnemyDeterminismTextBox"].Id,
-    Text = "(Not Yet Implemented) ",
-    Color = {1, 0, 0, 0.4},
-    FontSize = 10,
-    OffsetX = 0, OffsetY = 22,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left",
-  })
+  ModpackMenu.Label(
+      "WarningEnemyDeterminismNotImplemented",
+      "(Not Yet Implemented)",
+      {
+          Color = {1, 0, 0, 0.4},
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
   itemLocationY = itemLocationY + itemSpacingY
 
   -- Hammers
-  screen.Components["HammerControlTextBox"] = CreateScreenComponent({
-    Name = "BlankObstacle",
-    Scale = 1,
-    X = itemLocationX,
-    Y = itemLocationY,
-    Group = "Combat_Menu"
-  })
-  CreateTextBox({
-    Id = screen.Components["HammerControlTextBox"].Id,
-    Text = "Set Hammers by Aspect: ",
-    Color = Color.BoonPatchCommon,
-    FontSize = 16,
-    OffsetX = 0, OffsetY = 0,
-    Font = "AlegrayaSansSCRegular",
-    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
-    Justification = "Left"
-  })
+  ModpackMenu.Label(
+      "EnableHammerControl",
+      "Set Hammers by Aspect: ",
+      {
+          ItemLocationX = itemLocationX,
+          ItemLocationY = itemLocationY,
+      }
+  )
+
   screen.Components["HammerControlCheckBox"] = CreateScreenComponent({
     Name = "RadioButton",
     Scale = 1,
