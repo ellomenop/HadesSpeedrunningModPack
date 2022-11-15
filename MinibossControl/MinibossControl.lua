@@ -23,6 +23,13 @@ MinibossControl.Presets = {
     -- Tartarus_Sneak
     A_MiniBoss03 = 1,
 
+    --Megaera
+    A_Boss01 = true,
+    --Alecto
+    A_Boss02 = true,
+    --Tisiphone
+    A_Boss03 = true,
+
     -- Asphodel_Barge
     B_Wrapping01 = 1,
     -- Asphodel_PowerCouple,
@@ -45,6 +52,13 @@ MinibossControl.Presets = {
     A_MiniBoss04 = 1,
     -- Tartarus_Sneak
     A_MiniBoss03 = 1,
+
+    --Megaera
+    A_Boss01 = true,
+    --Alecto
+    A_Boss02 = true,
+    --Tisiphone
+    A_Boss03 = true,
 
     -- Asphodel_Barge
     B_Wrapping01 = 0,
@@ -69,6 +83,13 @@ MinibossControl.Presets = {
     -- Tartarus_Sneak
     A_MiniBoss03 = 1,
 
+    --Megaera
+    A_Boss01 = true,
+    --Alecto
+    A_Boss02 = true,
+    --Tisiphone
+    A_Boss03 = true,
+
     -- Asphodel_Barge
     B_Wrapping01 = 0,
     -- Asphodel_PowerCouple,
@@ -91,6 +112,43 @@ MinibossControl.Presets = {
     A_MiniBoss04 = 1,
     -- Tartarus_Sneak
     A_MiniBoss03 = 1,
+
+    --Megaera
+    A_Boss01 = true,
+    --Alecto
+    A_Boss02 = true,
+    --Tisiphone
+    A_Boss03 = true,
+
+    -- Asphodel_Barge
+    B_Wrapping01 = 0,
+    -- Asphodel_PowerCouple,
+    B_MiniBoss01 = 1,
+    -- Asphodel_Witches
+    B_MiniBoss02 = 2,
+
+    -- Elysium_ButterflyBall
+    C_MiniBoss02 = 2,
+    -- Elysium_Asterius
+    C_MiniBoss01 = 0,
+
+    -- If true, Tiny Vermin will not spawn
+    RemoveTinyVermin = true,
+  },
+  Hypermodded = {
+    -- Tartarus_Bombers
+    A_MiniBoss01 = 1,
+    -- Tartarus_Doomstone TODO: Handle middle management?
+    A_MiniBoss04 = 1,
+    -- Tartarus_Sneak
+    A_MiniBoss03 = 1,
+
+    --Megaera
+    A_Boss01 = true,
+    --Alecto
+    A_Boss02 = true,
+    --Tisiphone
+    A_Boss03 = false,
 
     -- Asphodel_Barge
     B_Wrapping01 = 0,
@@ -196,4 +254,16 @@ end)
 ModUtil.Path.Wrap("StartNewRun", function ( baseFunc, currentRun )
   MinibossControl.UpdateMaxCreations()
   return baseFunc(currentRun)
+end, MinibossControl)
+
+-- Remove ineligible Furies
+-- Scripts/RunManager.lua : 652
+ModUtil.Path.Wrap("IsRoomEligible", function( baseFunc, currentRun, currentRoom, nextRoomData, args )
+    if currentRoom ~= nil and currentRoom.Name == "A_PreBoss01" then
+        if not MinibossControl.Presets[MinibossControl.config.MinibossSetting][nextRoomData.Name] then
+            DebugPrint({ Text="Rejecting " .. nextRoomData.Name })
+            return false
+        end
+    end
+    return baseFunc(currentRun, currentRoom, nextRoomData, args )
 end, MinibossControl)
