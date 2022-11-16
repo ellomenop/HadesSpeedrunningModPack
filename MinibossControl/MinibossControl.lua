@@ -174,7 +174,19 @@ end
 
 -- Apply the configured miniboss settings to the game data
 function MinibossControl.UpdateMaxCreations()
-    ModUtil.Table.Merge(RoomSetData, {
+    AllowedBossesTartarus = {}
+
+    if MinibossControl.Presets[config.MinibossSetting].A_Boss01 then
+        table.insert(AllowedBossesTartarus,"A_Boss01")
+    end
+    if MinibossControl.Presets[config.MinibossSetting].A_Boss02 then
+        table.insert(AllowedBossesTartarus,"A_Boss02")
+    end
+    if MinibossControl.Presets[config.MinibossSetting].A_Boss03 then
+        table.insert(AllowedBossesTartarus,"A_Boss03")
+    end
+
+    ModUtil.Table.MergeKeyed(RoomSetData, { --Table.Merge doesn't remove unwanted furies from LinkedRooms; this sets them to nil
         -- [[ Tartarus Miniboss Counts ]]
         Tartarus = {
             A_MiniBoss01 = {
@@ -191,6 +203,9 @@ function MinibossControl.UpdateMaxCreations()
                 -- Vanilla Doomstone
                 MaxCreationsThisRun = MinibossControl.Presets[config.MinibossSetting].A_MiniBoss04,
             },
+            A_PreBoss01 = {
+                LinkedRooms = AllowedBossesTartarus,
+            }
         },
         -- [[ Asphodel Miniboss Counts ]]
         Asphodel = {
@@ -254,16 +269,4 @@ end)
 ModUtil.Path.Wrap("StartNewRun", function ( baseFunc, currentRun )
   MinibossControl.UpdateMaxCreations()
   return baseFunc(currentRun)
-end, MinibossControl)
-
--- Remove ineligible Furies
--- Scripts/RunManager.lua : 652
-ModUtil.Path.Wrap("IsRoomEligible", function( baseFunc, currentRun, currentRoom, nextRoomData, args )
-    if currentRoom ~= nil and currentRoom.Name == "A_PreBoss01" then
-        if not MinibossControl.Presets[MinibossControl.config.MinibossSetting][nextRoomData.Name] then
-            DebugPrint({ Text="Rejecting " .. nextRoomData.Name })
-            return false
-        end
-    end
-    return baseFunc(currentRun, currentRoom, nextRoomData, args )
 end, MinibossControl)
