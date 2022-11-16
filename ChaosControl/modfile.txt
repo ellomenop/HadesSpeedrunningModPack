@@ -1,0 +1,2 @@
+:: Miniboss Control
+Import "ChaosControl.lua"
