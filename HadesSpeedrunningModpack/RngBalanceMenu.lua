@@ -204,16 +204,16 @@ function HSMConfigMenu.CreateRNGMenu( screen )
       }
   )
 
-  screen.Components["DGVCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["DGVCheckBox"].Config = "DontGetVorimed.config.Enabled"
-  screen.Components["DGVCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["DGVCheckBox"])
+  ModpackMenu.CheckBox(
+    "EnableDontGetVorimed",
+    DontGetVorimed.config,
+    "Enabled",
+    {
+      ItemLocationX = itemLocationX + itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
+
   itemLocationY = itemLocationY + itemSpacingY
 
   -----------------
@@ -351,16 +351,17 @@ function HSMConfigMenu.CreateRNGMenu( screen )
           ItemLocationY = itemLocationY,
       }
   )
-  screen.Components["MinibossVisualIndicatorCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["MinibossVisualIndicatorCheckBox"].Config = "DoorVisualIndicators.config.ShowMinibossDoorIndicator"
-  screen.Components["MinibossVisualIndicatorCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["MinibossVisualIndicatorCheckBox"])
+
+  ModpackMenu.CheckBox(
+    "EnableMinibossVisualIndicator",
+    DoorVisualIndicators.config,
+    "ShowMinibossDoorIndicator",
+    {
+      ItemLocationX = itemLocationX + itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
+
   itemLocationY = itemLocationY + itemSpacingY
 
   ModpackMenu.Label(
@@ -372,16 +373,16 @@ function HSMConfigMenu.CreateRNGMenu( screen )
       }
   )
 
-  screen.Components["FountainVisualIndicatorCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["FountainVisualIndicatorCheckBox"].Config = "DoorVisualIndicators.config.ShowFountainDoorIndictor"
-  screen.Components["FountainVisualIndicatorCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["FountainVisualIndicatorCheckBox"])
+  ModpackMenu.CheckBox(
+    "EnableFountainVisualIndicator",
+    DoorVisualIndicators.config,
+    "ShowFountainDoorIndicator",
+    {
+      ItemLocationX = itemLocationX + itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
+
   itemLocationY = itemLocationY + itemSpacingY
 
   ModpackMenu.Label(
@@ -393,16 +394,16 @@ function HSMConfigMenu.CreateRNGMenu( screen )
       }
   )
 
-  screen.Components["BoonSelectorCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["BoonSelectorCheckBox"].Config = "EllosBoonSelectorMod.config.ShowPreview"
-  screen.Components["BoonSelectorCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["BoonSelectorCheckBox"])
+  ModpackMenu.CheckBox(
+    "EnableBoonSelectorPreview",
+    EllosBoonSelectorMod.config,
+    "ShowPreview",
+    {
+      ItemLocationX = itemLocationX + itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
+
   itemLocationY = itemLocationY + itemSpacingY
 
 
@@ -436,16 +437,15 @@ function HSMConfigMenu.CreateRNGMenu( screen )
     }
   )
 
-  screen.Components["RoomDeterminismCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["RoomDeterminismCheckBox"].Config = "RoomDeterminism.config.Enabled"
-  screen.Components["RoomDeterminismCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["RoomDeterminismCheckBox"])
+  ModpackMenu.CheckBox(
+    "EnableRoomDeterminism",
+    RoomDeterminism.config,
+    "Enabled",
+    {
+      ItemLocationX = itemLocationX + itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
 
   itemLocationY = itemLocationY + itemSpacingY
 
@@ -486,19 +486,15 @@ function HSMConfigMenu.CreateRNGMenu( screen )
           ItemLocationY = itemLocationY,
       }
   )
-
-  screen.Components["HammerControlCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["HammerControlCheckBox"].Config = "RunStartControl.config.Enabled"
-  screen.Components["HammerControlCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
-  itemLocationY = itemLocationY + itemSpacingY
-
-  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["HammerControlCheckBox"])
+  ModpackMenu.CheckBox(
+    "EnableHammerControl",
+    RunStartControl.config,
+    "Enabled",
+    {
+      ItemLocationX = itemLocationX + itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
   itemLocationY = itemLocationY + itemSpacingY
 end
 
