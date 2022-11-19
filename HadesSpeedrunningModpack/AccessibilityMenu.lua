@@ -1,21 +1,3 @@
-local updateColorblindCheckbox = function(screen, button)
-  local enabled = ColorblindMod.config[button.Biome .. "Enabled"]
-  local radioButtonValue = "RadioButton_Unselected"
-  if enabled then
-    radioButtonValue = "RadioButton_Selected"
-  end
-  SetThingProperty({
-    DestinationId = button.Id,
-    Property = "Graphic",
-    Value = radioButtonValue
-  })
-end
-
-function HSMConfigMenu__ToggleColorblindCheckBox(screen, button)
-  ColorblindMod.config[button.Biome .. "Enabled"] = not ColorblindMod.config[button.Biome .. "Enabled"]
-  updateColorblindCheckbox(screen, button)
-end
-
 function HSMConfigMenu.CreateAccessibilityMenu( screen )
   local rowStartX = 250
   local itemLocationX = rowStartX
@@ -73,51 +55,48 @@ function HSMConfigMenu.CreateAccessibilityMenu( screen )
       }
   )
 
+  ModpackMenu.CheckBox(
+    "ColorblindTartarusCheckBox",
+    ColorblindMod.config,
+    "TartarusEnabled",
+    {
+      ItemLocationX = itemLocationX + itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
+
   -- Biome Checkboxes
   itemLocationX = itemLocationX + 250
-  screen.Components["ColorblindTartarusCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["ColorblindTartarusCheckBox"].Biome = "Tartarus"
-  screen.Components["ColorblindTartarusCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleColorblindCheckBox"
-  updateColorblindCheckbox(screen, screen.Components["ColorblindTartarusCheckBox"])
+  ModpackMenu.CheckBox(
+    "ColorblindAsphodelCheckBox",
+    ColorblindMod.config,
+    "AsphodelEnabled",
+    {
+      ItemLocationX = itemLocationX + 2 * itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
 
-  screen.Components["ColorblindAsphodelCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + 2 * itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["ColorblindAsphodelCheckBox"].Biome = "Asphodel"
-  screen.Components["ColorblindAsphodelCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleColorblindCheckBox"
-  updateColorblindCheckbox(screen, screen.Components["ColorblindAsphodelCheckBox"])
+  ModpackMenu.CheckBox(
+    "ColorblindElysiumCheckBox",
+    ColorblindMod.config,
+    "ElysiumEnabled",
+    {
+      ItemLocationX = itemLocationX + 3 * itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
 
-  screen.Components["ColorblindElysiumCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + 3 * itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["ColorblindElysiumCheckBox"].Biome = "Elysium"
-  screen.Components["ColorblindElysiumCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleColorblindCheckBox"
-  updateColorblindCheckbox(screen, screen.Components["ColorblindElysiumCheckBox"])
+  ModpackMenu.CheckBox(
+    "ColorblindStyxCheckBox",
+    ColorblindMod.config,
+    "StyxEnabled",
+    {
+      ItemLocationX = itemLocationX + 4 * itemSpacingX,
+      ItemLocationY = itemLocationY,
+    }
+  )
 
-  screen.Components["ColorblindStyxCheckBox"] = CreateScreenComponent({
-    Name = "RadioButton",
-    Scale = 1,
-    X = itemLocationX + 4 * itemSpacingX,
-    Y = itemLocationY,
-    Group = "CombatMenu"
-  })
-  screen.Components["ColorblindStyxCheckBox"].Biome = "Styx"
-  screen.Components["ColorblindStyxCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleColorblindCheckBox"
-  updateColorblindCheckbox(screen, screen.Components["ColorblindStyxCheckBox"])
   itemLocationY = itemLocationY + itemSpacingY
   itemLocationX = rowStartX
 
