@@ -9,6 +9,7 @@ ModUtil.Mod.Register("SatyrSackControl")
 
 local config = {
     Enabled = true, -- If true, sack wil fall between MinSack and MaxSack
+    ForceShortTunnels = false, -- If true, all tunnels will be short
     MinSack = 2, -- Lowest tunnel count to see Sack
     MaxSack = 2 -- Highest tunnel count to see Sack
 }
@@ -104,4 +105,89 @@ ModUtil.Path.Override("IsRoomForced", function(currentRun, currentRoom, nextRoom
     end
 
     return false
+end)
+
+-- Scripts/RunManager.lua : 652
+ModUtil.Path.Override("IsRoomEligible", function(currentRun, currentRoom, nextRoomData, args)
+    if args == nil then
+        args = {}
+    end
+
+    if nextRoomData == nil then
+        return false
+    end
+
+    local excludedNames = args.ExcludedNames
+    local excludedTypes = args.ExcludedTypes
+    local excludedRewards = args.ExcludedRewards
+    local roomsSkipped = args.DepthSkip or 0
+
+    if nextRoomData.DebugOnly then
+        return false
+    end
+
+    if excludedNames ~= nil and excludedNames[nextRoomData.Name] then
+        return false
+    end
+
+    if excludedTypes ~= nil and excludedTypes[nextRoomData.Type] then
+        return false
+    end
+
+    if excludedRewards ~= nil and not IsEmpty(nextRoomData.RewardTypes) and ContainsAll(excludedRewards, nextRoomData.RewardTypes) then
+        return false
+    end
+
+    if nextRoomData.ForceAtBiomeDepth ~= nil and currentRun.BiomeDepthCache ~= nextRoomData.ForceAtBiomeDepth then
+        return false
+    end
+    if nextRoomData.ForceAtBiomeDepthMin ~= nil and currentRun.BiomeDepthCache < nextRoomData.ForceAtBiomeDepthMin then
+        return false
+    end
+
+    if currentRoom ~= nil then
+        if nextRoomData.Name == currentRoom.Name then
+            return false
+        end
+        if nextRoomData.Starting and not currentRoom.AllowNextRoomStarting then
+            return false
+        end
+        if nextRoomData.RequiresLinked then
+            if currentRoom.LinkedRoom ~= nextRoomData.Name and ( currentRoom.LinkedRooms == nil or not Contains( currentRoom.LinkedRooms, nextRoomData.Name ) ) then
+                return false
+            end
+        end
+
+        -- If in a MiniBoss wing and we are not a MiniBoss, we are ineligible (except Reprieve)
+        if currentRoom.RequireWingEndMiniBoss and nextRoomData.WingEndRoom and not nextRoomData.WingEndMiniBoss and not nextRoomData.AllowAsAnyWingEnd then
+            return false
+        end
+
+        -- If in a regular wing and we are a MiniBoss room, we are ineligible (except Reprieve)
+        if not currentRoom.RequireWingEndMiniBoss and nextRoomData.WingEndRoom and nextRoomData.WingEndMiniBoss and not nextRoomData.AllowAsAnyWingEnd then
+            return false
+        end
+        
+        -- [[ CHANGES MADE HERE ]]
+        if SatyrSackControl.config.ForceShortTunnels and currentRun.WingDepth >= 3 and not nextRoomData.WingEndRoom then
+            return false
+        end
+        -- [[ END OF CHANGES ]]
+    end
+
+    if nextRoomData.MaxAppearancesThisRun ~= nil and currentRun.RoomCountCache[nextRoomData.Name] ~= nil and currentRun.RoomCountCache[nextRoomData.Name] >= nextRoomData.MaxAppearancesThisRun then
+        return false
+    end
+    if nextRoomData.MaxAppearancesThisBiome ~= nil and currentRun.BiomeRoomCountCache[nextRoomData.Name] ~= nil and currentRun.BiomeRoomCountCache[nextRoomData.Name] >= nextRoomData.MaxAppearancesThisBiome then
+        return false
+    end
+
+    if nextRoomData.MaxCreationsThisRun ~= nil and currentRun.RoomCreations[nextRoomData.Name] ~= nil and currentRun.RoomCreations[nextRoomData.Name] >= nextRoomData.MaxCreationsThisRun then
+        return false
+    end
+
+    if not IsGameStateEligible( currentRun, nextRoomData , nextRoomData.GameStateRequirements, args) then
+        return false
+    end
+    return true
 end)
