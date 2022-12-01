@@ -3,109 +3,138 @@
     Authors:
         SleepSoul (Discord: SleepSoul#6006)
         Museus (Discord: Museus#7777)
-    Dependencies: ModUtil, RCLib
     Change the eligible offerings from Chaos, allowing certain curses or blessings to be removed.
 ]]
 ModUtil.Mod.Register("ChaosControl")
 
 local config = {
-  ChaosSetting = "Hypermodded"
+  ChaosSetting = "Vanilla"
 }
 ChaosControl.config = config --TODO add config option in menu
 ChaosControl.EligibleBlessings = {}
 ChaosControl.EligibleCurses = {}
-ChaosControl.VanillaBlessings = {}
-ChaosControl.VanillaCurses = {}
 
 ChaosControl.Presets = { --Define rulesets
-    Vanilla = {},
-    Hypermodded = {
+    Vanilla = {
         Blessings = {
-            Eclipse = false,
+            ChaosBlessingMeleeTrait = true,
+            ChaosBlessingRangedTrait = true,
+            ChaosBlessingAmmoTrait = true,
+            ChaosBlessingMaxHealthTrait = true,
+            ChaosBlessingBoonRarityTrait = true,
+            ChaosBlessingMoneyTrait = true,
+            ChaosBlessingMetapointTrait = true,
+            ChaosBlessingSecondaryTrait = true,
+            ChaosBlessingDashAttackTrait = true,
+            ChaosBlessingExtraChanceTrait = true,
+            ChaosBlessingBackstabTrait = true,
+            ChaosBlessingAlphaStrikeTrait = true,
         },
         Curses = {
-            Roiling = false,
+            ChaosCurseNoMoneyTrait = true,
+            ChaosCurseAmmoUseDelayTrait = true,
+            ChaosCursePrimaryAttackTrait = true,
+            ChaosCurseSecondaryAttackTrait = true,
+            ChaosCurseCastAttackTrait = true,
+            ChaosCurseDeathWeaponTrait = true,
+            ChaosCurseHiddenRoomReward = true,
+            ChaosCurseDamageTrait = true,
+            ChaosCurseTrapDamageTrait = true,
+            ChaosCurseHealthTrait = true,
+            ChaosCurseMoveSpeedTrait = true,
+            ChaosCurseSpawnTrait = true,
+            ChaosCurseDashRangeTrait = true,
+        }
+    },
+    Hypermodded = {
+        Blessings = {
+            ChaosBlessingMeleeTrait = true,
+            ChaosBlessingRangedTrait = true,
+            ChaosBlessingAmmoTrait = true,
+            ChaosBlessingMaxHealthTrait = true,
+            ChaosBlessingBoonRarityTrait = true,
+            ChaosBlessingMoneyTrait = true,
+            ChaosBlessingSecondaryTrait = true,
+            ChaosBlessingDashAttackTrait = true,
+            ChaosBlessingExtraChanceTrait = true,
+            ChaosBlessingBackstabTrait = true,
+            ChaosBlessingAlphaStrikeTrait = true,
         },
+        Curses = {
+            ChaosCurseNoMoneyTrait = true,
+            ChaosCurseAmmoUseDelayTrait = true,
+            ChaosCursePrimaryAttackTrait = true,
+            ChaosCurseSecondaryAttackTrait = true,
+            ChaosCurseCastAttackTrait = true,
+            ChaosCurseDeathWeaponTrait = true,
+            ChaosCurseHiddenRoomReward = true,
+            ChaosCurseDamageTrait = true,
+            ChaosCurseTrapDamageTrait = true,
+            ChaosCurseHealthTrait = true,
+            ChaosCurseMoveSpeedTrait = true,
+            ChaosCurseDashRangeTrait = true,
+        }
     },
     Debug = {
         Blessings = {
-            Shot = true,
+            ChaosBlessingRangedTrait = true,
         },
         Curses = {
-            Abyssal = true,
-        },
+            ChaosCurseTrapDamageTrait = true,
+        }
     }
 }
 
-ChaosControl.InheritVanilla = { -- Presets set to true will inherit the vanilla traits and only remove those set to false, Presets set to false will start from 0 and only add those set to true.
-    Hypermodded = {
-        Blessings = true,
-        Curses = true,
-    },
-}
-
-function ChaosControl.ReadPreset() -- Read current preset and create table of blessings and curses marked to eligible, including failsafe for presets with <3 traits
-    local Preset = {
-        Blessings = {},
-        Curses = {},
-    }
-    local InheritVanilla = {}
-    if ChaosControl.Presets[config.ChaosSetting] ~= nil then
-        Preset = ChaosControl.Presets[config.ChaosSetting]
-    end
-    if ChaosControl.InheritVanilla[config.ChaosSetting] ~= nil then
-        InheritVanilla = ChaosControl.InheritVanilla[config.ChaosSetting]
-    end
-    if Preset.Blessings ~= nil then
-        if InheritVanilla.Blessings then
-            RCLib.PopulateMinLength(
-                ChaosControl.EligibleBlessings,
-                RCLib.RemoveIneligibleStrings(Preset.Blessings,ChaosControl.VanillaBlessings,RCLib.NameToCode.ChaosBlessings),
-                3
-            )
-        else
-            RCLib.PopulateMinLength(
-                ChaosControl.EligibleBlessings,
-                RCLib.GetEligible(Preset.Blessings,RCLib.NameToCode.ChaosBlessings),
-                3
-            )
+function ChaosControl.PopulateMinLength(targetTable, inputTable, minLength) --Populates a target table with the contents of an input table, repeatedly inserting until a minimum length is reached.
+    local i = 0
+    while i < minLength do
+        for _, name in pairs(inputTable) do
+            table.insert(targetTable, name)
+            i = i + 1
         end
-    else
-        ChaosControl.EligibleBlessings = ChaosControl.VanillaBlessings
-    end
-    if Preset.Curses ~= nil then
-        if InheritVanilla.Curses then
-            RCLib.PopulateMinLength(
-                ChaosControl.EligibleCurses,
-                RCLib.RemoveIneligibleStrings(Preset.Curses,ChaosControl.VanillaCurses,RCLib.NameToCode.ChaosCurses),
-                3
-            )
-        else
-            RCLib.PopulateMinLength(
-                ChaosControl.EligibleCurses,
-                RCLib.GetEligible(Preset.Curses,RCLib.NameToCode.ChaosCurses),
-                3
-            )
-        end
-    else
-        ChaosControl.EligibleCurses = ChaosControl.VanillaCurses
     end
 end
 
+function ChaosControl.GetEligibleTraits(inputTable)
+    local eligibleTraits = {}
+    for name, bool in pairs(inputTable) do
+        if ( bool ) then
+            table.insert(eligibleTraits, name)
+        end
+    end
+    return eligibleTraits
+end
+
+function ChaosControl.RegisterPreset(name, preset)
+    ChaosControl.Presets[name] = preset
+end
+
+function ChaosControl.ReadPreset() --Read current preset and create table of blessings and curses marked to eligible, including failsafe for presets with <3 traits, which otherwise cause crash
+    ChaosControl.EligibleBlessings = {}
+    ChaosControl.EligibleCurses = {}
+    ChaosControl.PopulateMinLength(
+        ChaosControl.EligibleBlessings,
+        ChaosControl.GetEligibleTraits(ChaosControl.Presets[config.ChaosSetting].Blessings),
+        3
+    )
+    ChaosControl.PopulateMinLength(
+        ChaosControl.EligibleCurses,
+        ChaosControl.GetEligibleTraits(ChaosControl.Presets[config.ChaosSetting].Curses),
+        3
+    )
+end
+
 function ChaosControl.UpdateOfferings() --Inject eligible blessings/curses into table of Chaos' offerings in LootData
-    DebugPrint({Text = "Chaos preset: "..ChaosControl.config.ChaosSetting})
     ModUtil.Table.MergeKeyed(LootData, {
         TrialUpgrade = {
             PermanentTraits = ChaosControl.EligibleBlessings,
             TemporaryTraits = ChaosControl.EligibleCurses,
         }
     })
-    DebugPrint({Text = "Updated Chaos offerings"})
+    DebugPrint({Text = "Chaos Offerings: "..config.ChaosSetting})
 end
 
 ModUtil.LoadOnce( function()
-    ChaosControl.VanillaBlessings = ModUtil.Table.Copy(LootData.TrialUpgrade.PermanentTraits)
-    ChaosControl.VanillaCurses = ModUtil.Table.Copy(LootData.TrialUpgrade.TemporaryTraits)
     ChaosControl.ReadPreset()
     ChaosControl.UpdateOfferings()
 end)
