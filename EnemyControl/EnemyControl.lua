@@ -3,22 +3,20 @@
     Authors:
         SleepSoul (Discord: SleepSoul#6006)
         Museus (Discord: Museus#7777)
+    Dependencies: ModUtil, RCLib
     Change the pool of enemies eligible in each room, allowing certain enemy types to be removed.
 ]]
 ModUtil.Mod.Register("EnemyControl")
 
 local config = {
-  EnemySetting = "Vanilla"
+    EnemySetting = "Hypermodded2"
 }
 EnemyControl.config = config --TODO add config option in menu
+EnemyControl.EligibleEnemies = {}
+EnemyControl.VanillaSets = {}
 
-EnemyControl.Presets = { --Define rulesets
+EnemyControl.Presets = { -- Define rulesets
     Vanilla = {},
-    Debug = {
-        Tartarus = {
-            Lout = true,
-        }
-    },
     Hypermodded1 = {
         StyxSmallRoom = {
             TinyRat = false,
@@ -38,14 +36,79 @@ EnemyControl.Presets = { --Define rulesets
             Bowman = false,
             Shieldsman = false,
             Swordsman = false,
+            Flamewheel = false,
         },
         StyxSmallRoom = {
             TinyRat = false,
         }
-    }
+    },
+    RatsOClock = {
+        Tartarus = {
+            TinyRat = true,
+        },
+        TartarusElite = {
+            TinyRat = true,
+        },
+        TartarusSurvival = {
+            TinyRat = true,
+        },
+        Asphodel = {
+            TinyRat = true,
+        },
+        AsphodelElite = {
+            TinyRat = true,
+        },
+        Elysium = {
+            TinyRat = true,
+        },
+        ElysiumElite = {
+            TinyRat = true,
+        },
+        StyxSmallRoom = {
+            TinyRat = true,
+        },
+        StyxSmallRoomElite = {
+            TinyRat = true,
+        },
+        StyxSmallRoomSingle = {
+            TinyRat = true,
+        },
+    },
+    Neuron = {
+        Tartarus = {
+            ArmoredSplitter = true,
+        },
+        TartarusElite = {
+            ArmoredSplitter = true,
+        },
+        TartarusSurvival = {
+            ArmoredSplitter = true,
+        },
+        Asphodel = {
+            ArmoredSplitter = true,
+        },
+        AsphodelElite = {
+            ArmoredSplitter = true,
+        },
+        Elysium = {
+            ArmoredSplitter = true,
+        },
+        ElysiumElite = {
+            ArmoredSplitter = true,
+        },
+        StyxSmallRoom = {
+            ArmoredSplitter = true,
+        },
+        StyxSmallRoomElite = {
+            ArmoredSplitter = true,
+        },
+        StyxSmallRoomSingle = {
+            ArmoredSplitter = true,
+        },
+    },
 }
 
-EnemyControl.PresetTypes = {
+EnemyControl.InheritVanilla = { -- Biomes set to true will inherit the vanilla enemy set and only remove those set to false, biomes set to false will start from 0 and only add those set to true.
     Hypermodded1 = {
         StyxSmallRoom = true,
     },
@@ -57,110 +120,48 @@ EnemyControl.PresetTypes = {
     }
 }
 
-function EnemyControl.PopulateMinLength(targetTable, inputTable, minLength) --Populates a target table with the contents of an input table, repeatedly inserting until a minimum length is reached.
-    local i = 0
-    while i < minLength do
-        for _, name in pairs(inputTable) do
-            table.insert(targetTable, name)
-            i = i + 1
-        end
-    end
-end
-
-function EnemyControl.GetEligible(inputTable)
-    local eligible = {}
-    for name, bool in pairs(inputTable) do
-        if ( bool ) then
-            table.insert(eligible, EnemyControl.NameToCode.Enemies[name])
-            DebugPrint({Text = EnemyControl.NameToCode.Enemies[name]})
-        end
-    end
-    return eligible
-end
-
-function EnemyControl.RemoveIneligibleFromBools(inputTable,baseTable)
-    local eligible = {}
-    local check = ""
-    local match = false
-    for name, bool in pairs(baseTable) do
-        match = false
-        check = name
-        DebugPrint({Text = check})
-        if ( bool ) then
-            if ( next(inputTable) == nil ) then
-                table.insert(eligible,check)
-            else
-                for name2, bool2 in pairs(inputTable) do
-                    if ( EnemyControl.NameToCode.Enemies[name2] == check and bool2 == false ) then
-                        match = true
-                    end
-                end
-                if ( match == false ) then
-                    table.insert(eligible,check)
-                end
-            end
-        end
-    end
-    return eligible
-end
-
-function EnemyControl.RemoveIneligibleFromStrings(inputTable,baseTable)
-    local eligible = {}
-    local check = ""
-    local match = false
-    for _, name in ipairs(baseTable) do
-        match = false
-        check = name
-        if ( next(inputTable) == nil ) then
-            table.insert(eligible,name)
-        else
-            for name2, bool in pairs(inputTable) do
-                DebugPrint({Text = name2})
-                if ( EnemyControl.NameToCode.Enemies[name2] == check and bool == false ) then
-                    match = true
-                end
-            end
-            if ( match == false ) then
-                table.insert(eligible,name)
-            end
-        end
-    end
-    return eligible
-end
-
-function EnemyControl.RegisterPreset(name, preset)
-    EnemyControl.Presets[name] = preset
-end
+EnemyControl.RuleOverrides = { -- Any overrides to enemy eligibility are made here. Only option currently supported is HardForce, which will make the enemy always eligible to appear. TODO add overrides for minimum and maximum biome depth per biome
+    Neuron = {
+        ArmoredSplitter = {
+            HardForce = true,
+        },
+    },
+}
 
 function EnemyControl.ReadPreset() --Read current preset and create table of enemies marked as eligible
-    EnemyControl.EligibleEnemies = {}
     local Preset = EnemyControl.Presets[config.EnemySetting]
-    local PresetType = EnemyControl.PresetTypes[config.EnemySetting]
+    local InheritVanilla = {}
+    if EnemyControl.InheritVanilla[config.EnemySetting] ~= nil then
+        InheritVanilla = EnemyControl.InheritVanilla[config.EnemySetting]
+    end
     for biome, _ in pairs(Preset) do
         EnemyControl.EligibleEnemies[biome] = {}
-        if ( PresetType[biome] == true ) then
-            EnemyControl.PopulateMinLength(
+        if InheritVanilla[biome] == true then
+            RCLib.PopulateMinLength(
                 EnemyControl.EligibleEnemies[biome],
-                EnemyControl.RemoveIneligibleFromStrings(Preset[biome],EnemyControl.VanillaSets[EnemyControl.NameToCode.Biomes[biome]]),
+                RCLib.RemoveIneligibleStrings(Preset[biome],EnemyControl.VanillaSets[RCLib.EncodeEnemySet(biome)],RCLib.NameToCode.Enemies),
                 1
             )
         else
-            EnemyControl.PopulateMinLength(
+            RCLib.PopulateMinLength(
                 EnemyControl.EligibleEnemies[biome],
-                EnemyControl.GetEligible(Preset[biome]),
+                RCLib.GetEligible(Preset[biome],RCLib.NameToCode.Enemies),
                 1
             )
         end
     end
 end
 
-function EnemyControl.UpdatePools()
+function EnemyControl.UpdatePools() -- Inject every non-empty biome of the current preset into the relevant biomes in EnemySets.lua
+    DebugPrint({Text = "Enemy preset: "..EnemyControl.config.EnemySetting})
+    if EnemyControl.InheritVanilla[config.EnemySetting] ~= nil then
+        InheritVanilla = EnemyControl.InheritVanilla[config.EnemySetting]
+    end
     for biome, pool in pairs(EnemyControl.EligibleEnemies) do
-        EnemyControl.Target = EnemyControl.NameToCode.Biomes[biome]
+        EnemyControl.Target = RCLib.EncodeEnemySet(biome)
         EnemyControl.Pool = pool
-        DebugPrint({Text = EnemyControl.Target})
-        DebugPrint({Text = EnemyControl.Pool})
         ModUtil.Table.Replace(EnemySets[EnemyControl.Target], EnemyControl.Pool)
+        DebugPrint({Text = "Updated enemy pool for "..biome})
     end
 end
 
@@ -175,4 +176,17 @@ ModUtil.Path.Wrap("StartNewRun", function ( baseFunc, currentRun )
     EnemyControl.ReadPreset()
     EnemyControl.UpdatePools()
     return baseFunc(currentRun)
+end, EnemyControl)
+
+ModUtil.Path.Wrap("IsEnemyEligible", function ( baseFunc, enemyName, encounter, wave )
+    local Preset = EnemyControl.config.EnemySetting
+    local EnemyRef = RCLib.DecodeEnemy(enemyName)
+    local Overrides = {}
+    if EnemyControl.RuleOverrides[Preset][EnemyRef] ~= nil then
+        Overrides = EnemyControl.RuleOverrides[Preset][EnemyRef]
+    end
+    if Overrides.HardForce then
+        return true
+    end
+    return baseFunc( enemyName, encounter, wave )
 end, EnemyControl)
