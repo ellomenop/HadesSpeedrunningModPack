@@ -1,4 +1,255 @@
 RCLib.NameToCode = {
+    Aspects = {
+        -- Uses in-game names for aspects, format <Aspect><Weapon>.
+        -- This avoids confusion with BoonSets in cases like Zeus/Poseidon/Chaos and lines up with how aspects are often referred to in the community. No abbreviations are used for clarity.
+        ZagreusSword = "SwordBaseUpgradeTrait",
+        NemesisSword = "SwordCriticalParryTrait",
+        PoseidonSword = "DislodgeAmmoTrait",
+        ArthurSword = "SwordConsecrationTrait",
+        ZagreusSpear = "SpearBaseUpgradeTrait",
+        AchillesSpear = "SpearTeleportTrait",
+        HadesSpear = "SpearWeaveTrait",
+        GuanYuSpear = "SpearSpinTravel",
+        ZagreusShield = "ShieldBaseUpgradeTrait",
+        ZeusShield = "ShieldTwoShieldTrait",
+        ChaosShield = "ShieldRushBonusProjectileTrait",
+        BeowulfShield = "ShieldLoadAmmoTrait",
+        ZagreusBow = "BowBaseUpgradeTrait",
+        HeraBow = "BowLoadAmmoTrait",
+        ChironBow = "BowMarkHomingTrait",
+        RamaBow = "BowBondTrait",
+        ZagreusFists = "FistBaseUpgradeTrait",
+        TalosFists = "FistVacuumTrait",
+        DemeterFists = "FistWeaveTrait",
+        GilgameshFists = "FistDetonateTrait",
+        ZagreusRail = "GunBaseUpgradeTrait",
+        HestiaRail = "GunManualReloadTrait",
+        ErisRail = "GunGrenadeSelfEmpowerTrait",
+        LuciferRail = "GunLoadedGrenadeTrait",
+    },
+    Boons = {
+        -- Uses in-game names for boons.
+        -- Several boons are unused- these are not currently included.
+        -- Duos
+        BlizzardShot = "BlizzardOrbTrait",
+        CalculatedRisk = "SlowProjectileTrait",
+        ColdEmbrace = "SelfLaserTrait",
+        ColdFusion = "JoltDurationTrait",
+        CrystalClarity = "HomingLaserTrait",
+        CurseOfDrowning = "PoseidonAresProjectileTrait",
+        CurseOfLonging = "CurseSickTrait",
+        CurseOfNausea = "PoisonTickRateTrait",
+        DeadlyReversal = "ArtemisReflectBuffTrait",
+        ExclusiveAccess = "RaritySuperBoost",
+        FreezingVortex = "StationaryRiftTrait",
+        HeartRend = "HeartsickCritDamageTrait",
+        HuntingBlades = "AresHomingTrait",
+        IceWine = "IceStrikeArrayTrait",
+        LightningPhalanx = "ReboundingAthenaCastTrait",
+        LightningRod = "AmmoBoltTrait",
+        LowTolerance = "DionysusAphroditeStackIncreaseTrait",
+        MercifulEnd = "TriggerCurseTrait",
+        MirageShot = "ArtemisBonusProjectileTrait",
+        PartingShot = "CastBackstabTrait",
+        SeaStorm = "ImpactBoltTrait",
+        ScintillatingFeast = "LightningCloudTrait",
+        SmolderingAir = "RegeneratingCappedSuperTrait",
+        SplittingHeadache = "PoisonCritVulnerabilityTrait",
+        StubbornRoots = "NoLastStandRegenerationTrait",
+        SweetNectar = "ImprovedPomTrait",
+        UnshakableMettle = "StatusImmunityTrait",
+        VengefulMood = "AutoRetaliateTrait",
+        
+        -- Zeus
+        LightningStrike = "ZeusWeaponTrait",
+        ThunderFlourish = "ZeusSecondaryTrait",
+        ElectricShot = "ZeusRangedTrait",
+        ThunderFlare = "ShieldLoadAmmo_ZeusRangedTrait",
+        ThunderDash = "ZeusRushTrait",
+        ZeusAid = "ZeusShoutTrait",
+        
+        StaticDischarge = "ZeusLightningDebuff",
+
+        StormLightning = "ZeusBonusBounceTrait",
+        DoubleStrike = "ZeusBonusBoltTrait",
+        HighVoltage = "ZeusBoltAoETrait",
+        HeavensVengeance = "RetaliateWeaponTrait",
+        LightningReflexes = "PerfectDashBoltTrait",
+        CloudedJudgment = "SuperGenerationTrait",
+        BillowingStrength = "OnWrathDamageBuffTrait",
+
+        SplittingBolt = "ZeusChargedBoltTrait",
+
+        -- Athena
+        DivineStrike = "AthenaWeaponTrait",
+        DivineFlourish = "AthenaSecondaryTrait",
+        PhalanxShot = "AthenaRangedTrait",
+        PhalanxFlare = "ShieldLoadAmmo_AthenaRangedTrait",
+        DivineDash = "AthenaRushTrait",
+        AthenasAid = "AthenaShoutTrait",
+
+        BlindingFlash = "AthenaBackstabDebuffTrait",
+
+        BrilliantRiposte = "AthenaShieldTrait",
+        HolyShield = "AthenaRetaliateTrait",
+        SureFooting = "TrapDamageTrait",
+        BronzeSkin = "EnemyDamageTrait",
+        LastStand = "LastStandHealTrait",
+        DeathlessStand = "LastStandDurationTrait",
+        ProudBearing = "PreloadSuperGenerationTrait",
+
+        DivineProtection = "ShieldHitTrait",
+
+        -- Poseidon
+        TempestStrike = "PoseidonWeaponTrait",
+        TempestFlourish = "PoseidonSecondaryTrait",
+        FloodShot = "PoseidonRangedTrait",
+        FloodFlare = "ShieldLoadAmmo_PoseidonRangedTrait",
+        TidalDash = "PoseidonRushTrait",
+        PoseidonAid = "PoseidonShoutTrait",
+
+        RazorShoals = "SlipperyTrait",
+
+        BreakingWave = "SlamExplosionTrait",
+        TyphoonsFury = "BonusCollisionTrait",
+        HydraulicMight = "EncounterStartOffenseBuffTrait",
+        SunkenTreasure = "RandomMinorLootDrop",
+        OceansBounty = "RoomRewardBonusTrait",
+        WavePounding = "BossDamageTrait",
+        BoilingPoint = "DefensiveSuperGenerationTrait",
+        RipCurrent = "PoseidonShoutDurationTrait",
+
+        SecondWave = "DoubleCollisionTrait",
+        HugeCatch = "FishingTrait",
+
+        -- Ares
+        CurseOfAgony = "AresWeaponTrait",
+        CurseOfPain = "AresSecondaryTrait",
+        SlicingShot = "AresRangedTrait",
+        SlicingFlare = "ShieldLoadAmmo_AresRangedTrait",
+        BladeDash = "AresRushTrait",
+        AresAid = "AresShoutTrait",
+
+        BlackMetal = "AresAoETrait",
+        EngulfingVortex = "AresDragTrait",
+        CurseOfVengeance = "AresRetaliateTrait",
+        UrgeToKill = "IncreasedDamageTrait",
+        BattleRage = "OnEnemyDeathDamageInstanceBuffTrait",
+        BloodFrenzy = "LastStandDamageBonusTrait",
+        ImpendingDoom = "AresLongCurseTrait",
+        DireMisfortune = "AresLoadCurseTrait",
+
+        ViciousCycle = "AresCursedRiftTrait",
+
+        -- Aphrodite
+        HeartbreakStrike = "AphroditeWeaponTrait",
+        HeartbreakFlourish = "AphroditeSecondaryTrait",
+        CrushShot = "AphroditeRangedTrait",
+        PassionFlare = "ShieldLoadAmmo_AphroditeRangedTrait",
+        PassionDash = "AphroditeRushTrait",
+        AphroditesAid = "AphroditeShoutTrait",
+
+        EmptyInside = "AphroditeDurationTrait",
+        BrokenResolve = "AphroditePotencyTrait",
+        SweetSurrender = "AphroditeWeakenTrait",
+        WaveOfDespair = "AphroditeRetaliateTrait",
+        DyingLament = "AphroditeDeathTrait",
+        DifferentLeague = "ProximityArmorTrait",
+        LifeAffirmation = "HealthRewardBonusTrait",
+        BlownKiss = "AphroditeRangedBonusTrait",
+
+        UnhealthyFixation = "CharmTrait",
+
+        -- Artemis
+        DeadlyStrike = "ArtemisWeaponTrait",
+        DeadlyFlourish = "ArtemisSecondaryTrait",
+        TrueShot = "ArtemisRangedTrait",
+        HuntersFlare = "ShieldLoadAmmo_ArtemisRangedTrait",
+        HunterDash = "ArtemisRushTrait",
+        ArtemisAid = "ArtemisShoutTrait",
+
+        HuntersMark = "CritVulnerabilityTrait",
+
+        PressurePoints = "CritBonusTrait",
+        SupportFire = "ArtemisSupportingFireTrait",
+        ExitWounds = "ArtemisAmmoExitTrait",
+        CleanKill = "ArtemisCriticalTrait",
+        HideBreaker = "CriticalBufferMultiplierTrait",
+        HunterInstinct = "CriticalSuperGenerationTrait",
+
+        FullyLoaded = "MoreAmmoTrait",
+
+        -- Dionysus
+        DrunkenStrike = "DionysusWeaponTrait",
+        DrunkenFlourish = "DionysusSecondaryTrait",
+        TrippyShot = "DionysusRangedTrait",
+        TrippyFlare = "ShieldLoadAmmo_DionysusRangedTrait",
+        DrunkenDash = "DionysusRushTrait",
+        DionysusAid = "DionysusShoutTrait",
+
+        AfterParty = "DoorHealTrait",
+        PositiveOutlook = "LowHealthDefenseTrait",
+        PremiumVintage = "DionysusGiftDrop",
+        StrongDrink = "FountainDamageBonusTrait",
+        NumbingSensation = "DionysusSlowTrait",
+        PeerPressure = "DionysusSpreadTrait",
+        HighTolerance = "DionysusDefenseTrait",
+        BadInfluence = "DionysusPoisonPowerTrait",
+
+        BlackOut = "DionysusComboVulnerability",
+
+        -- Demeter
+        FrostStrike = "DemeterWeaponTrait",
+        FrostFlourish = "DemeterSecondaryTrait",
+        CrystalBeam = "DemeterRangedTrait", --BEAM
+        IcyFlare = "ShieldLoadAmmo_DemeterRangedTrait",
+        MistralDash = "DemeterRushTrait",
+        DemetersAid = "DemeterShoutTrait",
+
+        RavenousWill = "ZeroAmmoBonusTrait",
+        ArcticBlast = "MaximumChillBlast",
+        KillingFreeze = "MaximumChillBonusSlow",
+        FrozenTouch = "DemeterRetaliateTrait",
+        SnowBurst = "CastNovaTrait",
+        NourishedSoul = "HealingPotencyTrait",
+        RareCrop = "HarvestBoonDrop",
+        GlacialGlare = "DemeterRangedBonusTrait",
+        InstantChillKill = "InstantChillKill",
+
+        -- Hermes
+        GreatestReflex = "BonusDashTrait",
+        HyperSprint = "RushSpeedBoostTrait",
+        GreaterHaste = "MoveSpeedTrait",
+        QuickRecovery = "RushRallyTrait",
+        GreaterEvasion = "DodgeChanceTrait",
+        SwiftStrike = "HermesWeaponTrait",
+        SwiftFlourish = "HermesSecondaryTrait",
+        SideHustle = "ChamberGoldTrait",
+        QuickReload = "AmmoReclaimTrait",
+        FlurryCast = "RapidCastTrait",
+        AutoReload = "AmmoReloadTrait",
+        SecondWind = "HermesShoutDodge",
+        QuickFavor = "RegeneratingSuperTrait",
+
+        RushDelivery = "SpeedDamageTrait",
+
+        GreaterRecall = "MagnetismTrait",
+        BadNews = "UnstoredAmmoDamageTrait",
+    },
+    BoonSets = {
+        Zeus = "ZeusUpgrade",
+        Athena = "AthenaUpgrade",
+        Poseidon = "PoseidonUpgrade",
+        Ares = "AresUpgrade",
+        Aphrodite = "AphroditeUpgrade",
+        Artemis = "ArtemisUpgrade",
+        Dionysus = "DionysusUpgrade",
+        Demeter = "DemeterUpgrade",
+        Hermes = "HermesUpgrade",
+        Chaos = "TrialUpgrade",
+        Hammer = "WeaponUpgrade",
+        Pom = "StackUpgrade",
+    },
     ChaosBlessings = {
         -- Uses in-game names for blessings and curses.
         -- Several curses and blessings are unused- these are not currently included.
@@ -213,6 +464,100 @@ RCLib.NameToCode = {
         EM4HadesLargeAdds = "EnemiesHadesLarge",
 
         ErebusSuperElite = "ShrineChallengeSuperElite",
+    },
+    Hammers = {
+        -- Sword
+        WorldSplitter = "SwordHeavySecondStrikeTrait",
+        FlurrySlash = "SwordTwoComboTrait",
+        ShadowSlash = "SwordBackstabTrait",
+        BreachingSlash = "SwordHealthBufferDamageTrait",
+        SuperNova = "SwordSecondaryAreaDamageTrait",
+        DoubleNova = "SwordSecondaryDoubleAttackTrait",
+        DoubleEdge = "SwordDoubleDashAttackTrait",
+        CruelThrust = "SwordCriticalTrait",
+        PiercingWave = "SwordThrustWaveTrait",
+        CursedSlash = "SwordCursedLifeStealTrait",
+        HoardingSlash = "SwordGoldDamageTrait",
+        DashNova = "SwordBlinkTrait",
+        GreaterConsecration = "SwordConsecrationBoostTrait",
+
+        -- Spear
+        ExtendingJab = "SpearReachAttack",
+        ChainSkewer = "SpearThrowBounce",
+        BreachingSkewer = "SpearThrowPenetrate",
+        ViciousSkewer = "SpearThrowCritical",
+        ChargedSkewer = "SpearThrowElectiveCharge",
+        ExplodingLauncher = "SpearThrowExplode",
+        MassiveSpin = "SpearSpinDamageRadius",
+        QuickSpin = "SpearSpinChargeLevelTime",
+        FlurryJab = "SpearAutoAttack",
+        SerratedPoint = "SpearDashMultiStrike",
+        FlaringSpin = "SpearSpinChargeAreaDamageTrait",
+        TripleJab = "SpearAttackPhalanxTrait",
+        WingedSerpent = "SpearSpinTravelDurationTrait",
+
+        -- Shield
+        DreadFlight = "ShieldThrowFastTrait",
+        ExplosiveReturn = "ShieldThrowCatchExplode",
+        PulverizingBlow = "ShieldBashDamageTrait",
+        DashingWallop = "ShieldDashAOETrait",
+        SuddenRush = "ShieldChargeSpeedTrait",
+        MinotaurRush = "ShieldPerfectRushTrait",
+        BreachingRush = "ShieldChargeHealthBufferTrait",
+        ChargedShot = "ShieldRushProjectileTrait",
+        ChargedFlight = "ShieldThrowElectiveCharge",
+        EmpoweringFlight = "ShieldThrowEmpowerTrait",
+        FerociousGuard = "ShieldBlockEmpowerTrait",
+        DashingFlight = "ShieldThrowRushTrait",
+        UnyieldingDefense = "ShieldLoadAmmoBoostTrait",
+
+        -- Bow
+        SniperShot = "BowLongRangeDamageTrait",
+        FlurryShot = "BowTapFireTrait",
+        PerfectShot = "BowPowerShotTrait",
+        RelentlessVolley = "BowSecondaryBarrageTrait",
+        PiercingVolley = "BowPenetrationTrait",
+        ChargedVolley = "BowSecondaryFocusedFireTrait",
+        TripleShot = "BowTripleShotTrait",
+        TwinShot = "BowDoubleShotTrait",
+        ExplosiveShot = "BowSlowChargeDamageTrait",
+        ChainShot = "BowChainShotTrait",
+        ConcentratedVolley = "BowConsecutiveBarrageTrait",
+        PointBlankShot = "BowCloseAttackTrait",
+        RepulseShot = "BowBondBoostTrait",
+
+        -- Rail
+        FlurryFire = "GunMinigunTrait",
+        DeltaChamber = "GunInfiniteAmmoTrait",
+        PiercingFire = "GunArmorPenerationTrait",
+        TripleBomb = "GunGrenadeFastTrait",
+        SpreadFire = "GunShotgunTrait",
+        RocketBomb = "GunExplodingSecondaryTrait",
+        TargetingSystem = "GunSlowGrenade",
+        ClusterBomb = "GunGrenadeClusterTrait",
+        HazardBomb = "GunGrenadeDropTrait",
+        RicochetFire = "GunChainShotTrait",
+        SeekingFire = "GunHomingBulletTrait",
+        GreaterInferno = "GunLoadedGrenadeBoostTrait",
+        ConcentratedBeam = "GunLoadedGrenadeLaserTrait",
+        FlashFire = "GunLoadedGrenadeSpeedTrait",
+        TripleBeam = "GunLoadedGrenadeWideTrait",
+        EternalChamber = "GunLoadedGrenadeInfiniteAmmoTrait",
+
+        -- Fist
+        LongKnuckle = "FistReachAttackTrait",
+        RollingKnuckle = "FistAttackFinisherTrait",
+        ConcentratedKnuckle = "FistConsecutiveAttackTrait",
+        BreachingCross = "FistDashAttackHealthBufferTrait",
+        ExplosiveUpper = "FistDoubleDashSpecialTrait",
+        RushKick = "FistTeleportSpecialTrait",
+        FlyingCutter = "FistChargeSpecialTrait",
+        DrainingCutter = "FistKillTrait",
+        QuakeCutter = "FistSpecialLandTrait",
+        KineticLauncher = "FistSpecialFireballTrait",
+        HeavyKnuckle = "FistHeavyAttackTrait",
+        ColossusKnuckle = "FistAttackDefenseTrait",
+        RendingClaws = "FistDetonateBoostTrait",
     }
 }
 RCLib.CodeToName = {
@@ -222,10 +567,38 @@ RCLib.CodeToName = {
     EnemySets = {},
 }
 
+RCLib.CodeToName.Aspects = ModUtil.Table.Transpose(RCLib.NameToCode.Aspects)
+RCLib.CodeToName.Boons = ModUtil.Table.Transpose(RCLib.NameToCode.Boons)
+RCLib.CodeToName.BoonSets = ModUtil.Table.Transpose(RCLib.NameToCode.BoonSets)
 RCLib.CodeToName.ChaosBlessings = ModUtil.Table.Transpose(RCLib.NameToCode.ChaosBlessings)
 RCLib.CodeToName.ChaosCurses = ModUtil.Table.Transpose(RCLib.NameToCode.ChaosCurses)
 RCLib.CodeToName.Enemies = ModUtil.Table.Transpose(RCLib.NameToCode.Enemies)
 RCLib.CodeToName.EnemySets = ModUtil.Table.Transpose(RCLib.NameToCode.EnemySets)
+RCLib.CodeToName.Hammers = ModUtil.Table.Transpose(RCLib.NameToCode.Hammers)
+
+function RCLib.EncodeAspect(name)
+    return RCLib.NameToCode.Aspects[name]
+end
+
+function RCLib.DecodeAspect(name)
+    return RCLib.CodeToName.Aspects[name]
+end
+
+function RCLib.EncodeBoon(name)
+    return RCLib.NameToCode.Boons[name]
+end
+
+function RCLib.DecodeBoon(name)
+    return RCLib.CodeToName.Boons[name]
+end
+
+function RCLib.EncodeBoonSet(name)
+    return RCLib.NameToCode.BoonSets[name]
+end
+
+function RCLib.DecodeBoonSet(name)
+    return RCLib.CodeToName.BoonSets[name]
+end
 
 function RCLib.EncodeChaosBlessing(name)
     return RCLib.NameToCode.ChaosBlessings[name]
@@ -257,4 +630,12 @@ end
 
 function RCLib.DecodeEnemySet(name)
     return RCLib.CodeToName.EnemySets[name]
+end
+
+function RCLib.EncodeHammer(name)
+    return RCLib.NameToCode.Hammers[name]
+end
+
+function RCLib.DecodeHammer(name)
+    return RCLib.CodeToName.Hammers[name]
 end
