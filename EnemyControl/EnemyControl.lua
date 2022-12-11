@@ -182,7 +182,7 @@ ModUtil.Path.Wrap("IsEnemyEligible", function ( baseFunc, enemyName, encounter, 
     local Preset = EnemyControl.config.EnemySetting
     local EnemyRef = RCLib.DecodeEnemy(enemyName)
     local Overrides = {}
-    if EnemyControl.RuleOverrides[Preset][EnemyRef] ~= nil then
+    if EnemyControl.RuleOverrides[Preset] ~= nil and EnemyControl.RuleOverrides[Preset][EnemyRef] ~= nil then
         Overrides = EnemyControl.RuleOverrides[Preset][EnemyRef]
     end
     if Overrides.HardForce then
@@ -190,3 +190,4 @@ ModUtil.Path.Wrap("IsEnemyEligible", function ( baseFunc, enemyName, encounter, 
     end
     return baseFunc( enemyName, encounter, wave )
 end, EnemyControl)
+
