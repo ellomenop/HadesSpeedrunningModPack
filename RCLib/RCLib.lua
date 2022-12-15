@@ -78,3 +78,19 @@ function RCLib.PopulateMinLength(targetTable, inputTable, minLength) -- Populate
         end
     end
 end
+
+function RCLib.GetAspectName()
+    for aspect, name in pairs(RCLib.CodeToName.Aspects) do
+		if HeroHasTrait(aspect) then
+            return name
+        end
+    end
+end
+
+function RCLib.GetAspectCode()
+    for aspect, name in pairs(RCLib.CodeToName.Aspects) do
+		if HeroHasTrait(aspect) then
+            return aspect
+        end
+    end
+end

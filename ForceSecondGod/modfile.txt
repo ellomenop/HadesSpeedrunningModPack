@@ -1,0 +1,3 @@
+:: Force Second God
+Import "ForceSecondGod.lua"
+Import "config.lua"
