@@ -1,0 +1,30 @@
+local config = {
+    Enabled = true,
+    AspectSettings = {
+        ZagreusSword = "Athena",
+        NemesisSword = "Artemis",
+        PoseidonSword = "Athena",
+        ArthurSword = "Zeus",
+        ZagreusSpear = "Artemis",
+        AchillesSpear = "Artemis",
+        HadesSpear = "Athena",
+        GuanYuSpear = "Athena",
+        ZagreusShield = "Ares",
+        ZeusShield = "Athena",
+        ChaosShield = "Ares",
+        BeowulfShield = "Artemis",
+        ZagreusBow = "Artemis",
+        HeraBow = "Demeter",
+        ChironBow = "Zeus",
+        RamaBow = "Zeus",
+        ZagreusFists = "Athena",
+        TalosFists = "Athena",
+        DemeterFists = "Athena",
+        GilgameshFists = "Athena",
+        ZagreusRail = "Poseidon",
+        HestiaRail = "Aphrodite",
+        ErisRail = "Poseidon",
+        LuciferRail = "Poseidon",
+    }
+}
+ForceSecondGod.config = config

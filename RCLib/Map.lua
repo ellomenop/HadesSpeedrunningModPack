@@ -558,13 +558,45 @@ RCLib.NameToCode = {
         HeavyKnuckle = "FistHeavyAttackTrait",
         ColossusKnuckle = "FistAttackDefenseTrait",
         RendingClaws = "FistDetonateBoostTrait",
+    },
+    Keepsakes = {
+        LuckyTooth = "ReincarnationTrait",
+        BlackShawl = "BackstabAlphaStrikeTrait",
+        BoneHourglass = "ShopDurationTrait",
+        OldSpikedCollar = "MaxHealthKeepsakeTrait",
+        MyrmidonBracer = "DirectionalArmorTrait",
+        BrokenSpearpoint = "ShieldAfterHitTrait",
+        ShatteredShackle = "VanillaTrait",
+        DistantMemory = "DistanceDamageTrait",
+        SkullEarring = "LowHealthDamageTrait",
+        HarpyFeatherDuster = "LifeOnUrnTrait",
+        ChthonicCoinPurse = "BonusMoneyTrait",
+        OwlPendant = "ForceAthenaBoonTrait",
+        EternalRose = "ForceAphroditeBoonTrait",
+        AdamantArrowhead = "ForceArtemisBoonTrait",
+        ThunderSignet = "ForceZeusBoonTrait",
+        ConchShell = "ForcePoseidonBoonTrait",
+        BloodFilledVial = "ForceAresBoonTrait",
+        OverflowingCup = "ForceDionysusBoonTrait",
+        FrostbittenHorn = "ForceDemeterBoonTrait",
+        CosmicEgg = "ChaosBoonTrait",
+        PiercedButterfly = "PerfectClearDamageBonusTrait",
+        LambentPlume = "FastClearDodgeBonusTrait",
+        EvergreenAcorn = "ShieldBossTrait",
+        PomBlossom = "ChamberStackTrait",
+        SigilOfTheDead = "HadesShoutKeepsake",
     }
 }
 RCLib.CodeToName = {
+    Aspects = {},
+    Boons = {},
+    BoonSets = {},
     ChaosBlessings = {},
     ChaosCurses = {},
     Enemies = {},
     EnemySets = {},
+    Hammers = {},
+    Keepsakes = {},
 }
 
 RCLib.CodeToName.Aspects = ModUtil.Table.Transpose(RCLib.NameToCode.Aspects)
@@ -575,6 +607,7 @@ RCLib.CodeToName.ChaosCurses = ModUtil.Table.Transpose(RCLib.NameToCode.ChaosCur
 RCLib.CodeToName.Enemies = ModUtil.Table.Transpose(RCLib.NameToCode.Enemies)
 RCLib.CodeToName.EnemySets = ModUtil.Table.Transpose(RCLib.NameToCode.EnemySets)
 RCLib.CodeToName.Hammers = ModUtil.Table.Transpose(RCLib.NameToCode.Hammers)
+RCLib.CodeToName.Keepsakes = ModUtil.Table.Transpose(RCLib.NameToCode.Keepsakes)
 
 function RCLib.EncodeAspect(name)
     return RCLib.NameToCode.Aspects[name]
@@ -638,4 +671,12 @@ end
 
 function RCLib.DecodeHammer(name)
     return RCLib.CodeToName.Hammers[name]
+end
+
+function RCLib.EncodeKeepsake(name)
+    return RCLib.NameToCode.Keepsakes[name]
+end
+
+function RCLib.DecodeKeepsake(name)
+    return RCLib.CodeToName.Keepsakes[name]
 end
