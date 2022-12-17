@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("CodexTechPrevention")
+ModUtil.Mod.Register("CodexTechPrevention")
 
 local config = {
     ModName = "Codex Tech Prevention",
@@ -9,7 +9,7 @@ CodexTechPrevention.config = config
 
 -- Scripts/CodexScripts.lua : 1056
 -- Prevents the use of CodexTech by preventing the codex opening while the timer is running in a run
-ModUtil.WrapBaseFunction("CanOpenCodex", function ( baseFunc )
+ModUtil.Path.Wrap("CanOpenCodex", function ( baseFunc )
     if CodexTechPrevention.config.Enabled then
         if not CurrentRun.Hero.IsDead then
             timerRunningAndOutOfCombat = not HasTimerBlock( CurrentRun ) and not IsCombatEncounterActive ( CurrentRun )
