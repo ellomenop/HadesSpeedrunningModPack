@@ -34,3 +34,13 @@ ModUtil.Path.Wrap( "IsEnemyWeaponEligible", function( baseFunc, enemy, weaponNam
     end
     return baseFunc( enemy, weaponName )
 end, DarknessDenied)
+
+ModUtil.Path.Wrap( "IsEnemyWeaponEligible", function( baseFunc, enemy, weaponName )
+    if DarknessDenied.config.RemoveDarkness and weaponName == "HadesInvisibility" then
+        return false
+    elseif DarknessDenied.config.RemoveInstadarkness and weaponName == "HadesInvisibility" and DarknessDenied.BlockInstadarknessFlag then
+        DarknessDenied.BlockInstadarknessFlag = false -- We only need to block Instadarkness once; this flag will be set back to true next time he phases
+        return false
+    end
+    return baseFunc( enemy, weaponName )
+end, DarknessDenied)
