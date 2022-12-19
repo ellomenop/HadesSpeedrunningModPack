@@ -120,11 +120,15 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function(baseFunc, lootData, args)
 	local AppearanceNum = 1
 	local OlympiansSeen = 0
 	local TryEpicForce = false
+	local isEpicForceValid = true
 	
+	if CurrentRun.LootTypeHistory[upgradeName] ~= nil then
+		AppearanceNum = CurrentRun.LootTypeHistory[upgradeName]
+	end
 	if lootData.Name == "HermesUpgrade" and not BoonControl.config.AllowHermesControl then
 		return baseFunc(lootData, args)
 	end
-	if upgradeName == "WeaponUpgrade" and not BoonControl.config.AllowHammerControl then
+	if upgradeName == "WeaponUpgrade" and BoonControl.config.AllowedHammerControl < AppearanceNum then
 		return baseFunc(lootData, args)
 	end
 
@@ -132,23 +136,27 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function(baseFunc, lootData, args)
 		TryEpicForce = true
 	elseif lootData.GodLoot and BoonControl.config.FirstBoonEpicOnPride and GameState.MetaUpgradesSelected[11] == "EpicBoonDropMetaUpgrade" and not BoonControl.EpicGivenFlag then
 		TryEpicForce = true
-	elseif lootData.OverriddenRarityChances then
+	end
+	if BoonControl.EpicGivenFlag and lootData.OverriddenRarityChances then
 		lootData.RarityChances = lootData.OverriddenRarityChances -- Stores the base rarity table; this is restored upon reroll
 	end
-	
 	if TryEpicForce then
 		for god, seen in pairs(CurrentRun.LootTypeHistory) do
-			if Contains(BoonControl.OlympianBoonSets, god) then
-				OlympiansSeen = OlympiansSeen + seen
+			if BoonControl.OlympianBoonSets[god] then
+				OlympiansSeen = OlympiansSeen + 1
 			end
 			if math.min(1,OlympiansSeen) > 1 then
-				return -- If we've already interacted with an Olympian so far, this isn't our first boon and doesn't need to be epic- TODO possibly simplify this
+				isEpicForceValid = false -- If we've already interacted with an Olympian so far, this isn't our first boon and doesn't need to be epic.
 			end
 		end
-		lootData.OverriddenRarityChances = lootData.RarityChances
-		lootData.RarityChances = BoonControl.FirstBoonRarityOverride
+		if isEpicForceValid then
+			lootData.OverriddenRarityChances = lootData.RarityChances
+			lootData.RarityChances = BoonControl.FirstBoonRarityOverride
+		elseif lootData.OverriddenRarityChances then
+			lootData.RarityChances = lootData.OverriddenRarityChances
+		end
 	end
-	
+
 	if Contains(BoonControl.OlympianBoonSets, lootData.Name) and not BoonControl.config.AllowOlympianControl then
 		return baseFunc(lootData, args)
 	end
@@ -165,10 +173,6 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function(baseFunc, lootData, args)
 
 	if PresetData == nil then
 		return baseFunc(lootData, args)
-	end
-
-	if CurrentRun.LootTypeHistory[upgradeName] ~= nil then
-		AppearanceNum = CurrentRun.LootTypeHistory[upgradeName]
 	end
 	if PresetData.ForceOnAppearanceNum ~= nil and PresetData.ForceOnAppearanceNum[AppearanceNum] ~= nil then
 		ForcedBoons = PresetData.ForceOnAppearanceNum[AppearanceNum] -- Prioritise per-appearance forces over the default, TODO more conditions?
@@ -204,7 +208,7 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function(baseFunc, lootData, args)
 end, RunStartControl)
 
 ModUtil.Path.Wrap("HandleUpgradeChoiceSelection", function ( baseFunc, screen, button )
-    if config.Enabled and not BoonControl.EpicGivenFlag and #GetAllUpgradeableGodTraits() == 0 then
+    if BoonControl.config.Enabled and not BoonControl.EpicGivenFlag and #GetAllUpgradeableGodTraits() == 0 then
         if button.Data.God ~= nil then
 			BoonControl.EpicGivenFlag = true -- Upon selecting any boon, set the flag to true
 		end

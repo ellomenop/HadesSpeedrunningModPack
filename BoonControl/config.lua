@@ -2,7 +2,7 @@ local config = {
     Enabled = true,
     AllowOlympianControl = false,
     AllowHermesControl = true,
-	AllowHammerControl = true,
+	AllowedHammerControl = 2, -- If 0, don't force hammer, 1, only force first hammer, 2, force both
 	AllowRarityForce = false, -- If false, ForcedRarity will not be applied
 	AllowOverrides = false, -- If false, boons cannot be forced to appear if ineligible
 
@@ -240,14 +240,14 @@ BoonControl.BoonPresets = {
 		Hermes = {
 			ForceOnAppearanceNum = {
 				{
-					{Name = "HyperSprint",},
-					{Name = "RushDelivery",},
-					{Name = "GreatestReflex",},
+					{Name = "HyperSprint", ForcedRarity = "Epic"},
+					{Name = "RushDelivery", ForcedRarity = "Epic"},
+					{Name = "GreatestReflex", ForcedRarity = "Epic"},
 				},
 				{
-					{Name = "HyperSprint",},
-					{Name = "RushDelivery",},
-					{Name = "GreatestReflex",},
+					{Name = "HyperSprint", ForcedRarity = "Epic"},
+					{Name = "RushDelivery", ForcedRarity = "Epic"},
+					{Name = "GreatestReflex", ForcedRarity = "Epic"},
 				},
 				{}
 			},
@@ -257,18 +257,18 @@ BoonControl.BoonPresets = {
 		Hermes = {
 			ForceOnAppearanceNum = {
 				{
-					{Name = "HyperSprint",},
-					{Name = "RushDelivery",},
-					{Name = "QuickReload",},
-					{Name = "AutoReload",},
-					{Name = "GreatestReflex",},
+					{Name = "HyperSprint", ForcedRarity = "Epic"},
+					{Name = "RushDelivery", ForcedRarity = "Epic"},
+					{Name = "QuickReload", ForcedRarity = "Epic"},
+					{Name = "AutoReload", ForcedRarity = "Epic"},
+					{Name = "GreatestReflex", ForcedRarity = "Epic"},
 				},
 				{
-					{Name = "HyperSprint",},
-					{Name = "RushDelivery",},
-					{Name = "QuickReload",},
-					{Name = "AutoReload",},
-					{Name = "GreatestReflex",},
+					{Name = "HyperSprint", ForcedRarity = "Epic"},
+					{Name = "RushDelivery", ForcedRarity = "Epic"},
+					{Name = "QuickReload", ForcedRarity = "Epic"},
+					{Name = "AutoReload", ForcedRarity = "Epic"},
+					{Name = "GreatestReflex", ForcedRarity = "Epic"},
 				},
 				{}
 			},
