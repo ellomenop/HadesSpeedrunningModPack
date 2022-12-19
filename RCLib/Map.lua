@@ -585,6 +585,42 @@ RCLib.NameToCode = {
         EvergreenAcorn = "ShieldBossTrait",
         PomBlossom = "ChamberStackTrait",
         SigilOfTheDead = "HadesShoutKeepsake",
+    },
+    WellItems = {
+        -- Uses in-game names for well items.
+        -- Several well items are unused; these are not currently included. Patroclus' items, however, are- they will also work correctly when placed in wells.
+        LifeEssence = "HealDropRange",
+        PriceOfMidas = "DamageSelfDrop",
+        KissOfStyx = "LastStandDrop",
+        KissOfStyxPremium = "BuffExtraChance", -- exclusive to Patroclus
+        TouchOfStyx = "TemporaryLastStandHealTrait",
+        TouchOfStyxDark = "UpgradedTemporaryLastStandHealTrait", -- exclusive to Patroclus
+        HydraLite = "TemporaryDoorHealTrait",
+        HydraLiteGold = "BuffHealing", -- exclusive to Patroclus
+        CentaurSoul = "EmptyMaxHealthDrop",
+        EyeOfLamia = "TemporaryWeaponLifeOnKillTrait",
+
+        CyclopsJerky = "TemporaryImprovedWeaponTrait",
+        CyclopsJerkySelect = "TemporaryImprovedWeaponTrait_Patroclus", -- exclusive to Patroclus
+        ChimaeraJerky = "TemporaryImprovedSecondaryTrait",
+        BraidOfAtlas = "TemporaryImprovedRangedTrait",
+        PrometheusStone = "TemporaryMoreAmmoTrait",
+        NemesisCrest = "TemporaryBackstabTrait",
+        ErisBangle = "TemporaryAlphaStrikeTrait",
+        NailOfTalos = "TemporaryArmorDamageTrait",
+        IgnitedIchor = "TemporaryMoveSpeedTrait",
+        StygianShard = "TemporaryImprovedTrapDamageTrait",
+        AetherNet = "TemporaryPreloadSuperGenerationTrait",
+        FlameWheelsRelease = "TemporaryBlockExplodingChariotsTrait",
+        YarnOfAriadne = "TemporaryBoonRarityTrait",
+        LightOfIxion = "TemporaryForcedSecretDoorTrait",
+        TroveTracker = "TemporaryForcedChallengeSwitchTrait",
+        SkeletalLure = "TemporaryForcedFishingPointTrait",
+
+        NightSpindle = "KeepsakeChargeDrop",
+        FatefulTwist = "RandomStoreItem",
+        TingeOfErebus = "MetaDropRange",
+        GaeasTreasure = "GemDropRange",
     }
 }
 RCLib.CodeToName = {
@@ -608,6 +644,7 @@ RCLib.CodeToName.Enemies = ModUtil.Table.Transpose(RCLib.NameToCode.Enemies)
 RCLib.CodeToName.EnemySets = ModUtil.Table.Transpose(RCLib.NameToCode.EnemySets)
 RCLib.CodeToName.Hammers = ModUtil.Table.Transpose(RCLib.NameToCode.Hammers)
 RCLib.CodeToName.Keepsakes = ModUtil.Table.Transpose(RCLib.NameToCode.Keepsakes)
+RCLib.CodeToName.WellItems = ModUtil.Table.Transpose(RCLib.NameToCode.WellItems)
 
 function RCLib.EncodeAspect(name)
     return RCLib.NameToCode.Aspects[name]
@@ -679,4 +716,12 @@ end
 
 function RCLib.DecodeKeepsake(name)
     return RCLib.CodeToName.Keepsakes[name]
+end
+
+function RCLib.EncodeWellItem(name)
+    return RCLib.NameToCode.WellItems[name]
+end
+
+function RCLib.DecodeWellItem(name)
+    return RCLib.CodeToName.WellItems[name]
 end

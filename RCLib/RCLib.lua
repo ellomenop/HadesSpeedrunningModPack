@@ -79,6 +79,20 @@ function RCLib.PopulateMinLength(targetTable, inputTable, minLength) -- Populate
     end
 end
 
+function RCLib.BuildList( sourceList, inheritList, inheritBool, lookupTable )
+    local eligible = {}
+    if sourceList ~= nil then
+        if inheritBool then
+            eligible = RCLib.RemoveIneligibleStrings( sourceList, inheritList, lookupTable )
+        else
+            eligible = RCLib.GetEligible( sourceList, lookupTable )
+        end
+    else
+        eligible = inheritList
+    end
+    return eligible
+end
+
 function RCLib.GetAspectName()
     for aspect, name in pairs(RCLib.CodeToName.Aspects) do
 		if HeroHasTrait(aspect) then
