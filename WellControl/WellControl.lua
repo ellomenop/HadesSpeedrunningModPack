@@ -166,19 +166,20 @@ ModUtil.Path.Wrap("StartNewRun", function ( baseFunc, currentRun )
 end, WellControl)
 
 ModUtil.Path.Context.Wrap("FillInShopOptions", function ( )
-    ModUtil.Path.Wrap( "GetRandomValueFromWeightedList", function ( baseFunc, weightedList )
-        if baseFunc(weightedList) ~= nil then
-            return baseFunc(weightedList)
+    ModUtil.Path.Wrap("GetRandomValueFromWeightedList", function ( baseFunc, weightedList )
+        local results = baseFunc(weightedList)
+        if results ~= nil then
+            return results
         end
 
         DebugPrint({Text = "No options in weighted list, rebuilding with excluded options..."})
         -- Handling for if not enough eligible healing items are in preset. Can result in illegal offerings but prevents crashes
-        local locals = ModUtil.Locals.Stacked( )
+        local locals = ModUtil.Locals.Stacked()
         local storeData = locals.storeData
-        local options = DeepCopyTable( storeData.HealingOffers.WeightedList )
+        local options = DeepCopyTable(storeData.HealingOffers.WeightedList)
         local newList = {}
 
-        for i, itemData in pairs( options ) do
+        for i, itemData in pairs(options) do
             newList[i] = itemData.Weight
         end
         return baseFunc(newList)
