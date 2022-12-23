@@ -106,32 +106,40 @@ function ModpackMenu.CheckBox( settingName, modConfigTable, modConfigOptionAsStr
     ModpackMenu__UpdateCheckBox(screen, screen.Components[settingName .. "CheckBox"])
 end
 
-function ModpackMenu.DropDown( settingName, itemLocationX, itemLocationY, config )
-    config = MergeTables( ModpackMenu.ActiveProfile, config or {} )
+function ModpackMenu.DropDown( settingName, modConfigTable, modConfigOptionAsString, settingOptions, formatting )
+    local config = MergeTables( ModpackMenu.ActiveProfile, formatting or {} )
+
+    local dropdownOptions = {
+        ["Default"] = {
+            event = function(dropdown) end,
+            Text = modConfigTable[modConfigOptionAsString],
+        }
+    }
+
+    for idx, option in pairs(settingOptions) do
+        table.insert(
+            dropdownOptions,
+            {
+                event = function(dropdown)
+                    modConfigTable[modConfigOptionAsString] = option
+                end,
+                Text = option
+            }
+        )
+    end
+
     ErumiUILib.Dropdown.CreateDropdown(
         screen,
         {
             Name = settingName .. "DropDown",
-            Group = "SackMinGroup",
-            Scale = {
-                X = .25,
-                Y = .5,
-            },
-            Padding = {
-                X = 0,
-                Y = 2,
-            },
-            X = itemLocationX + config.ItemSpacingX,
-            Y = itemLocationY,
+            Group = settingName .. "Group",
+            Scale = config.Scale,
+            X = config.ItemLocationX + config.ItemSpacingX,
+            Y = config.ItemLocationY,
             GeneralFontSize = config.FontSize,
             Font = config.Font,
-            Items = {
-                ["Default"] = {Text = SatyrSackControl.config.MinSack, event = function() end},
-                minSack2,
-                minSack3,
-                minSack4,
-                minSack5,
-            },
+            Items = dropdownOptions,
         }
     )
+
 end
