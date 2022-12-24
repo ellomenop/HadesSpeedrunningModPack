@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("LootChoiceExt")
+ModUtil.Mod.Register("LootChoiceExt")
 
 local config = {
 	MinExtraLootChoices = 0,
@@ -19,16 +19,16 @@ OnAnyLoad{ function()
 	LootChoiceExt.LastLootChoices = LootChoiceExt.Choices + RandomInt( config.MinExtraLootChoices, config.MaxExtraLootChoices )
 end}
 
-ModUtil.BaseOverride("GetTotalLootChoices", function()
+ModUtil.Path.Override("GetTotalLootChoices", function()
 	return LootChoiceExt.LastLootChoices
 end, LootChoiceExt)
 
-ModUtil.BaseOverride("CalcNumLootChoices", function()
+ModUtil.Path.Override("CalcNumLootChoices", function()
 	local numChoices = LootChoiceExt.LastLootChoices - GetNumMetaUpgrades("ReducedLootChoicesShrineUpgrade")
 	return numChoices
 end, LootChoiceExt)
 
-ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData, reroll )
+ModUtil.Path.Override("CreateBoonLootButtons", function( lootData, reroll )
 
 	-- BASE CODE ... (From Live Steam version v1.37996, pulled on 2021.04.27)
 	local components = ScreenAnchors.ChoiceScreen.Components
@@ -528,7 +528,7 @@ ModUtil.BaseOverride("CreateBoonLootButtons", function( lootData, reroll )
 
 end, LootChoiceExt)
 
-ModUtil.BaseOverride("DestroyBoonLootButtons", function( lootData )
+ModUtil.Path.Override("DestroyBoonLootButtons", function( lootData )
 	local components = ScreenAnchors.ChoiceScreen.Components
 	local toDestroy = {}
 	for index = 1, GetTotalLootChoices() do

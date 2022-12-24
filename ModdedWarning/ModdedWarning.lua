@@ -1,4 +1,4 @@
-ModUtil.RegisterMod("ModdedWarning")
+ModUtil.Mod.Register("ModdedWarning")
 
 local config = {
   WarningMessage = "MODDED GAME",

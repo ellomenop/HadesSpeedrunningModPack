@@ -168,6 +168,38 @@ function HSMConfigMenu.CreateQolMenu(screen)
   itemLocationY = itemLocationY + itemSpacingY
 
   -----------------------------
+  -- Quick Restart on Death
+  -----------------------------
+
+  screen.Components["QuickDeathTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["QuickDeathTextBox"].Id,
+    Text = "Enable Quick Death:",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+  screen.Components["QuickDeathCheckBox"] = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX,
+    Y = itemLocationY,
+    Group = "CombatMenu"
+  })
+  screen.Components["QuickDeathCheckBox"].Config = "QuickRestart.config.QuickDeathEnabled"
+  screen.Components["QuickDeathCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["QuickDeathCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
+
+  -----------------------------
   -- Charon Sack Control
   -----------------------------
 

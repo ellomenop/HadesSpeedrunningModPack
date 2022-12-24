@@ -237,7 +237,7 @@ end
 
 function GetConfigBits(parentTable, config)
   for i, val in ipairs(config.Values) do
-    local currentConfigVal = ModUtil.SafeGet(parentTable, ModUtil.PathToIndexArray(config.Key))
+    local currentConfigVal = ModUtil.IndexArray.Get(parentTable, ModUtil.Path.IndexArray(config.Key))
     if currentConfigVal == nil then
       currentConfigVal = config.Default -- One liner will not work for boolean values as it will be interpreted as a logical or
     end
@@ -256,7 +256,7 @@ function SetConfigBits(parentTable, config, configBits)
     setValue = config.Default -- One liner will not work for boolean values as it will be interpreted as a logical or
   end
 
-  ModUtil.SafeSet(parentTable, ModUtil.PathToIndexArray(config.Key), setValue)
+  ModUtil.IndexArray.Set(parentTable, ModUtil.Path.IndexArray(config.Key), setValue)
 end
 
 function CalculateHash(settings, parentTable)
