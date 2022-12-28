@@ -5,6 +5,7 @@ local config = {
 	AllowedHammerControl = 2, -- If 0, don't force hammer, 1, only force first hammer, 2, force both
 	AllowRarityForce = false, -- If false, ForcedRarity will not be applied
 	AllowOverrides = false, -- If false, boons cannot be forced to appear if ineligible
+	ForceOnReroll = false, -- If false, no boons are forced upon a reroll
 
 	FirstBoonAlwaysEpic = false,
 	FirstBoonEpicOnPride = true,

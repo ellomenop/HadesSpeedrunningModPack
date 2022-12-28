@@ -98,38 +98,57 @@ function BoonControl.RollRarityForBoon(boon, rarityChances, lookupTable)
 	return chosenRarity
 end
 
-ModUtil.Path.Wrap("StartNewRun", function ( baseFunc, currentRun )
+ModUtil.Path.Wrap( "StartNewRun", function ( baseFunc, currentRun )
 	BoonControl.EpicGivenFlag = false
     return baseFunc(currentRun)
 end, BoonControl)
 
-ModUtil.Path.Wrap( "SetTraitsOnLoot", function(baseFunc, lootData, args)
+ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	if not BoonControl.config.Enabled then
-		return baseFunc(lootData, args)
+		return baseFunc( lootData, args )
 	end
 
 	local upgradeName = lootData.Name
 	if upgradeName == "TrialUpgrade" or upgradeName == "StackUpgrade" then -- Chaos and poms respectively- both have different offering mechanics not accounted for here
-		return baseFunc(lootData, args)
+		return baseFunc( lootData, args )
 	end
 
+	args = args or {}
 	local upgradeChoiceData = LootData[upgradeName]
+	local run = CurrentRun
 	local PresetData = {}
 	local ForcedBoons = nil
 	local BoonOptions = {}
-	local AppearanceNum = 1
 	local OlympiansSeen = 0
 	local TryEpicForce = false
 	local isEpicForceValid = true
-	
-	if CurrentRun.LootTypeHistory[upgradeName] ~= nil then
-		AppearanceNum = CurrentRun.LootTypeHistory[upgradeName]
+
+	-- Boons are usually rolled twice due to a function UpgradeHarvestBoon clearing them;
+	-- We need to know whether they will be to accurately count appearances of a god.
+	-- Thanks Para!
+	local AppearanceNum = run.LootTypeHistory[upgradeName] or 0
+	local rewardClearedInUpgradeHarvestBoon = true
+	if run.CurrentRoom.Name == "RoomOpening" or run.CurrentRoom.Encounter == nil or run.CurrentRoom.Encounter.EncounterType == "NonCombat" then
+		rewardClearedInUpgradeHarvestBoon = false
+	else
+		for i, trait in pairs( run.Hero.Traits ) do
+		  	if trait.HarvestBoons then
+				local traitCurrentRoom = (trait.CurrentRoom or -1) + 1
+				if trait.RoomsPerUpgrade and traitCurrentRoom < trait.RoomsPerUpgrade then
+					rewardClearedInUpgradeHarvestBoon = false
+				end
+			end
+		end
 	end
+	if not rewardClearedInUpgradeHarvestBoon and not args.ExclusionNames then -- ExclusionNames exists on rerolls; Appearances are already counted correctly on reroll so no need
+		AppearanceNum = AppearanceNum + 1
+	end
+
 	if lootData.Name == "HermesUpgrade" and not BoonControl.config.AllowHermesControl then
-		return baseFunc(lootData, args)
+		return baseFunc( lootData, args )
 	end
 	if upgradeName == "WeaponUpgrade" and BoonControl.config.AllowedHammerControl < AppearanceNum then
-		return baseFunc(lootData, args)
+		return baseFunc( lootData, args )
 	end
 
 	if lootData.GodLoot and BoonControl.config.FirstBoonAlwaysEpic and not BoonControl.EpicGivenFlag then
@@ -141,7 +160,7 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function(baseFunc, lootData, args)
 		lootData.RarityChances = lootData.OverriddenRarityChances -- Stores the base rarity table; this is restored upon reroll
 	end
 	if TryEpicForce then
-		for god, seen in pairs(CurrentRun.LootTypeHistory) do
+		for god, seen in pairs(run.LootTypeHistory) do
 			if BoonControl.OlympianBoonSets[god] then
 				OlympiansSeen = OlympiansSeen + 1
 			end
@@ -157,8 +176,11 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function(baseFunc, lootData, args)
 		end
 	end
 
-	if Contains(BoonControl.OlympianBoonSets, lootData.Name) and not BoonControl.config.AllowOlympianControl then
-		return baseFunc(lootData, args)
+	if args.ExclusionNames and not BoonControl.config.ForceOnReroll then
+		return baseFunc( lootData, args )
+	end
+	if Contains( BoonControl.OlympianBoonSets, lootData.Name ) and not BoonControl.config.AllowOlympianControl then
+		return baseFunc( lootData, args )
 	end
 
 	for aspect, data in pairs(BoonControl.config.AspectSettings) do
@@ -198,16 +220,16 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function(baseFunc, lootData, args)
 		BoonOptions = BoonControl.CreateTraitList(ForcedBoons, EligibleList, lootData.RarityChances, RCLib.NameToCode.Boons)
 	end
 	
-	if IsEmpty( BoonOptions ) and BoonControl.config.UseSpareWealth then -- Failsafe; can be triggered by errors in presets but also by no forced boons being eligible
-		table.insert(BoonOptions, { ItemName = "FallbackMoneyDrop", Type = "Consumable", Rarity = "Common" })
-	elseif IsEmpty( BoonOptions ) then
-		return baseFunc(lootData, args)
+	if IsEmpty(BoonOptions) and BoonControl.config.UseSpareWealth then -- Failsafe; can be triggered by errors in presets but also by no forced boons being eligible
+		table.insert( BoonOptions, { ItemName = "FallbackMoneyDrop", Type = "Consumable", Rarity = "Common" } )
+	elseif IsEmpty(BoonOptions) then
+		return baseFunc( lootData, args )
 	end
 
 	lootData.UpgradeOptions = BoonOptions
 end, RunStartControl)
 
-ModUtil.Path.Wrap("HandleUpgradeChoiceSelection", function ( baseFunc, screen, button )
+ModUtil.Path.Wrap( "HandleUpgradeChoiceSelection", function ( baseFunc, screen, button )
     if BoonControl.config.Enabled and not BoonControl.EpicGivenFlag and #GetAllUpgradeableGodTraits() == 0 then
         if button.Data.God ~= nil then
 			BoonControl.EpicGivenFlag = true -- Upon selecting any boon, set the flag to true
@@ -217,7 +239,7 @@ ModUtil.Path.Wrap("HandleUpgradeChoiceSelection", function ( baseFunc, screen, b
     baseFunc(screen, button)
 end, BoonControl)
 
-ModUtil.WrapBaseFunction("DestroyBoonLootButtons", function ( baseFunc, lootData )
+ModUtil.Path.Wrap( "DestroyBoonLootButtons", function ( baseFunc, lootData )
     if BoonControl.config.FirstBoonAlwaysEpic or BoonControl.config.FirstBoonEpicOnPride and lootData.GodLoot and not BoonControl.EpicGivenFlag then
         BoonControl.EpicGivenFlag = true -- Upon rerolling any boon, set the flag to true
     end
