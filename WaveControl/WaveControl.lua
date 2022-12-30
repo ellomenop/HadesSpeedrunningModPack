@@ -6,7 +6,7 @@
 ]]
 ModUtil.Mod.Register("WaveControl")
 
-local config = {WaveSettings = "NoTart3Wave"}
+local config = {WaveSettings = "Vanilla"}
 
 WaveControl.config = config
 
