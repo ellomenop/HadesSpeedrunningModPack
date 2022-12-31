@@ -72,7 +72,7 @@ local config = {
 		HadesSpear = {
 			HammerSetting = {
 				ForceOnAppearanceNum = {
-					{{Name = "ExplosiveLauncher"}},
+					{{Name = "ExplodingLauncher"}},
 					{{Name = "ChargedSkewer"}},
 				}
 			},
