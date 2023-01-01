@@ -45,6 +45,8 @@ ChaosControl.InheritVanilla = { -- Presets set to true will inherit the vanilla 
 }
 
 function ChaosControl.ReadPreset() -- Read current preset and create table of blessings and curses marked to eligible, including failsafe for presets with <3 traits
+    ChaosControl.EligibleBlessings = {}
+    ChaosControl.EligibleCurses = {}
     local Preset = {
         Blessings = {},
         Curses = {},
