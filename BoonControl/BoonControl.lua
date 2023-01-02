@@ -33,10 +33,11 @@ function BoonControl.CreateTraitList(forced, eligible, rarityTable, lookupTable)
 	for trait, _ in pairs( forced ) do
 		local currentTrait = forced[trait].Name
 		local isValid = false
+		local maxOptions = LootChoiceExt.Choices or GetTotalLootChoices()
 		if Contains(eligible, currentTrait) or ( BoonControl.config.AllowOverrides and forced[trait].OverridePrereqs ) then
 			isValid = true
 		end
-		if isValid and TableLength( traitOptions ) <= GetTotalLootChoices() then
+		if isValid and TableLength( traitOptions ) < maxOptions then
 			local rarityToUse = "Common" 
 			if forced[trait].ForcedRarity ~= nil and BoonControl.config.AllowRarityForce then
 				rarityToUse = forced[trait].ForcedRarity

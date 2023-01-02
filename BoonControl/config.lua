@@ -48,7 +48,7 @@ local config = {
 					{{Name = "PiercingWave"}},
 				}
 			},
-			BoonSetting = "FlatDamage"
+			BoonSetting = "AttackWeapon"
 		},
 		-- Spears
 		ZagreusSpear = {
@@ -130,7 +130,7 @@ local config = {
 					{{Name = "FlurryShot"}},
 				}
 			},
-			BoonSetting = "FlatDamage"
+			BoonSetting = "AttackWeapon"
 		},
 		HeraBow = {
 			HammerSetting = {
@@ -148,7 +148,7 @@ local config = {
 					{{Name = "RelentlessVolley"}},
 				}
 			},
-			BoonSetting = "FlatDamage"
+			BoonSetting = "Rail"
 		},
 		RamaBow = {
 			HammerSetting = {
@@ -202,7 +202,7 @@ local config = {
 					{{Name = "ClusterBomb"}},
 				}
 			},
-			BoonSetting = "FlatDamage"
+			BoonSetting = "Rail"
 		},
 		HestiaRail = {
 			HammerSetting = {
@@ -211,7 +211,7 @@ local config = {
 					{{Name = "ClusterBomb"}},
 				}
 			},
-			BoonSetting = "FlatDamage"
+			BoonSetting = "Rail"
 		},
 		ErisRail = {
 			HammerSetting = {
@@ -220,7 +220,7 @@ local config = {
 					{{Name = "ClusterBomb"}},
 				}
 			},
-			BoonSetting = "FlatDamage"
+			BoonSetting = "Rail"
 		},
 		LuciferRail = {
 			HammerSetting = {
@@ -240,38 +240,90 @@ BoonControl.BoonPresets = {
 	FlatDamage = {
 		Hermes = {
 			ForceOnAppearanceNum = {
-				{
+				[3] = {
 					{Name = "HyperSprint", ForcedRarity = "Epic"},
 					{Name = "RushDelivery", ForcedRarity = "Epic"},
 					{Name = "GreatestReflex", ForcedRarity = "Epic"},
-				},
-				{
+					{Name = "GreaterHaste", ForcedRarity = "Epic"},
+					{Name = "QuickReload", ForcedRarity = "Epic"},
+					{Name = "AutoReload", ForcedRarity = "Epic"},
+				}
+			},
+			ForceDefault = {
+				{Name = "HyperSprint", ForcedRarity = "Epic"},
+				{Name = "RushDelivery", ForcedRarity = "Epic"},
+				{Name = "GreatestReflex", ForcedRarity = "Epic"},
+				{Name = "SideHustle", ForcedRarity = "Epic"},
+				{Name = "GreaterHaste", ForcedRarity = "Epic"},
+				{Name = "QuickReload", ForcedRarity = "Epic"},
+				{Name = "AutoReload", ForcedRarity = "Epic"},
+			},
+		}
+	},
+	Rail = {
+		Hermes = {
+			ForceOnAppearanceNum = {
+				[3] = {
 					{Name = "HyperSprint", ForcedRarity = "Epic"},
 					{Name = "RushDelivery", ForcedRarity = "Epic"},
 					{Name = "GreatestReflex", ForcedRarity = "Epic"},
+					{Name = "GreaterHaste", ForcedRarity = "Epic"},
+					{Name = "SwiftFlourish", ForcedRarity = "Epic"},
+					{Name = "QuickReload", ForcedRarity = "Epic"},
+					{Name = "AutoReload", ForcedRarity = "Epic"},
 				},
-				{}
+			},
+			ForceDefault = {
+				{Name = "HyperSprint", ForcedRarity = "Epic"},
+				{Name = "RushDelivery", ForcedRarity = "Epic"},
+				{Name = "GreatestReflex", ForcedRarity = "Epic"},
+				{Name = "SwiftFlourish", ForcedRarity = "Epic"},
+				{Name = "QuickReload", ForcedRarity = "Epic"},
+				{Name = "AutoReload", ForcedRarity = "Epic"},
+			},
+		}
+	},
+	AttackWeapon = {
+		Hermes = {
+			ForceOnAppearanceNum = {
+				[3] = {
+					{Name = "HyperSprint", ForcedRarity = "Epic"},
+					{Name = "RushDelivery", ForcedRarity = "Epic"},
+					{Name = "GreatestReflex", ForcedRarity = "Epic"},
+					{Name = "GreaterHaste", ForcedRarity = "Epic"},
+					{Name = "SwiftStrike", ForcedRarity = "Epic"},
+					{Name = "QuickReload", ForcedRarity = "Epic"},
+					{Name = "AutoReload", ForcedRarity = "Epic"},
+				},
+			},
+			ForceDefault = {
+				{Name = "HyperSprint", ForcedRarity = "Epic"},
+				{Name = "RushDelivery", ForcedRarity = "Epic"},
+				{Name = "GreatestReflex", ForcedRarity = "Epic"},
+				{Name = "SwiftStrike", ForcedRarity = "Epic"},
+				{Name = "QuickReload", ForcedRarity = "Epic"},
+				{Name = "AutoReload", ForcedRarity = "Epic"},
 			},
 		}
 	},
 	CastWeapon = {
 		Hermes = {
 			ForceOnAppearanceNum = {
-				{
+				[3] = {
 					{Name = "HyperSprint", ForcedRarity = "Epic"},
 					{Name = "RushDelivery", ForcedRarity = "Epic"},
 					{Name = "QuickReload", ForcedRarity = "Epic"},
 					{Name = "AutoReload", ForcedRarity = "Epic"},
+					{Name = "GreaterHaste", ForcedRarity = "Epic"},
 					{Name = "GreatestReflex", ForcedRarity = "Epic"},
-				},
-				{
-					{Name = "HyperSprint", ForcedRarity = "Epic"},
-					{Name = "RushDelivery", ForcedRarity = "Epic"},
-					{Name = "QuickReload", ForcedRarity = "Epic"},
-					{Name = "AutoReload", ForcedRarity = "Epic"},
-					{Name = "GreatestReflex", ForcedRarity = "Epic"},
-				},
-				{}
+				}
+			},
+			ForceDefault = {
+				{Name = "HyperSprint", ForcedRarity = "Epic"},
+				{Name = "RushDelivery", ForcedRarity = "Epic"},
+				{Name = "QuickReload", ForcedRarity = "Epic"},
+				{Name = "AutoReload", ForcedRarity = "Epic"},
+				{Name = "GreatestReflex", ForcedRarity = "Epic"},
 			},
 		}
 	}
