@@ -34,6 +34,7 @@ FreeRoomControl.IsFreeRoom = {
 
 function FreeRoomControl.CheckDoors( doors ) -- Check a table of offered doors, storing which are free/priority and returning how many free rooms are found
     local freeRoomsFound = 0
+    FreeRoomControl.FoundPriority = false
 
     for index, door in ipairs( doors ) do
         local name = door.Room.Name
@@ -42,9 +43,11 @@ function FreeRoomControl.CheckDoors( doors ) -- Check a table of offered doors, 
         doorData.IsPriority = FreeRoomControl.IsPriorityRoom[name] or false
 
         if doorData.IsFree then
+            DebugPrint({Text = name.." is free"})
             freeRoomsFound = freeRoomsFound + 1
         end
         if doorData.IsPriority then
+            DebugPrint({Text = name.." is priority"})
             FreeRoomControl.FoundPriority = true
         end
         FreeRoomControl.CurrentDoors[index] = doorData
@@ -57,14 +60,23 @@ function FreeRoomControl.ResolveConflicts( doors )
 
     for index, door in ipairs( doors ) do
         local name = door.Room.Name
+        local doorData = FreeRoomControl.CurrentDoors[index]
         local needsRerolling = true
-        if not FreeRoomControl.CurrentDoors[index].IsFree then
+        
+        local rewardsChosen = {}
+        for index, offeredDoor in pairs( OfferedExitDoors ) do
+            if offeredDoor.Room ~= nil then
+                table.insert( rewardsChosen, { RewardType = offeredDoor.Room.ChosenRewardType, ForceLootName = offeredDoor.Room.ForceLootName })
+            end
+        end
+
+        if not doorData.IsFree then
             needsRerolling = false
         end
-        if FreeRoomControl.CurrentDoors[index].IsPriority then
+        if doorData.IsPriority then
             needsRerolling = false
         end
-        if not FreeRoomControl.FoundPriority and not nonPriorityChosen then -- If there aren't any priority rooms to keep, we need to keep at least one non-priority free room
+        if doorData.IsFree and not FreeRoomControl.FoundPriority and not nonPriorityChosen then -- If there aren't any priority rooms to keep, we need to keep at least one non-priority free room
             nonPriorityChosen = true
             needsRerolling = false
         end
@@ -80,7 +92,7 @@ function FreeRoomControl.ResolveConflicts( doors )
             end
 
             local roomForDoorData = ChooseNextRoomData( CurrentRun, { BanFreeRooms = true } )
-            local roomForDoor = CreateRoom( roomForDoorData, { SkipChooseReward = not rollReward } )
+            local roomForDoor = CreateRoom( roomForDoorData, { SkipChooseReward = not rollReward, PreviouslyChosenRewards = rewardsChosen } )
             door.Room = roomForDoor
             door.Room.ChosenRewardType = storedReward or door.Room.ChosenRewardType
             
