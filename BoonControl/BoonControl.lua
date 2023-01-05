@@ -18,6 +18,8 @@ BoonControl.OlympianBoonSets = { -- For our purposes, Hermes is not an Olympian
 	"DemeterUpgrade",
 }
 
+BoonControl.GodAppearances = {}
+
 BoonControl.FirstBoonRarityOverride = {
     Rare = 0,
     Epic = 1.0,
@@ -104,18 +106,23 @@ ModUtil.Path.Wrap( "StartNewRun", function ( baseFunc, currentRun )
     return baseFunc(currentRun)
 end, BoonControl)
 
+
+ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
+	BoonControl.GodAppearances = ModUtil.Table.Copy(currentRun.LootTypeHistory)
+	-- LootTypeHistory is always accurate at the start and end of a room, but increments at an unpredictable time.
+	-- We need to replicate its functionality in a more consistent way
+	baseFunc( currentRun, currentRoom )
+end, BoonControl)
+
 ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
+	args = args or {}
 	if not BoonControl.config.Enabled then
 		return baseFunc( lootData, args )
 	end
 
 	local upgradeName = lootData.Name
-	if upgradeName == "TrialUpgrade" or upgradeName == "StackUpgrade" then -- Chaos and poms respectively- both have different offering mechanics not accounted for here
-		return baseFunc( lootData, args )
-	end
-
-	args = args or {}
 	local upgradeChoiceData = LootData[upgradeName]
+	local AppearanceNum = (BoonControl.GodAppearances[upgradeName] or 0) + 1
 	local run = CurrentRun
 	local PresetData = {}
 	local ForcedBoons = nil
@@ -124,27 +131,11 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	local TryEpicForce = false
 	local isEpicForceValid = true
 
-	-- Boons are usually rolled twice due to a function UpgradeHarvestBoon clearing them;
-	-- We need to know whether they will be to accurately count appearances of a god.
-	-- Thanks Para!
-	local AppearanceNum = run.LootTypeHistory[upgradeName] or 0
-	local rewardClearedInUpgradeHarvestBoon = true
-	if run.CurrentRoom.Name == "RoomOpening" or run.CurrentRoom.Encounter == nil or run.CurrentRoom.Encounter.EncounterType == "NonCombat" then
-		rewardClearedInUpgradeHarvestBoon = false
-	else
-		for i, trait in pairs( run.Hero.Traits ) do
-		  	if trait.HarvestBoons then
-				local traitCurrentRoom = (trait.CurrentRoom or -1) + 1
-				if trait.RoomsPerUpgrade and traitCurrentRoom < trait.RoomsPerUpgrade then
-					rewardClearedInUpgradeHarvestBoon = false
-				end
-			end
-		end
-	end
-	if not rewardClearedInUpgradeHarvestBoon and not args.ExclusionNames then -- ExclusionNames exists on rerolls; Appearances are already counted correctly on reroll so no need
-		AppearanceNum = AppearanceNum + 1
-	end
+	DebugPrint({Text = "This is appearance "..AppearanceNum.." of "..upgradeName})
 
+	if upgradeName == "TrialUpgrade" or upgradeName == "StackUpgrade" then -- Chaos and poms respectively- both have different offering mechanics not accounted for here
+		return baseFunc( lootData, args )
+	end
 	if lootData.Name == "HermesUpgrade" and not BoonControl.config.AllowHermesControl then
 		return baseFunc( lootData, args )
 	end
@@ -228,7 +219,7 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	end
 
 	lootData.UpgradeOptions = BoonOptions
-end, RunStartControl)
+end, BoonControl)
 
 ModUtil.Path.Wrap( "HandleUpgradeChoiceSelection", function ( baseFunc, screen, button )
     if BoonControl.config.Enabled and not BoonControl.EpicGivenFlag and #GetAllUpgradeableGodTraits() == 0 then
@@ -237,6 +228,10 @@ ModUtil.Path.Wrap( "HandleUpgradeChoiceSelection", function ( baseFunc, screen, 
 		end
     end
 
+	if not BoonControl.GodAppearances[button.UpgradeName] then
+		BoonControl.GodAppearances[button.UpgradeName] = 0
+	end
+	BoonControl.GodAppearances[button.UpgradeName] = BoonControl.GodAppearances[button.UpgradeName] + 1
     baseFunc(screen, button)
 end, BoonControl)
 
