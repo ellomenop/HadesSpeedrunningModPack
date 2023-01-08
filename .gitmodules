@@ -16,3 +16,6 @@
 [submodule "hades-RunHistoryWipe"]
 	path = hades-RunHistoryWipe
 	url = https://github.com/cgullsHadesMods/hades-RunHistoryWipe
+[submodule "SplitDisplay"]
+	path = SplitDisplay
+	url = https://github.com/cgullsHadesMods/hades-SplitDisplay.git

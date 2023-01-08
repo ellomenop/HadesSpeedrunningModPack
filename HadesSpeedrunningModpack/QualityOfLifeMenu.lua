@@ -317,7 +317,64 @@ function HSMConfigMenu.CreateQolMenu(screen)
   })
   screen.Components["RtaTimerResetButton"].OnPressedFunctionName = "RtaTimer__ResetRtaTimer"
   itemLocationY = itemLocationY + itemSpacingY
+  -----------------------------
+  -- Victory Screen Split Display Toggle
+  -----------------------------
+  screen.Components["SplitDisplayTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["SplitDisplayTextBox"].Id,
+    Text = "Splits on Victory Screen: ",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+  screen.Components["SplitDisplayCheckBox"] = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX,
+    Y = itemLocationY,
+    Group = "CombatMenu"
+  })
+  screen.Components["SplitDisplayCheckBox"].Config = "SplitDisplay.config.Enabled"
+  screen.Components["SplitDisplayCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["SplitDisplayCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
 
+  screen.Components["SplitDisplaySegmentTimeTextBox"] = CreateScreenComponent({
+    Name = "BlankObstacle",
+    Scale = 1,
+    X = itemLocationX,
+    Y = itemLocationY,
+    Group = "Combat_Menu" })
+  CreateTextBox({
+    Id = screen.Components["SplitDisplaySegmentTimeTextBox"].Id,
+    Text = " - Segment Length instead of Split Time: ",
+    Color = Color.BoonPatchCommon,
+    FontSize = 16,
+    OffsetX = 0, OffsetY = 0,
+    Font = "AlegrayaSansSCRegular",
+    ShadowBlur = 0, ShadowColor = { 0, 0, 0, 1 }, ShadowOffset = { 0,  2 },
+    Justification = "Left"
+  })
+  screen.Components["SplitDisplaySegmentTimeCheckBox"] = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = itemLocationX + itemSpacingX,
+    Y = itemLocationY,
+    Group = "CombatMenu"
+  })
+  screen.Components["SplitDisplaySegmentTimeCheckBox"].Config = "SplitDisplay.config.ShowSegments"
+  screen.Components["SplitDisplaySegmentTimeCheckBox"].OnPressedFunctionName = "HSMConfigMenu__ToggleGenericConfigCheckBox"
+  HSMConfigMenu__UpdateGenericConfigCheckbox(screen, screen.Components["SplitDisplaySegmentTimeCheckBox"])
+  itemLocationY = itemLocationY + itemSpacingY
   -----------------------------
   -- Hell Mode Toggle
   -----------------------------
