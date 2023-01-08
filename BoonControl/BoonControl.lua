@@ -236,7 +236,7 @@ ModUtil.Path.Wrap( "HandleUpgradeChoiceSelection", function ( baseFunc, screen, 
 end, BoonControl)
 
 ModUtil.Path.Wrap( "DestroyBoonLootButtons", function ( baseFunc, lootData )
-    if BoonControl.config.FirstBoonAlwaysEpic or BoonControl.config.FirstBoonEpicOnPride and lootData.GodLoot and not BoonControl.EpicGivenFlag then
+    if BoonControl.config.Enabled and BoonControl.OlympianBoonSets[lootData.Name] and not BoonControl.EpicGivenFlag then
         BoonControl.EpicGivenFlag = true -- Upon rerolling any boon, set the flag to true
     end
 	if lootData.OverriddenRarityChances then
