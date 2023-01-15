@@ -62,7 +62,7 @@ function QuickRestart.ResetRun(triggerArgs)
     Kill( CurrentRun.Hero, triggerArgs )
 end
 
-OnControlPressed{ "Assist",
+OnControlPressed{ "Assist Use Shout Reload",
     function(triggerArgs)
         if config.Enabled then
             if IsControlDown({ Name = "Assist" })
@@ -72,43 +72,8 @@ OnControlPressed{ "Assist",
                 QuickRestart.ResetRun(triggerArgs)
             end
         end
-end}
-
-OnControlPressed{ "Use",
-    function(triggerArgs)
-        if config.Enabled then
-            if IsControlDown({ Name = "Assist" })
-                    and IsControlDown({ Name = "Use" })
-                    and IsControlDown({ Name = "Shout" })
-                    and IsControlDown({ Name = "Reload" }) then
-                QuickRestart.ResetRun(triggerArgs)
-            end
-        end
-end}
-
-OnControlPressed{ "Shout",
-    function(triggerArgs)
-        if config.Enabled then
-            if IsControlDown({ Name = "Assist" })
-                    and IsControlDown({ Name = "Use" })
-                    and IsControlDown({ Name = "Shout" })
-                    and IsControlDown({ Name = "Reload" }) then
-                QuickRestart.ResetRun(triggerArgs)
-            end
-        end
-end}
-
-OnControlPressed{ "Reload",
-    function(triggerArgs)
-        if config.Enabled then
-            if IsControlDown({ Name = "Assist" })
-                    and IsControlDown({ Name = "Use" })
-                    and IsControlDown({ Name = "Shout" })
-                    and IsControlDown({ Name = "Reload" }) then
-                QuickRestart.ResetRun(triggerArgs)
-            end
-        end
-end}
+    end
+}
 
 OnAnyLoad{ "RoomPreRun",
     function ( triggerArgs )
@@ -145,12 +110,15 @@ ModUtil.Path.Context.Wrap("HandleDeath", function ()
             if QuickRestart.KeepStartingKeepsake and GameState.QuickRestartStartingKeepsake then
               GameState.LastAwardTrait = GameState.QuickRestartStartingKeepsake
             end
-          end
+        end
 
-          -- Set UsedQuickRestart Flag so Keepsake and InputBlock are appropriately set.
-          if quickDeathApplicable then
-              QuickRestart.UsedQuickRestart = true
-          end
+        -- Set UsedQuickRestart Flag so Keepsake and InputBlock are appropriately set.
+        local quickDeathApplicable = config.QuickDeathEnabled and not currentRun.Cleared
+        if quickDeathApplicable then
+            QuickRestart.UsedQuickRestart = true
+        end
+
+        baseFunc(argTable)
     end, QuickRestart)
 end, QuickRestart)
 
