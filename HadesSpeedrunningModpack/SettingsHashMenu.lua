@@ -48,7 +48,8 @@ HSMConfigMenu.NonRulesetSettings = {
 
   {Key = "RtaTimer.config.DisplayTimer", Values = {false, true}, Default = false},
   {Key = "RtaTimer.config.MultiWeapon", Values = {false, true}, Default = false},
-
+  {Key = "SplitDisplay.config.Enabled", Values = {false, true}, Default = false},
+  {Key = "SplitDisplay.config.ShowSegments", Values = {false, true}, Default = false},
   {Key = "EmoteMod.config.Enabled", Values = {false, true}, Default = false},
 }
 
