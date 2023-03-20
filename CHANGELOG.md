@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/), and will follow [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] - 2023-03-20
+
+### Added
+
+ - New setting to treat all non-completion Deaths as QuickRestarts
+ - Add RunHistoryWipe mod to allow purging run history from save file
+ - Add CodexTechPrevention mod to prevent Codex from being opened while the timer is running
+ - Add SplitDisplay mod to optionally replace Victory Screen stats with run splits
+
+### Changed
+
+ - Update all ModUtil calls to v2.8.1
+
+
 ## [1.2.0] - 2022-05-30
 
 ### Added
